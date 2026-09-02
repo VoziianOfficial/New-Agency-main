@@ -1858,6 +1858,12 @@
   position: relative;
   z-index: 2;
 
+  width: 100%;
+  max-width: 620px;
+
+  align-self: center;
+  justify-self: center;
+
   padding: 30px;
 
   color: var(--color-text);
@@ -1870,7 +1876,58 @@
   margin-bottom: 25px;
 
   font-size: clamp(28px, 2.4vw, 40px);
+  text-align: center;
   text-transform: uppercase;
+}
+
+.home-contact__form .form-grid {
+  align-items: start;
+}
+
+.home-contact__form .form-field {
+  min-width: 0;
+}
+
+.home-contact__form .form-label {
+  text-align: left;
+}
+
+.home-contact__form .form-control {
+  line-height: 1.35;
+}
+
+.home-contact__form select.form-control {
+  appearance: none;
+  -webkit-appearance: none;
+
+  padding-right: 46px;
+
+  background-color: var(--color-white);
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--color-dark) 50%),
+    linear-gradient(135deg, var(--color-dark) 50%, transparent 50%);
+  background-position:
+    calc(100% - 22px) 50%,
+    calc(100% - 16px) 50%;
+  background-size:
+    6px 6px,
+    6px 6px;
+  background-repeat: no-repeat;
+}
+
+.home-contact__form select.form-control:focus {
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--color-accent) 50%),
+    linear-gradient(135deg, var(--color-accent) 50%, transparent 50%);
+}
+
+.home-contact__form .btn {
+  width: 100%;
+  justify-content: center;
+}
+
+.home-contact__form .form-message {
+  text-align: center;
 }
 
 

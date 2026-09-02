@@ -9,6 +9,31 @@
   const qsa = (selector, context = doc) =>
     context ? Array.from(context.querySelectorAll(selector)) : [];
 
+  const duplicateSlidesForLoop = (slider, minSlides) => {
+    const wrapper = qs(".swiper-wrapper", slider);
+
+    if (!wrapper) return [];
+
+    const originals = qsa(".swiper-slide", wrapper);
+
+    if (!originals.length) return [];
+
+    let index = 0;
+
+    while (wrapper.children.length < minSlides) {
+      const clone = originals[index % originals.length].cloneNode(true);
+
+      clone
+        .querySelectorAll("[id]")
+        .forEach((element) => element.removeAttribute("id"));
+
+      wrapper.appendChild(clone);
+      index += 1;
+    }
+
+    return qsa(".swiper-slide", wrapper);
+  };
+
   const reducedMotion = window.matchMedia(
     "(prefers-reduced-motion: reduce)"
   ).matches;
@@ -24,7 +49,7 @@
       return;
     }
 
-    const slides = qsa(".swiper-slide", slider);
+    const slides = duplicateSlidesForLoop(slider, 6);
 
     if (!slides.length) return;
 
@@ -43,8 +68,6 @@
       speed: 720,
 
       loop: true,
-      loopAdditionalSlides: slides.length,
-      loopedSlides: slides.length,
 
       grabCursor: true,
 
@@ -90,10 +113,7 @@
       return;
     }
 
-    const slides = qsa(
-      ".swiper-slide",
-      slider
-    );
+    const slides = duplicateSlidesForLoop(slider, 4);
 
     if (!slides.length) return;
 
@@ -112,7 +132,6 @@
       speed: 760,
 
       loop: true,
-      loopAdditionalSlides: 1,
 
       grabCursor: true,
 

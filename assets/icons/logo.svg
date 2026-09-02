@@ -6,7 +6,6 @@
 >
   <title id="logoTitle">NOVA Performance logo</title>
 
-  <!-- Outer mark -->
   <circle
     cx="36"
     cy="36"
@@ -16,7 +15,6 @@
     stroke-width="7"
   />
 
-  <!-- Intentional opening -->
   <path
     d="M13 36
        C13 23.3 23.3 13 36 13"
@@ -26,7 +24,6 @@
     stroke-linecap="round"
   />
 
-  <!-- Inner performance stroke -->
   <path
     d="M20 43
        L29 29
@@ -39,7 +36,6 @@
     stroke-linejoin="round"
   />
 
-  <!-- Endpoint -->
   <circle
     cx="51"
     cy="23"

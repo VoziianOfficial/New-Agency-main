@@ -12,7 +12,6 @@
     stroke-linejoin="round"
   >
 
-    <!-- LEFT LOOP / DARK DEPTH -->
     <path
       d="M78 186
          C34 150 42 84 95 61
@@ -23,7 +22,6 @@
       stroke-width="55"
     />
 
-    <!-- LEFT LOOP / ORANGE BODY -->
     <path
       d="M78 186
          C34 150 42 84 95 61
@@ -34,7 +32,6 @@
       stroke-width="39"
     />
 
-    <!-- LEFT LOOP / HIGHLIGHT -->
     <path
       d="M73 172
          C48 137 57 97 92 80
@@ -44,7 +41,6 @@
     />
 
 
-    <!-- CENTER CROSS / DARK DEPTH -->
     <path
       d="M128 267
          C173 286 215 261 211 218
@@ -55,7 +51,6 @@
       stroke-width="55"
     />
 
-    <!-- CENTER CROSS / ORANGE BODY -->
     <path
       d="M128 267
          C173 286 215 261 211 218
@@ -66,7 +61,6 @@
       stroke-width="39"
     />
 
-    <!-- CENTER HIGHLIGHT -->
     <path
       d="M181 69
          C207 48 240 59 253 82
@@ -76,7 +70,6 @@
     />
 
 
-    <!-- RIGHT LOOP / DARK DEPTH -->
     <path
       d="M259 130
          C285 94 323 76 352 95
@@ -88,7 +81,6 @@
       stroke-width="55"
     />
 
-    <!-- RIGHT LOOP / ORANGE BODY -->
     <path
       d="M259 130
          C285 94 323 76 352 95
@@ -100,7 +92,6 @@
       stroke-width="39"
     />
 
-    <!-- RIGHT HIGHLIGHT -->
     <path
       d="M292 111
          C314 94 341 99 353 117
@@ -110,7 +101,6 @@
     />
 
 
-    <!-- FRONT INTERLOCK -->
     <path
       d="M103 207
          C129 169 170 149 204 165

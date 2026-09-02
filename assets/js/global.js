@@ -1,8 +1,3 @@
-/* =========================================================
-   NOVA PERFORMANCE
-   GLOBAL.JS
-========================================================= */
-
 (() => {
   "use strict";
 
@@ -13,10 +8,6 @@
   root.classList.remove("no-js");
   root.classList.add("js");
 
-
-  /* =========================================================
-     HELPERS
-  ========================================================= */
 
   const qs = (selector, context = doc) =>
     context ? context.querySelector(selector) : null;
@@ -45,16 +36,7 @@
     );
 
 
-  /* =========================================================
-     GLOBAL CONFIG
-  ========================================================= */
-
   const applySiteConfig = () => {
-    /*
-      Example:
-      <span data-config="companyName"></span>
-    */
-
     qsa("[data-config]").forEach((element) => {
       const key = element.dataset.config;
 
@@ -64,11 +46,6 @@
       element.textContent = replaceConfigTokens(config[key]);
     });
 
-
-    /*
-      LOGO
-      <img data-config-logo>
-    */
 
     qsa("[data-config-logo]").forEach((image) => {
       if (!config.logo) return;
@@ -81,11 +58,6 @@
     });
 
 
-    /*
-      BRAND MARK
-      <img data-config-brand-mark>
-    */
-
     qsa("[data-config-brand-mark]").forEach((image) => {
       if (!config.brandMark) return;
 
@@ -97,10 +69,6 @@
     });
 
 
-    /*
-      DISCLAIMER
-    */
-
     qsa("[data-config-disclaimer]").forEach((element) => {
       element.textContent = replaceConfigTokens(
         config.disclaimer || ""
@@ -108,20 +76,12 @@
     });
 
 
-    /*
-      EMAIL TEXT
-    */
-
     qsa("[data-config-email]").forEach((element) => {
       if (!config.email) return;
 
       element.textContent = config.email;
     });
 
-
-    /*
-      EMAIL LINKS
-    */
 
     qsa("[data-config-email-link]").forEach((element) => {
       if (!config.email) return;
@@ -137,10 +97,6 @@
     });
 
 
-    /*
-      CTA TEXT
-    */
-
     qsa("[data-config-primary-cta]").forEach((element) => {
       if (config.primaryCTA) {
         element.textContent = config.primaryCTA;
@@ -154,10 +110,6 @@
     });
 
 
-    /*
-      COMPANY NAME IN ARIA LABELS
-    */
-
     qsa("[data-company-aria]").forEach((element) => {
       const template =
         element.dataset.companyAria ||
@@ -169,10 +121,6 @@
       );
     });
 
-
-    /*
-      PAGE TITLE
-    */
 
     const explicitPageTitle =
       doc.body?.dataset.pageTitle || "";
@@ -186,10 +134,6 @@
       );
     }
 
-
-    /*
-      FAVICON
-    */
 
     if (config.favicon) {
       let favicon = qs('link[rel="icon"]');
@@ -206,10 +150,6 @@
     }
   };
 
-
-  /* =========================================================
-     HEADER
-  ========================================================= */
 
   const initHeader = () => {
     const header = qs(".site-header");
@@ -253,10 +193,6 @@
     );
   };
 
-
-  /* =========================================================
-     FULLSCREEN BURGER MENU
-  ========================================================= */
 
   const initMenu = () => {
     const panel = qs(".menu-panel");
@@ -367,10 +303,6 @@
     });
 
 
-    /*
-      Close menu after navigation.
-    */
-
     qsa("a[href]", panel).forEach(
       (link) => {
         link.addEventListener(
@@ -380,10 +312,6 @@
       }
     );
 
-
-    /*
-      ESC + focus trap.
-    */
 
     doc.addEventListener(
       "keydown",
@@ -439,10 +367,6 @@
     );
   };
 
-
-  /* =========================================================
-     SEARCH
-  ========================================================= */
 
   const initSearch = () => {
     const modal = qs(".search");
@@ -706,10 +630,6 @@
   };
 
 
-  /* =========================================================
-     AOS
-  ========================================================= */
-
   const initAOS = () => {
     if (
       prefersReducedMotion ||
@@ -738,10 +658,6 @@
     );
   };
 
-
-  /* =========================================================
-     ACCORDIONS
-  ========================================================= */
 
   const initAccordions = () => {
     const accordions =
@@ -800,12 +716,6 @@
                     "is-open"
                   );
 
-                /*
-                  Optional:
-                  data-accordion-single
-                  allows only one item open.
-                */
-
                 if (
                   accordion.hasAttribute(
                     "data-accordion-single"
@@ -856,10 +766,6 @@
     );
   };
 
-
-  /* =========================================================
-     SIMPLE PARALLAX
-  ========================================================= */
 
   const initParallax = () => {
     if (prefersReducedMotion) {
@@ -945,10 +851,6 @@
   };
 
 
-  /* =========================================================
-     CUSTOM REVEALS
-  ========================================================= */
-
   const initRevealObserver = () => {
     const targets = qsa(
       "[data-fade], .reveal-line"
@@ -1005,10 +907,6 @@
   };
 
 
-  /* =========================================================
-     INTERNAL ANCHORS
-  ========================================================= */
-
   const initAnchors = () => {
     qsa('a[href*="#"]').forEach(
       (link) => {
@@ -1034,11 +932,6 @@
               pathname,
               hash
             ] = href.split("#");
-
-            /*
-              Only smooth-scroll if target
-              belongs to current page.
-            */
 
             const currentFile =
               window.location.pathname
@@ -1096,10 +989,6 @@
   };
 
 
-  /* =========================================================
-     COOKIE CONSENT
-  ========================================================= */
-
   const initCookieConsent = () => {
     const card = qs(
       ".cookie-card"
@@ -1146,8 +1035,7 @@
           value
         );
       } catch (error) {
-        /* Local storage unavailable. */
-      }
+        }
     };
 
     if (!alreadyHandled) {
@@ -1173,10 +1061,6 @@
     );
   };
 
-
-  /* =========================================================
-     AJAX FORMS
-  ========================================================= */
 
   const initForms = () => {
     const forms = qsa(
@@ -1315,10 +1199,6 @@
   };
 
 
-  /* =========================================================
-     ACTIVE NAVIGATION
-  ========================================================= */
-
   const initActiveNavigation = () => {
     const currentFile =
       window.location.pathname
@@ -1363,10 +1243,6 @@
   };
 
 
-  /* =========================================================
-     EXTERNAL LINK SAFETY
-  ========================================================= */
-
   const initExternalLinks = () => {
     qsa(
       'a[target="_blank"]'
@@ -1391,10 +1267,6 @@
     });
   };
 
-
-  /* =========================================================
-     RESIZE REFRESH
-  ========================================================= */
 
   const initResizeRefresh = () => {
     let resizeTimer = null;
@@ -1422,10 +1294,6 @@
     );
   };
 
-
-  /* =========================================================
-     INITIALIZE
-  ========================================================= */
 
   const init = () => {
     applySiteConfig();

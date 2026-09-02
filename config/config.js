@@ -1,8 +1,3 @@
-/* =========================================================
-   GLOBAL SITE CONFIG
-   Edit this file to update brand information site-wide.
-========================================================= */
-
 window.SiteConfig = {
   companyName: "NOVA Performance",
 

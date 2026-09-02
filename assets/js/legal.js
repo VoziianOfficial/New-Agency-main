@@ -1,8 +1,3 @@
-/* =========================================================
-   NOVA PERFORMANCE
-   LEGAL PAGES — LEGAL.JS
-========================================================= */
-
 (() => {
   "use strict";
 
@@ -18,10 +13,6 @@
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
-
-  /* =========================================================
-     ACTIVE LEGAL SECTION
-  ========================================================= */
 
   const initSectionNavigation = () => {
     const sections = qsa(".legal-section[id]");
@@ -85,10 +76,6 @@
     };
 
 
-    /*
-      Direct click
-    */
-
     links.forEach((link) => {
       link.addEventListener(
         "click",
@@ -127,10 +114,6 @@
       );
     });
 
-
-    /*
-      Scroll tracking
-    */
 
     if (
       !("IntersectionObserver" in window)
@@ -189,12 +172,6 @@
         {
           root: null,
 
-          /*
-            Active section is determined
-            around the middle/top part
-            of the viewport.
-          */
-
           rootMargin:
             "-18% 0px -60% 0px",
 
@@ -206,10 +183,6 @@
       observer.observe(section);
     });
 
-
-    /*
-      Initial state from URL hash
-    */
 
     const initialHash =
       window.location.hash.replace(
@@ -227,10 +200,6 @@
     }
   };
 
-
-  /* =========================================================
-     LEGAL PAGE CURRENT CARD
-  ========================================================= */
 
   const initCurrentLegalPage = () => {
     const currentFile =
@@ -275,10 +244,6 @@
   };
 
 
-  /* =========================================================
-     TABLE ACCESSIBILITY
-  ========================================================= */
-
   const initTables = () => {
     qsa(
       ".legal-table-wrap"
@@ -314,10 +279,6 @@
   };
 
 
-  /* =========================================================
-     HASH ON LOAD
-  ========================================================= */
-
   const initHashPosition = () => {
     const hash =
       window.location.hash;
@@ -337,17 +298,7 @@
   };
 
 
-  /* =========================================================
-     SCROLL SAFETY
-  ========================================================= */
-
   const initScrollSafety = () => {
-    /*
-      Legal pages must always use natural document scrolling.
-      This protects mobile/tablet pages from accidental
-      body locking caused by stale menu/modal classes.
-    */
-
     const unlockIfNeeded = () => {
       const menuOpen =
         qs(".menu-panel.is-open");
@@ -381,10 +332,6 @@
   };
 
 
-  /* =========================================================
-     SIDEBAR MOBILE DRAG
-  ========================================================= */
-
   const initMobileSidebar = () => {
     const nav = qs(
       ".legal-sidebar__box"
@@ -392,20 +339,10 @@
 
     if (!nav) return;
 
-    /*
-      Native horizontal scrolling is preserved.
-      We do not use preventDefault/touchmove,
-      so vertical page scrolling remains untouched.
-    */
-
     nav.style.touchAction =
       "pan-x pan-y";
   };
 
-
-  /* =========================================================
-     PRINT
-  ========================================================= */
 
   const initPrintRefresh = () => {
     window.addEventListener(
@@ -420,10 +357,6 @@
     );
   };
 
-
-  /* =========================================================
-     INIT
-  ========================================================= */
 
   const init = () => {
     initSectionNavigation();

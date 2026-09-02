@@ -2,31 +2,14 @@
 
 declare(strict_types=1);
 
-/* =========================================================
-   NOVA PERFORMANCE
-   CONTACT FORM HANDLER
-========================================================= */
-
 header('Content-Type: application/json; charset=UTF-8');
 header('X-Content-Type-Options: nosniff');
 
-
-/* =========================================================
-   SETTINGS
-========================================================= */
-
-/*
-   Change this email when the final agency email is ready.
-*/
 
 $recipientEmail = 'hello@novaperformance.agency';
 
 $siteName = 'NOVA Performance';
 
-
-/* =========================================================
-   RESPONSE
-========================================================= */
 
 function respond(bool $success, string $message, int $status = 200): never
 {
@@ -43,10 +26,6 @@ function respond(bool $success, string $message, int $status = 200): never
     exit;
 }
 
-
-/* =========================================================
-   HELPERS
-========================================================= */
 
 function cleanText(?string $value): string
 {
@@ -92,10 +71,6 @@ function validEmail(string $email): bool
 }
 
 
-/* =========================================================
-   REQUEST METHOD
-========================================================= */
-
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     respond(
         false,
@@ -105,43 +80,17 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 }
 
 
-/* =========================================================
-   SIMPLE HONEYPOT
-========================================================= */
-
-/*
-   Add this hidden field to the form:
-
-   <input
-     type="text"
-     name="website_check"
-     tabindex="-1"
-     autocomplete="off"
-     aria-hidden="true"
-     style="position:absolute;left:-9999px"
-   >
-*/
-
 $honeypot = trim(
     (string) ($_POST['website_check'] ?? '')
 );
 
 if ($honeypot !== '') {
-    /*
-       Return success so bots do not know
-       that they were detected.
-    */
-
     respond(
         true,
         'Successfully sent!'
     );
 }
 
-
-/* =========================================================
-   FORM DATA
-========================================================= */
 
 $name = cleanText(
     $_POST['name'] ?? ''
@@ -175,10 +124,6 @@ $message = cleanMessage(
     $_POST['message'] ?? ''
 );
 
-
-/* =========================================================
-   VALIDATION
-========================================================= */
 
 if ($name === '') {
     respond(
@@ -244,10 +189,6 @@ if (
 }
 
 
-/* =========================================================
-   WEBSITE VALIDATION
-========================================================= */
-
 if ($website !== '') {
 
     if (
@@ -273,10 +214,6 @@ if ($website !== '') {
     }
 }
 
-
-/* =========================================================
-   BUILD EMAIL
-========================================================= */
 
 $subject = sprintf(
     'New Google Ads audit request — %s',
@@ -308,10 +245,6 @@ $emailBody = implode(
 );
 
 
-/* =========================================================
-   MAIL HEADERS
-========================================================= */
-
 $host = $_SERVER['HTTP_HOST'] ?? 'localhost';
 
 $host = preg_replace(
@@ -332,10 +265,6 @@ $headers = [
 ];
 
 
-/* =========================================================
-   SEND
-========================================================= */
-
 $sent = @mail(
     $recipientEmail,
     $subject,
@@ -352,10 +281,6 @@ if (!$sent) {
     );
 }
 
-
-/* =========================================================
-   SUCCESS
-========================================================= */
 
 respond(
     true,

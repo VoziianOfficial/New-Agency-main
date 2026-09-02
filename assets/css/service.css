@@ -558,13 +558,10 @@
 .service-flow__step {
   position: relative;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: grid;
+  align-content: end;
 
-  min-height: 235px;
-
-  padding: 24px;
+  padding: 24px 72px 22px 22px;
 
   color: var(--color-white);
   background: var(--color-dark-card);
@@ -590,11 +587,15 @@
 }
 
 .service-flow__icon {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+
   display: grid;
   place-items: center;
 
-  width: 46px;
-  height: 46px;
+  width: 40px;
+  height: 40px;
 
   border: 1px solid currentColor;
   border-radius: 50%;
@@ -603,12 +604,12 @@
 }
 
 .service-flow__icon svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
 }
 
 .service-flow__step h3 {
-  margin-top: 46px;
+  margin-top: 0;
 
   font-size: 18px;
   line-height: 1.05;
@@ -789,9 +790,9 @@
 
 .service-platforms__shell {
   display: grid;
-  grid-template-columns: minmax(250px, 0.6fr) minmax(0, 1.4fr);
+  grid-template-columns: minmax(250px, 0.52fr) minmax(0, 1.48fr);
 
-  min-height: 500px;
+  min-height: 430px;
 
   color: var(--color-white);
   background: var(--color-dark);
@@ -888,7 +889,7 @@
   position: relative;
 
   min-width: 0;
-  min-height: 500px;
+  min-height: 430px;
 }
 
 .service-platforms__panel {
@@ -896,12 +897,12 @@
   inset: 0;
 
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 0.8fr);
-  gap: 42px;
+  grid-template-columns: minmax(0, 0.92fr) minmax(300px, 0.78fr);
+  gap: clamp(24px, 3vw, 38px);
 
   align-items: center;
 
-  padding: clamp(34px, 5vw, 62px);
+  padding: clamp(28px, 3.4vw, 42px);
 
   opacity: 0;
   visibility: hidden;
@@ -926,29 +927,32 @@
 }
 
 .service-platforms__copy h3 {
-  max-width: 450px;
+  max-width: 390px;
 
-  font-size: clamp(34px, 4vw, 60px);
-  line-height: 0.96;
+  font-size: clamp(30px, 3.2vw, 44px);
+  line-height: 0.98;
 
+  text-wrap: balance;
   text-transform: uppercase;
 }
 
 .service-platforms__copy p {
-  max-width: 500px;
+  max-width: 430px;
 
-  margin-top: 20px;
+  margin-top: 14px;
 
-  font-size: 14px;
+  font-size: 13px;
+  line-height: 1.55;
 
   color: var(--color-text-light);
 }
 
 .service-platforms__list {
   display: grid;
-  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: 8px 20px;
 
-  margin-top: 25px;
+  margin-top: 18px;
 }
 
 .service-platforms__list li {
@@ -979,7 +983,11 @@
 .service-platforms__visual {
   position: relative;
 
-  height: 340px;
+  align-self: center;
+
+  width: 100%;
+  height: clamp(240px, 23vw, 310px);
+  max-height: 100%;
 
   background: var(--color-dark-card);
 
@@ -992,6 +1000,9 @@
 .service-platforms__visual img {
   width: 100%;
   height: 100%;
+
+  color: transparent;
+  font-size: 0;
 
   object-fit: cover;
 }
@@ -1622,11 +1633,6 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .service-flow__step:nth-child(4),
-  .service-flow__step:nth-child(5) {
-    min-height: 215px;
-  }
-
   .service-process__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -1773,7 +1779,7 @@
   .service-platforms__shell {
     grid-template-columns: 1fr;
 
-    min-height: 640px;
+    min-height: 560px;
   }
 
   .service-platforms__nav {
@@ -1811,7 +1817,7 @@
   }
 
   .service-platforms__content {
-    min-height: 555px;
+    min-height: 475px;
   }
 
   .service-dashboard__grid {
@@ -1964,11 +1970,11 @@
   }
 
   .service-flow__step {
-    min-height: 190px;
+    padding: 22px 68px 20px 20px;
   }
 
   .service-flow__step h3 {
-    margin-top: 30px;
+    margin-top: 0;
   }
 
   .service-strategy__media {
@@ -2018,7 +2024,7 @@
   }
 
   .service-platforms__content {
-    min-height: 660px;
+    min-height: 560px;
   }
 
   .service-platforms__panel {
@@ -2045,7 +2051,7 @@
   }
 
   .service-platforms__visual {
-    height: 270px;
+    height: 240px;
   }
 
   .service-dashboard__main {
@@ -2180,7 +2186,7 @@
   }
 
   .service-platforms__content {
-    min-height: 680px;
+    min-height: 580px;
   }
 }
 
@@ -2269,8 +2275,7 @@
 }
 
 .service-workflow__media,
-.service-stack__media,
-.service-platforms__visual {
+.service-stack__media {
   height: clamp(330px, 36vw, 500px);
 }
 
@@ -2317,8 +2322,7 @@
 
   .service-hero__visual,
   .service-workflow__media,
-  .service-stack__media,
-  .service-platforms__visual {
+  .service-stack__media {
     height: 420px;
   }
 
@@ -2336,8 +2340,7 @@
 
   .service-hero__visual,
   .service-workflow__media,
-  .service-stack__media,
-  .service-platforms__visual {
+  .service-stack__media {
     height: 330px;
   }
 

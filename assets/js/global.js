@@ -145,7 +145,9 @@
         doc.head.appendChild(favicon);
       }
 
-      favicon.type = "image/svg+xml";
+      favicon.type = config.favicon.endsWith(".svg")
+        ? "image/svg+xml"
+        : "image/png";
       favicon.href = config.favicon;
     }
   };

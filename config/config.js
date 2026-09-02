@@ -5,7 +5,7 @@ window.SiteConfig = {
 
   logo: "assets/icons/logo.svg",
 
-  favicon: "assets/icons/favicon.svg",
+  favicon: "assets/icons/favicon.png",
 
   brandMark: "assets/icons/brand-mark.svg",
 

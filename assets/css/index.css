@@ -494,7 +494,20 @@
 }
 
 .home-services__slider {
+  padding-block: 10px;
+  margin-block: -10px;
+
   overflow: hidden;
+}
+
+.home-services__slider .swiper-wrapper {
+  align-items: stretch;
+  height: auto;
+}
+
+.home-services__slider .swiper-slide {
+  display: flex;
+  height: auto;
 }
 
 .home-services__card {
@@ -503,6 +516,8 @@
   display: flex;
   flex-direction: column;
 
+  width: 100%;
+  height: 100%;
   min-height: 510px;
 
   padding: 30px;
@@ -872,7 +887,7 @@
   z-index: 3;
 
   left: 50%;
-  bottom: 34px;
+  bottom: clamp(74px, 7vw, 110px);
 
   font-family: var(--font-display);
   font-size: clamp(19px, 1.6vw, 27px);
@@ -960,7 +975,7 @@
 .home-video__media {
   position: relative;
 
-  height: clamp(460px, 50vw, 690px);
+  height: clamp(230px, 25vw, 345px);
 
   overflow: hidden;
 }
@@ -991,8 +1006,8 @@
   display: grid;
   place-items: center;
 
-  width: 112px;
-  height: 112px;
+  width: 96px;
+  height: 96px;
 
   color: var(--color-dark);
   background: var(--color-white);
@@ -1016,8 +1031,7 @@
     scale(1.05);
 }
 
-.home-video__play::before,
-.home-video__play::after {
+.home-video__play::before {
   content: "";
 
   position: absolute;
@@ -1027,17 +1041,9 @@
   border-radius: 50%;
 }
 
-.home-video__play::after {
-  inset: -39px;
-
-  border-color: rgba(255, 255, 255, 0.25);
-}
-
-.home-video__play svg {
-  width: 26px;
-  height: 26px;
-
-  margin-left: 4px;
+.home-video__play img {
+  width: 46px;
+  height: 46px;
 }
 
 
@@ -2424,20 +2430,16 @@
   }
 
   .home-video__media {
-    height: 430px;
+    height: 215px;
   }
 
   .home-video__play {
-    width: 82px;
-    height: 82px;
+    width: 72px;
+    height: 72px;
   }
 
   .home-video__play::before {
     inset: -14px;
-  }
-
-  .home-video__play::after {
-    inset: -26px;
   }
 
   .home-process__visual {
@@ -2608,5 +2610,164 @@
   .team-card img,
   .home-services__icon {
     transition: none;
+  }
+}
+
+
+.home-hero {
+  min-height: min(760px, 100svh);
+  padding: 104px 0 30px;
+}
+
+.home-hero__container,
+.home-about__grid,
+.home-proof__grid,
+.home-approach__grid,
+.home-industries__grid,
+.home-partners__grid,
+.home-cta__shell {
+  gap: clamp(24px, 3.4vw, 62px);
+}
+
+.home-hero__label {
+  margin-bottom: clamp(16px, 2vw, 26px);
+}
+
+.home-hero__title {
+  font-size: clamp(58px, 6.7vw, 104px);
+}
+
+.home-hero__intro {
+  gap: 24px;
+  margin-top: clamp(28px, 4vw, 46px);
+}
+
+.home-hero__visual {
+  height: min(560px, 58vh);
+}
+
+.home-about__copy,
+.home-services__intro,
+.home-process__intro,
+.home-team__intro,
+.home-contact__intro {
+  margin-top: 14px;
+}
+
+.home-services__actions,
+.home-services__card-link,
+.home-process__actions,
+.home-industries__actions,
+.home-team__actions,
+.home-contact__actions {
+  margin-top: 18px;
+}
+
+.home-services__card {
+  min-height: 420px;
+  padding: 24px;
+}
+
+.home-services__card-title {
+  padding-top: 36px;
+}
+
+.home-services__card-text,
+.home-service__meta,
+.home-case__text,
+.home-team__text {
+  margin-top: 12px;
+}
+
+.home-services__card-bottom {
+  padding-top: 18px;
+}
+
+.home-proof__visual,
+.home-method__visual,
+.home-partners__media,
+.home-contact__media {
+  height: clamp(320px, 34vw, 470px);
+}
+
+.home-case {
+  min-height: 390px;
+}
+
+.home-testimonials__mark {
+  margin-top: 32px;
+}
+
+.testimonial-card {
+  min-height: 360px;
+}
+
+.testimonial-card__body {
+  gap: 28px;
+  padding: clamp(26px, 3.5vw, 48px);
+}
+
+.testimonial-card__footer {
+  min-height: 68px;
+  padding: 12px 24px 12px clamp(26px, 3.5vw, 48px);
+}
+
+.team-card {
+  height: clamp(330px, 33vw, 450px);
+}
+
+.home-cta__shell,
+.home-testimonials__panel {
+  padding-block: 28px 38px;
+}
+
+.home-team {
+  width: min(
+    calc(100% - (var(--container-padding) * 2)),
+    var(--container)
+  );
+  margin-inline: auto;
+  border-radius: var(--radius-lg);
+}
+
+.home-team > .container {
+  width: 100%;
+}
+
+@media (max-width: 991px) {
+  .home-hero {
+    min-height: auto;
+    padding-top: 104px;
+    padding-bottom: 34px;
+  }
+
+  .home-hero__visual {
+    height: 430px;
+  }
+
+  .home-services__card,
+  .testimonial-card {
+    min-height: 360px;
+  }
+}
+
+@media (max-width: 767px) {
+  .home-hero {
+    padding-top: 92px;
+  }
+
+  .home-hero__visual {
+    height: 330px;
+  }
+
+  .home-services__card {
+    min-height: 380px;
+  }
+
+  .home-proof__visual,
+  .home-method__visual,
+  .home-partners__media,
+  .home-contact__media {
+    height: 310px;
   }
 }

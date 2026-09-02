@@ -43,7 +43,8 @@
       speed: 720,
 
       loop: true,
-      loopAdditionalSlides: 1,
+      loopAdditionalSlides: slides.length,
+      loopedSlides: slides.length,
 
       grabCursor: true,
 
@@ -69,7 +70,7 @@
         },
 
         1100: {
-          slidesPerView: 3,
+          slidesPerView: 2,
           spaceBetween: 16
         }
       }

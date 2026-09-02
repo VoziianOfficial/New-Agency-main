@@ -1230,7 +1230,7 @@
 }
 
 .service-cases__slider {
-  overflow: visible;
+  overflow: hidden;
 }
 
 

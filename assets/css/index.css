@@ -494,7 +494,7 @@
 }
 
 .home-services__slider {
-  overflow: visible;
+  overflow: hidden;
 }
 
 .home-services__card {

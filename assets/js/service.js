@@ -173,7 +173,7 @@
 
       speed: 760,
 
-      loop: slides.length > 1,
+      loop: true,
       loopAdditionalSlides: 1,
 
       grabCursor: true,

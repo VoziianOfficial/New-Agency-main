@@ -1618,14 +1618,27 @@
 
 .home-team {
   overflow: hidden;
+  padding-inline: clamp(18px, 3vw, 44px);
 }
 
 .home-team__grid {
   display: grid;
-  grid-template-columns: minmax(280px, 0.72fr) minmax(0, 1.28fr);
-  gap: clamp(50px, 7vw, 110px);
+  grid-template-columns: minmax(300px, 0.78fr) minmax(0, 1.22fr);
+  gap: clamp(42px, 5.5vw, 84px);
 
   align-items: center;
+}
+
+.home-team__intro {
+  min-width: 0;
+}
+
+html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
+  transform: translate3d(0, 18px, 0);
+}
+
+.home-team__intro.aos-animate {
+  transform: translate3d(0, 0, 0);
 }
 
 .home-team__title {
@@ -1662,8 +1675,9 @@
 
 .home-team__members {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: clamp(16px, 2vw, 24px);
+  min-width: 0;
 }
 
 .team-card {
@@ -1671,6 +1685,7 @@
 
   height: clamp(440px, 41vw, 590px);
 
+  background: linear-gradient(145deg, #2a2a2d, #101013);
   border-radius: var(--radius-md);
 
   overflow: hidden;

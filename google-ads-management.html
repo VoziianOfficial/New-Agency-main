@@ -127,13 +127,36 @@
                 </a>
               </li>
 
-              <li>
-                <a
-                  class="main-nav__link"
-                  href="index.html#services"
+              <li class="main-nav__item main-nav__item--dropdown">
+                <button
+                  class="main-nav__link main-nav__link--dropdown"
+                  type="button"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  data-services-dropdown-toggle
                 >
-                  Services
-                </a>
+                  <span>Services</span>
+                  <span class="main-nav__chevron" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" focusable="false">
+                      <path d="M3 4.5 6 7.5 9 4.5" />
+                    </svg>
+                  </span>
+                </button>
+
+                <div class="services-dropdown" data-services-dropdown>
+                  <a class="services-dropdown__link" href="google-ads-management.html">
+                    <span>Google Ads</span>
+                  </a>
+                  <a class="services-dropdown__link" href="lead-generation.html">
+                    <span>Lead Generation</span>
+                  </a>
+                  <a class="services-dropdown__link" href="ecommerce-advertising.html">
+                    <span>E-commerce Ads</span>
+                  </a>
+                  <a class="services-dropdown__link" href="tracking-automation.html">
+                    <span>Tracking &amp; Automation</span>
+                  </a>
+                </div>
               </li>
 
               <li>
@@ -148,7 +171,7 @@
               <li>
                 <a
                   class="main-nav__link"
-                  href="#contact"
+                  href="index.html#contact"
                 >
                   Contact
                 </a>
@@ -195,7 +218,7 @@
 
             <a
               class="btn btn--accent"
-              href="#contact"
+              href="index.html#contact"
             >
               Free Audit
             </a>
@@ -343,7 +366,7 @@
               <li class="menu-panel__item">
                 <a
                   class="menu-panel__link"
-                  href="#contact"
+                  href="index.html#contact"
                 >
                   Contact
                 </a>
@@ -503,7 +526,7 @@
             <div class="service-hero__actions">
 
               <a
-                href="#contact"
+                href="index.html#contact"
                 class="btn btn--accent"
               >
                 Get a Free Audit
@@ -2628,7 +2651,7 @@
 
             <a
               class="service-cta__action"
-              href="#contact"
+              href="index.html#contact"
               aria-label="Request a Google Ads audit"
             >
 
@@ -2653,335 +2676,6 @@
         </div>
 
       </section>
-
-
-      <section
-        class="section service-contact"
-        id="contact"
-      >
-
-        <div class="container">
-
-          <div class="service-contact__shell">
-
-
-            <div class="service-contact__intro">
-
-              <span class="mini-label">
-                Free account review
-              </span>
-
-              <h2 class="section-title service-contact__title">
-                Review your
-                <span class="accent-word">
-                  Google Ads.
-                </span>
-              </h2>
-
-              <p class="service-contact__text">
-                Share a little context about your
-                business, account and objectives.
-                No phone number is required.
-              </p>
-
-
-              <a
-                class="service-contact__email"
-                href="mailto:hello@novaperformance.agency"
-                data-config-email-link
-                data-email-text
-              >
-                hello@novaperformance.agency
-              </a>
-
-            </div>
-
-
-            <form
-              class="service-contact__form"
-              action="contact.php"
-              method="post"
-              data-ajax-form
-            >
-
-              <h3 class="service-contact__form-title">
-                Request an Audit
-              </h3>
-
-
-              <input
-                type="text"
-                name="website_check"
-                tabindex="-1"
-                autocomplete="off"
-                aria-hidden="true"
-                style="position:absolute;left:-9999px;"
-              >
-
-
-              <div class="form-grid">
-
-
-                <div class="form-field">
-
-                  <label
-                    class="form-label"
-                    for="google-name"
-                  >
-                    Name *
-                  </label>
-
-                  <input
-                    class="form-control"
-                    id="google-name"
-                    name="name"
-                    type="text"
-                    placeholder="Your name"
-                    autocomplete="name"
-                    required
-                  >
-
-                </div>
-
-
-                <div class="form-field">
-
-                  <label
-                    class="form-label"
-                    for="google-company"
-                  >
-                    Company
-                  </label>
-
-                  <input
-                    class="form-control"
-                    id="google-company"
-                    name="company"
-                    type="text"
-                    placeholder="Company name"
-                    autocomplete="organization"
-                  >
-
-                </div>
-
-
-                <div class="form-field">
-
-                  <label
-                    class="form-label"
-                    for="google-email"
-                  >
-                    Business Email *
-                  </label>
-
-                  <input
-                    class="form-control"
-                    id="google-email"
-                    name="email"
-                    type="email"
-                    placeholder="you@company.com"
-                    autocomplete="email"
-                    required
-                  >
-
-                </div>
-
-
-                <div class="form-field">
-
-                  <label
-                    class="form-label"
-                    for="google-website"
-                  >
-                    Website
-                  </label>
-
-                  <input
-                    class="form-control"
-                    id="google-website"
-                    name="website"
-                    type="text"
-                    placeholder="yourwebsite.com"
-                  >
-
-                </div>
-
-
-                <div class="form-field">
-
-                  <label
-                    class="form-label"
-                    for="google-business"
-                  >
-                    Business Type
-                  </label>
-
-                  <select
-                    class="form-control"
-                    id="google-business"
-                    name="business_type"
-                  >
-
-                    <option value="">
-                      Select
-                    </option>
-
-                    <option value="Lead Generation">
-                      Lead Generation
-                    </option>
-
-                    <option value="E-commerce">
-                      E-commerce
-                    </option>
-
-                    <option value="Local Business">
-                      Local Business
-                    </option>
-
-                    <option value="B2B / SaaS">
-                      B2B / SaaS
-                    </option>
-
-                    <option value="Mobile App">
-                      Mobile App
-                    </option>
-
-                    <option value="Other">
-                      Other
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                <div class="form-field">
-
-                  <label
-                    class="form-label"
-                    for="google-budget"
-                  >
-                    Monthly Ad Budget
-                  </label>
-
-                  <select
-                    class="form-control"
-                    id="google-budget"
-                    name="budget"
-                  >
-
-                    <option value="">
-                      Select
-                    </option>
-
-                    <option value="Under 5k">
-                      Under 5k
-                    </option>
-
-                    <option value="5k - 15k">
-                      5k – 15k
-                    </option>
-
-                    <option value="15k - 50k">
-                      15k – 50k
-                    </option>
-
-                    <option value="50k+">
-                      50k+
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                <div class="form-field form-field--full">
-
-                  <label
-                    class="form-label"
-                    for="google-service"
-                  >
-                    What do you need help with?
-                  </label>
-
-                  <select
-                    class="form-control"
-                    id="google-service"
-                    name="service"
-                  >
-
-                    <option value="Google Ads Management">
-                      Google Ads Management
-                    </option>
-
-                    <option value="Performance Max">
-                      Performance Max
-                    </option>
-
-                    <option value="Shopping">
-                      Shopping
-                    </option>
-
-                    <option value="Account Audit">
-                      Account Audit
-                    </option>
-
-                    <option value="Tracking & Analytics">
-                      Tracking & Analytics
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                <div class="form-field form-field--full">
-
-                  <label
-                    class="form-label"
-                    for="google-message"
-                  >
-                    Main Goal / Message
-                  </label>
-
-                  <textarea
-                    class="form-control"
-                    id="google-message"
-                    name="message"
-                    placeholder="Tell us what you want to improve..."
-                  ></textarea>
-
-                </div>
-
-
-                <div class="form-field form-field--full">
-
-                  <button
-                    class="btn btn--accent"
-                    type="submit"
-                  >
-                    Get a Free Google Ads Audit
-                  </button>
-
-                </div>
-
-
-                <div
-                  class="form-message"
-                  role="status"
-                  aria-live="polite"
-                ></div>
-
-              </div>
-
-            </form>
-
-          </div>
-
-        </div>
-
-      </section>
-
     </main>
 
 
@@ -3128,7 +2822,7 @@
 
                 <a
                   class="footer-link"
-                  href="#contact"
+                  href="index.html#contact"
                 >
                   Contact
                 </a>

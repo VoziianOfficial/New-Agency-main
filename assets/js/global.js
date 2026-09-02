@@ -195,6 +195,85 @@
     );
   };
 
+  const initServicesDropdown = () => {
+    const items = qsa(
+      ".main-nav__item--dropdown"
+    );
+
+    if (!items.length) return;
+
+    const closeAll = (except = null) => {
+      items.forEach((item) => {
+        if (item === except) return;
+
+        item.classList.remove("is-open");
+
+        qs(
+          "[data-services-dropdown-toggle]",
+          item
+        )?.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+      });
+    };
+
+    items.forEach((item) => {
+      const toggle = qs(
+        "[data-services-dropdown-toggle]",
+        item
+      );
+
+      if (!toggle) return;
+
+      toggle.addEventListener(
+        "click",
+        (event) => {
+          event.preventDefault();
+
+          const shouldOpen =
+            !item.classList.contains("is-open");
+
+          closeAll(item);
+
+          item.classList.toggle(
+            "is-open",
+            shouldOpen
+          );
+
+          toggle.setAttribute(
+            "aria-expanded",
+            String(shouldOpen)
+          );
+        }
+      );
+    });
+
+    doc.addEventListener(
+      "click",
+      (event) => {
+        if (
+          event.target.closest(
+            ".main-nav__item--dropdown"
+          )
+        ) {
+          return;
+        }
+
+        closeAll();
+      }
+    );
+
+    doc.addEventListener(
+      "keydown",
+      (event) => {
+        if (event.key !== "Escape") return;
+
+        closeAll();
+      }
+    );
+  };
+
 
   const initMenu = () => {
     const panel = qs(".menu-panel");
@@ -1209,7 +1288,11 @@
       "index.html";
 
     qsa(
-      ".main-nav__link, .menu-panel__link"
+      [
+        ".main-nav__link",
+        ".menu-panel__link",
+        ".services-dropdown__link"
+      ].join(",")
     ).forEach((link) => {
       const href =
         link.getAttribute("href");
@@ -1240,6 +1323,15 @@
         link.classList.add(
           "is-active"
         );
+
+        link
+          .closest(
+            ".main-nav__item--dropdown"
+          )
+          ?.querySelector(
+            "[data-services-dropdown-toggle]"
+          )
+          ?.classList.add("is-active");
       }
     });
   };
@@ -1301,6 +1393,7 @@
     applySiteConfig();
 
     initHeader();
+    initServicesDropdown();
     initMenu();
     initSearch();
 

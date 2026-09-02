@@ -127,13 +127,36 @@
                 </a>
               </li>
 
-              <li>
-                <a
-                  class="main-nav__link"
-                  href="index.html#services"
+              <li class="main-nav__item main-nav__item--dropdown">
+                <button
+                  class="main-nav__link main-nav__link--dropdown"
+                  type="button"
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  data-services-dropdown-toggle
                 >
-                  Services
-                </a>
+                  <span>Services</span>
+                  <span class="main-nav__chevron" aria-hidden="true">
+                    <svg viewBox="0 0 12 12" focusable="false">
+                      <path d="M3 4.5 6 7.5 9 4.5" />
+                    </svg>
+                  </span>
+                </button>
+
+                <div class="services-dropdown" data-services-dropdown>
+                  <a class="services-dropdown__link" href="google-ads-management.html">
+                    <span>Google Ads</span>
+                  </a>
+                  <a class="services-dropdown__link" href="lead-generation.html">
+                    <span>Lead Generation</span>
+                  </a>
+                  <a class="services-dropdown__link" href="ecommerce-advertising.html">
+                    <span>E-commerce Ads</span>
+                  </a>
+                  <a class="services-dropdown__link" href="tracking-automation.html">
+                    <span>Tracking &amp; Automation</span>
+                  </a>
+                </div>
               </li>
 
               <li>
@@ -148,7 +171,7 @@
               <li>
                 <a
                   class="main-nav__link"
-                  href="#contact"
+                  href="index.html#contact"
                 >
                   Contact
                 </a>
@@ -192,7 +215,7 @@
 
             <a
               class="btn btn--accent"
-              href="#contact"
+              href="index.html#contact"
             >
               Free Audit
             </a>
@@ -337,7 +360,7 @@
               <li class="menu-panel__item">
                 <a
                   class="menu-panel__link"
-                  href="#contact"
+                  href="index.html#contact"
                 >
                   Contact
                 </a>
@@ -493,7 +516,7 @@
             <div class="service-hero__actions">
 
               <a
-                href="#contact"
+                href="index.html#contact"
                 class="btn btn--accent"
               >
                 Request E-commerce Audit
@@ -2528,7 +2551,7 @@
 
             <a
               class="service-cta__action"
-              href="#contact"
+              href="index.html#contact"
               aria-label="Request an e-commerce advertising audit"
             >
               <svg
@@ -2550,328 +2573,6 @@
         </div>
 
       </section>
-
-
-      <section
-        class="section service-contact"
-        id="contact"
-      >
-
-        <div class="container">
-
-          <div class="service-contact__shell">
-
-
-            <div class="service-contact__intro">
-
-              <span class="mini-label">
-                E-commerce audit
-              </span>
-
-              <h2 class="section-title service-contact__title">
-                Review your
-                <span class="accent-word">
-                  store.
-                </span>
-              </h2>
-
-              <p class="service-contact__text">
-                Tell us about your store,
-                current advertising and what
-                you want to improve.
-                No phone number required.
-              </p>
-
-
-              <a
-                class="service-contact__email"
-                href="mailto:hello@novaperformance.agency"
-                data-config-email-link
-                data-email-text
-              >
-                hello@novaperformance.agency
-              </a>
-
-            </div>
-
-
-            <form
-              class="service-contact__form"
-              action="contact.php"
-              method="post"
-              data-ajax-form
-            >
-
-              <h3 class="service-contact__form-title">
-                Request an Audit
-              </h3>
-
-
-              <input
-                type="text"
-                name="website_check"
-                tabindex="-1"
-                autocomplete="off"
-                aria-hidden="true"
-                style="position:absolute;left:-9999px;"
-              >
-
-
-              <div class="form-grid">
-
-
-                <div class="form-field">
-
-                  <label
-                    class="form-label"
-                    for="ecom-name"
-                  >
-                    Name *
-                  </label>
-
-                  <input
-                    class="form-control"
-                    id="ecom-name"
-                    name="name"
-                    type="text"
-                    placeholder="Your name"
-                    autocomplete="name"
-                    required
-                  >
-
-                </div>
-
-
-                <div class="form-field">
-
-                  <label
-                    class="form-label"
-                    for="ecom-company"
-                  >
-                    Company
-                  </label>
-
-                  <input
-                    class="form-control"
-                    id="ecom-company"
-                    name="company"
-                    type="text"
-                    placeholder="Company name"
-                    autocomplete="organization"
-                  >
-
-                </div>
-
-
-                <div class="form-field">
-
-                  <label
-                    class="form-label"
-                    for="ecom-email"
-                  >
-                    Business Email *
-                  </label>
-
-                  <input
-                    class="form-control"
-                    id="ecom-email"
-                    name="email"
-                    type="email"
-                    placeholder="you@company.com"
-                    autocomplete="email"
-                    required
-                  >
-
-                </div>
-
-
-                <div class="form-field">
-
-                  <label
-                    class="form-label"
-                    for="ecom-website"
-                  >
-                    Website
-                  </label>
-
-                  <input
-                    class="form-control"
-                    id="ecom-website"
-                    name="website"
-                    type="text"
-                    placeholder="yourstore.com"
-                  >
-
-                </div>
-
-
-                <div class="form-field">
-
-                  <label
-                    class="form-label"
-                    for="ecom-business"
-                  >
-                    Business Type
-                  </label>
-
-                  <select
-                    class="form-control"
-                    id="ecom-business"
-                    name="business_type"
-                  >
-
-                    <option value="E-commerce">
-                      E-commerce
-                    </option>
-
-                    <option value="Retail">
-                      Retail
-                    </option>
-
-                    <option value="DTC">
-                      DTC
-                    </option>
-
-                    <option value="Other">
-                      Other
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                <div class="form-field">
-
-                  <label
-                    class="form-label"
-                    for="ecom-budget"
-                  >
-                    Monthly Ad Budget
-                  </label>
-
-                  <select
-                    class="form-control"
-                    id="ecom-budget"
-                    name="budget"
-                  >
-
-                    <option value="">
-                      Select
-                    </option>
-
-                    <option value="Under 5k">
-                      Under 5k
-                    </option>
-
-                    <option value="5k - 15k">
-                      5k – 15k
-                    </option>
-
-                    <option value="15k - 50k">
-                      15k – 50k
-                    </option>
-
-                    <option value="50k+">
-                      50k+
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                <div class="form-field form-field--full">
-
-                  <label
-                    class="form-label"
-                    for="ecom-service"
-                  >
-                    What do you need help with?
-                  </label>
-
-                  <select
-                    class="form-control"
-                    id="ecom-service"
-                    name="service"
-                  >
-
-                    <option value="E-commerce Advertising">
-                      E-commerce Advertising
-                    </option>
-
-                    <option value="Google Shopping">
-                      Google Shopping
-                    </option>
-
-                    <option value="Performance Max">
-                      Performance Max
-                    </option>
-
-                    <option value="Product Feed">
-                      Product Feed
-                    </option>
-
-                    <option value="Tracking & Analytics">
-                      Tracking & Analytics
-                    </option>
-
-                    <option value="Account Audit">
-                      Account Audit
-                    </option>
-
-                  </select>
-
-                </div>
-
-
-                <div class="form-field form-field--full">
-
-                  <label
-                    class="form-label"
-                    for="ecom-message"
-                  >
-                    Main Goal / Message
-                  </label>
-
-                  <textarea
-                    class="form-control"
-                    id="ecom-message"
-                    name="message"
-                    placeholder="Tell us what you want to improve..."
-                  ></textarea>
-
-                </div>
-
-
-                <div class="form-field form-field--full">
-
-                  <button
-                    class="btn btn--accent"
-                    type="submit"
-                  >
-                    Request E-commerce Audit
-                  </button>
-
-                </div>
-
-
-                <div
-                  class="form-message"
-                  role="status"
-                  aria-live="polite"
-                ></div>
-
-              </div>
-
-            </form>
-
-          </div>
-
-        </div>
-
-      </section>
-
     </main>
 
 
@@ -3004,7 +2705,7 @@
                   Results
                 </a>
 
-                <a class="footer-link" href="#contact">
+                <a class="footer-link" href="index.html#contact">
                   Contact
                 </a>
 

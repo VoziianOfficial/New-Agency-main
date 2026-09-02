@@ -1,0 +1,49 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 72 72"
+  role="img"
+  aria-labelledby="logoTitle"
+>
+  <title id="logoTitle">NOVA Performance logo</title>
+
+  <!-- Outer mark -->
+  <circle
+    cx="36"
+    cy="36"
+    r="29"
+    fill="none"
+    stroke="#FFA300"
+    stroke-width="7"
+  />
+
+  <!-- Intentional opening -->
+  <path
+    d="M13 36
+       C13 23.3 23.3 13 36 13"
+    fill="none"
+    stroke="#171719"
+    stroke-width="9"
+    stroke-linecap="round"
+  />
+
+  <!-- Inner performance stroke -->
+  <path
+    d="M20 43
+       L29 29
+       L38 43
+       L51 23"
+    fill="none"
+    stroke="#FFA300"
+    stroke-width="7"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Endpoint -->
+  <circle
+    cx="51"
+    cy="23"
+    r="4.5"
+    fill="#171719"
+  />
+</svg>

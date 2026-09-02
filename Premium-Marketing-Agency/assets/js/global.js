@@ -1,0 +1,1467 @@
+/* =========================================================
+   NOVA PERFORMANCE
+   GLOBAL.JS
+========================================================= */
+
+(() => {
+  "use strict";
+
+  const doc = document;
+  const root = doc.documentElement;
+  const body = doc.body;
+
+  root.classList.remove("no-js");
+  root.classList.add("js");
+
+
+  /* =========================================================
+     HELPERS
+  ========================================================= */
+
+  const qs = (selector, context = doc) =>
+    context ? context.querySelector(selector) : null;
+
+  const qsa = (selector, context = doc) =>
+    context ? Array.from(context.querySelectorAll(selector)) : [];
+
+  const config = window.SiteConfig || {};
+
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  const escapeHTML = (value = "") =>
+    String(value)
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+  const replaceConfigTokens = (value = "") =>
+    String(value).replace(
+      /\{companyName\}/g,
+      config.companyName || ""
+    );
+
+
+  /* =========================================================
+     GLOBAL CONFIG
+  ========================================================= */
+
+  const applySiteConfig = () => {
+    /*
+      Example:
+      <span data-config="companyName"></span>
+    */
+
+    qsa("[data-config]").forEach((element) => {
+      const key = element.dataset.config;
+
+      if (!key) return;
+      if (!(key in config)) return;
+
+      element.textContent = replaceConfigTokens(config[key]);
+    });
+
+
+    /*
+      LOGO
+      <img data-config-logo>
+    */
+
+    qsa("[data-config-logo]").forEach((image) => {
+      if (!config.logo) return;
+
+      image.src = config.logo;
+
+      if (!image.hasAttribute("alt")) {
+        image.alt = "";
+      }
+    });
+
+
+    /*
+      BRAND MARK
+      <img data-config-brand-mark>
+    */
+
+    qsa("[data-config-brand-mark]").forEach((image) => {
+      if (!config.brandMark) return;
+
+      image.src = config.brandMark;
+
+      if (!image.hasAttribute("alt")) {
+        image.alt = "";
+      }
+    });
+
+
+    /*
+      DISCLAIMER
+    */
+
+    qsa("[data-config-disclaimer]").forEach((element) => {
+      element.textContent = replaceConfigTokens(
+        config.disclaimer || ""
+      );
+    });
+
+
+    /*
+      EMAIL TEXT
+    */
+
+    qsa("[data-config-email]").forEach((element) => {
+      if (!config.email) return;
+
+      element.textContent = config.email;
+    });
+
+
+    /*
+      EMAIL LINKS
+    */
+
+    qsa("[data-config-email-link]").forEach((element) => {
+      if (!config.email) return;
+
+      element.href = `mailto:${config.email}`;
+
+      if (
+        !element.textContent.trim() ||
+        element.hasAttribute("data-email-text")
+      ) {
+        element.textContent = config.email;
+      }
+    });
+
+
+    /*
+      CTA TEXT
+    */
+
+    qsa("[data-config-primary-cta]").forEach((element) => {
+      if (config.primaryCTA) {
+        element.textContent = config.primaryCTA;
+      }
+    });
+
+    qsa("[data-config-secondary-cta]").forEach((element) => {
+      if (config.secondaryCTA) {
+        element.textContent = config.secondaryCTA;
+      }
+    });
+
+
+    /*
+      COMPANY NAME IN ARIA LABELS
+    */
+
+    qsa("[data-company-aria]").forEach((element) => {
+      const template =
+        element.dataset.companyAria ||
+        "{companyName}";
+
+      element.setAttribute(
+        "aria-label",
+        replaceConfigTokens(template)
+      );
+    });
+
+
+    /*
+      PAGE TITLE
+    */
+
+    const explicitPageTitle =
+      doc.body?.dataset.pageTitle || "";
+
+    if (explicitPageTitle) {
+      doc.title =
+        `${explicitPageTitle} | ${config.companyName || ""}`;
+    } else if (config.browserTitle) {
+      doc.title = replaceConfigTokens(
+        config.browserTitle
+      );
+    }
+
+
+    /*
+      FAVICON
+    */
+
+    if (config.favicon) {
+      let favicon = qs('link[rel="icon"]');
+
+      if (!favicon) {
+        favicon = doc.createElement("link");
+        favicon.rel = "icon";
+
+        doc.head.appendChild(favicon);
+      }
+
+      favicon.type = "image/svg+xml";
+      favicon.href = config.favicon;
+    }
+  };
+
+
+  /* =========================================================
+     HEADER
+  ========================================================= */
+
+  const initHeader = () => {
+    const header = qs(".site-header");
+
+    if (!header) return;
+
+    let ticking = false;
+    let fixed = false;
+
+    const updateHeader = () => {
+      const shouldFix = window.scrollY > 260;
+
+      if (shouldFix !== fixed) {
+        fixed = shouldFix;
+
+        header.classList.toggle(
+          "is-fixed",
+          shouldFix
+        );
+      }
+
+      ticking = false;
+    };
+
+    const requestUpdate = () => {
+      if (ticking) return;
+
+      ticking = true;
+
+      window.requestAnimationFrame(
+        updateHeader
+      );
+    };
+
+    updateHeader();
+
+    window.addEventListener(
+      "scroll",
+      requestUpdate,
+      { passive: true }
+    );
+  };
+
+
+  /* =========================================================
+     FULLSCREEN BURGER MENU
+  ========================================================= */
+
+  const initMenu = () => {
+    const panel = qs(".menu-panel");
+
+    if (!panel) return;
+
+    const openButtons = qsa(
+      "[data-menu-open]"
+    );
+
+    const closeButtons = qsa(
+      "[data-menu-close]",
+      panel
+    );
+
+    let lastFocusedElement = null;
+
+    const getFocusableElements = () =>
+      qsa(
+        [
+          "a[href]",
+          "button:not([disabled])",
+          "input:not([disabled])",
+          "textarea:not([disabled])",
+          "select:not([disabled])",
+          '[tabindex]:not([tabindex="-1"])'
+        ].join(","),
+        panel
+      ).filter(
+        (element) =>
+          element.offsetParent !== null
+      );
+
+    const openMenu = () => {
+      if (panel.classList.contains("is-open")) {
+        return;
+      }
+
+      lastFocusedElement =
+        doc.activeElement;
+
+      panel.classList.add("is-open");
+      panel.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      body.classList.add("menu-open");
+
+      openButtons.forEach((button) => {
+        button.setAttribute(
+          "aria-expanded",
+          "true"
+        );
+      });
+
+      window.setTimeout(() => {
+        const focusable =
+          getFocusableElements();
+
+        focusable[0]?.focus();
+      }, 80);
+    };
+
+    const closeMenu = () => {
+      if (!panel.classList.contains("is-open")) {
+        return;
+      }
+
+      panel.classList.remove("is-open");
+      panel.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      body.classList.remove("menu-open");
+
+      openButtons.forEach((button) => {
+        button.setAttribute(
+          "aria-expanded",
+          "false"
+        );
+      });
+
+      if (
+        lastFocusedElement &&
+        typeof lastFocusedElement.focus ===
+          "function"
+      ) {
+        window.setTimeout(() => {
+          lastFocusedElement.focus();
+        }, 60);
+      }
+    };
+
+    openButtons.forEach((button) => {
+      button.addEventListener(
+        "click",
+        openMenu
+      );
+    });
+
+    closeButtons.forEach((button) => {
+      button.addEventListener(
+        "click",
+        closeMenu
+      );
+    });
+
+
+    /*
+      Close menu after navigation.
+    */
+
+    qsa("a[href]", panel).forEach(
+      (link) => {
+        link.addEventListener(
+          "click",
+          closeMenu
+        );
+      }
+    );
+
+
+    /*
+      ESC + focus trap.
+    */
+
+    doc.addEventListener(
+      "keydown",
+      (event) => {
+        if (
+          !panel.classList.contains(
+            "is-open"
+          )
+        ) {
+          return;
+        }
+
+        if (event.key === "Escape") {
+          event.preventDefault();
+          closeMenu();
+
+          return;
+        }
+
+        if (event.key !== "Tab") {
+          return;
+        }
+
+        const focusable =
+          getFocusableElements();
+
+        if (!focusable.length) {
+          return;
+        }
+
+        const first =
+          focusable[0];
+
+        const last =
+          focusable[
+            focusable.length - 1
+          ];
+
+        if (
+          event.shiftKey &&
+          doc.activeElement === first
+        ) {
+          event.preventDefault();
+          last.focus();
+        } else if (
+          !event.shiftKey &&
+          doc.activeElement === last
+        ) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    );
+  };
+
+
+  /* =========================================================
+     SEARCH
+  ========================================================= */
+
+  const initSearch = () => {
+    const modal = qs(".search");
+
+    if (!modal) return;
+
+    const input = qs(
+      ".search__input",
+      modal
+    );
+
+    const results = qs(
+      ".search__results",
+      modal
+    );
+
+    const openButtons = qsa(
+      "[data-search-open]"
+    );
+
+    const closeButtons = qsa(
+      "[data-search-close]",
+      modal
+    );
+
+    const pages = [
+      {
+        title: "Home",
+        description:
+          "Performance marketing agency",
+        url: "index.html"
+      },
+
+      {
+        title: "About",
+        description:
+          "About our performance approach",
+        url: "index.html#about"
+      },
+
+      {
+        title: "Google Ads Management",
+        description:
+          "Search, Performance Max, Shopping and campaign management",
+        url:
+          config.services?.googleAds
+            ?.url ||
+          "google-ads-management.html"
+      },
+
+      {
+        title: "Lead Generation",
+        description:
+          "Qualified leads and customer acquisition",
+        url:
+          config.services
+            ?.leadGeneration?.url ||
+          "lead-generation.html"
+      },
+
+      {
+        title: "E-commerce Advertising",
+        description:
+          "Shopping, PMax and revenue optimisation",
+        url:
+          config.services?.ecommerce
+            ?.url ||
+          "ecommerce-advertising.html"
+      },
+
+      {
+        title: "Tracking & Automation",
+        description:
+          "Analytics, conversion tracking and automation",
+        url:
+          config.services
+            ?.trackingAutomation?.url ||
+          "tracking-automation.html"
+      },
+
+      {
+        title: "Free Google Ads Audit",
+        description:
+          "Request an account review",
+        url: "index.html#contact"
+      },
+
+      {
+        title: "Privacy Policy",
+        description:
+          "Privacy information",
+        url:
+          config.legal?.privacy?.url ||
+          "privacy.html"
+      },
+
+      {
+        title: "Terms & Conditions",
+        description:
+          "Website terms",
+        url:
+          config.legal?.terms?.url ||
+          "terms.html"
+      },
+
+      {
+        title: "Cookie Policy",
+        description:
+          "Cookie information",
+        url:
+          config.legal?.cookies?.url ||
+          "cookies.html"
+      }
+    ];
+
+    let lastFocusedElement = null;
+
+    const renderResults = (
+      searchValue = ""
+    ) => {
+      if (!results) return;
+
+      const query = searchValue
+        .trim()
+        .toLowerCase();
+
+      if (!query) {
+        results.innerHTML = "";
+
+        return;
+      }
+
+      const matches = pages.filter(
+        (item) => {
+          const haystack =
+            `${item.title} ${item.description}`
+              .toLowerCase();
+
+          return haystack.includes(query);
+        }
+      );
+
+      if (!matches.length) {
+        results.innerHTML = `
+          <div class="search-result">
+            <span>No matching pages found.</span>
+          </div>
+        `;
+
+        return;
+      }
+
+      results.innerHTML = matches
+        .slice(0, 8)
+        .map(
+          (item) => `
+            <a
+              class="search-result"
+              href="${escapeHTML(item.url)}"
+            >
+              <span>
+                <strong>${escapeHTML(item.title)}</strong>
+                <small>${escapeHTML(item.description)}</small>
+              </span>
+            </a>
+          `
+        )
+        .join("");
+    };
+
+    const openSearch = () => {
+      lastFocusedElement =
+        doc.activeElement;
+
+      modal.classList.add(
+        "is-open"
+      );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "false"
+      );
+
+      body.classList.add(
+        "modal-open"
+      );
+
+      window.setTimeout(() => {
+        input?.focus();
+      }, 70);
+    };
+
+    const closeSearch = () => {
+      modal.classList.remove(
+        "is-open"
+      );
+
+      modal.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      body.classList.remove(
+        "modal-open"
+      );
+
+      if (input) {
+        input.value = "";
+      }
+
+      if (results) {
+        results.innerHTML = "";
+      }
+
+      lastFocusedElement?.focus?.();
+    };
+
+    openButtons.forEach((button) => {
+      button.addEventListener(
+        "click",
+        openSearch
+      );
+    });
+
+    closeButtons.forEach((button) => {
+      button.addEventListener(
+        "click",
+        closeSearch
+      );
+    });
+
+    input?.addEventListener(
+      "input",
+      () => {
+        renderResults(input.value);
+      }
+    );
+
+    modal.addEventListener(
+      "click",
+      (event) => {
+        if (event.target === modal) {
+          closeSearch();
+        }
+      }
+    );
+
+    doc.addEventListener(
+      "keydown",
+      (event) => {
+        if (
+          event.key === "Escape" &&
+          modal.classList.contains(
+            "is-open"
+          )
+        ) {
+          closeSearch();
+        }
+      }
+    );
+  };
+
+
+  /* =========================================================
+     AOS
+  ========================================================= */
+
+  const initAOS = () => {
+    if (
+      prefersReducedMotion ||
+      typeof window.AOS === "undefined"
+    ) {
+      return;
+    }
+
+    window.AOS.init({
+      once: true,
+      mirror: false,
+      offset: 36,
+      duration: 720,
+      easing:
+        "cubic-bezier(0.22, 1, 0.36, 1)",
+      anchorPlacement:
+        "top-bottom"
+    });
+
+    window.addEventListener(
+      "load",
+      () => {
+        window.AOS.refreshHard();
+      },
+      { once: true }
+    );
+  };
+
+
+  /* =========================================================
+     ACCORDIONS
+  ========================================================= */
+
+  const initAccordions = () => {
+    const accordions =
+      qsa(".accordion");
+
+    accordions.forEach(
+      (accordion) => {
+        const items = qsa(
+          ".accordion__item",
+          accordion
+        );
+
+        items.forEach(
+          (item) => {
+            const button = qs(
+              ".accordion__button",
+              item
+            );
+
+            const content = qs(
+              ".accordion__content",
+              item
+            );
+
+            if (!button || !content) {
+              return;
+            }
+
+            const isOpen =
+              item.classList.contains(
+                "is-open"
+              );
+
+            button.setAttribute(
+              "aria-expanded",
+              String(isOpen)
+            );
+
+            if (!content.id) {
+              content.id =
+                `accordion-${Math.random()
+                  .toString(36)
+                  .slice(2, 9)}`;
+            }
+
+            button.setAttribute(
+              "aria-controls",
+              content.id
+            );
+
+            button.addEventListener(
+              "click",
+              () => {
+                const currentlyOpen =
+                  item.classList.contains(
+                    "is-open"
+                  );
+
+                /*
+                  Optional:
+                  data-accordion-single
+                  allows only one item open.
+                */
+
+                if (
+                  accordion.hasAttribute(
+                    "data-accordion-single"
+                  )
+                ) {
+                  items.forEach(
+                    (otherItem) => {
+                      if (
+                        otherItem === item
+                      ) {
+                        return;
+                      }
+
+                      otherItem.classList.remove(
+                        "is-open"
+                      );
+
+                      const otherButton =
+                        qs(
+                          ".accordion__button",
+                          otherItem
+                        );
+
+                      otherButton?.setAttribute(
+                        "aria-expanded",
+                        "false"
+                      );
+                    }
+                  );
+                }
+
+                item.classList.toggle(
+                  "is-open",
+                  !currentlyOpen
+                );
+
+                button.setAttribute(
+                  "aria-expanded",
+                  String(
+                    !currentlyOpen
+                  )
+                );
+              }
+            );
+          }
+        );
+      }
+    );
+  };
+
+
+  /* =========================================================
+     SIMPLE PARALLAX
+  ========================================================= */
+
+  const initParallax = () => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    const elements = qsa(
+      "[data-parallax]"
+    );
+
+    if (!elements.length) {
+      return;
+    }
+
+    let ticking = false;
+
+    const update = () => {
+      const viewportHeight =
+        window.innerHeight;
+
+      elements.forEach(
+        (element) => {
+          const rect =
+            element.getBoundingClientRect();
+
+          if (
+            rect.bottom < 0 ||
+            rect.top >
+              viewportHeight
+          ) {
+            return;
+          }
+
+          const speed = Number(
+            element.dataset
+              .parallaxSpeed || 0.08
+          );
+
+          const center =
+            rect.top +
+            rect.height / 2;
+
+          const viewportCenter =
+            viewportHeight / 2;
+
+          const offset =
+            (center -
+              viewportCenter) *
+            speed;
+
+          element.style.transform =
+            `translate3d(0, ${offset.toFixed(
+              2
+            )}px, 0)`;
+        }
+      );
+
+      ticking = false;
+    };
+
+    const requestUpdate = () => {
+      if (ticking) return;
+
+      ticking = true;
+
+      window.requestAnimationFrame(
+        update
+      );
+    };
+
+    update();
+
+    window.addEventListener(
+      "scroll",
+      requestUpdate,
+      { passive: true }
+    );
+
+    window.addEventListener(
+      "resize",
+      requestUpdate
+    );
+  };
+
+
+  /* =========================================================
+     CUSTOM REVEALS
+  ========================================================= */
+
+  const initRevealObserver = () => {
+    const targets = qsa(
+      "[data-fade], .reveal-line"
+    );
+
+    if (!targets.length) {
+      return;
+    }
+
+    if (
+      prefersReducedMotion ||
+      !("IntersectionObserver" in window)
+    ) {
+      targets.forEach((element) => {
+        element.classList.add(
+          "is-visible"
+        );
+      });
+
+      return;
+    }
+
+    const observer =
+      new IntersectionObserver(
+        (entries) => {
+          entries.forEach(
+            (entry) => {
+              if (
+                !entry.isIntersecting
+              ) {
+                return;
+              }
+
+              entry.target.classList.add(
+                "is-visible"
+              );
+
+              observer.unobserve(
+                entry.target
+              );
+            }
+          );
+        },
+        {
+          threshold: 0.14,
+          rootMargin:
+            "0px 0px -5% 0px"
+        }
+      );
+
+    targets.forEach((element) => {
+      observer.observe(element);
+    });
+  };
+
+
+  /* =========================================================
+     INTERNAL ANCHORS
+  ========================================================= */
+
+  const initAnchors = () => {
+    qsa('a[href*="#"]').forEach(
+      (link) => {
+        link.addEventListener(
+          "click",
+          (event) => {
+            const href =
+              link.getAttribute(
+                "href"
+              );
+
+            if (
+              !href ||
+              href === "#" ||
+              href.startsWith(
+                "javascript:"
+              )
+            ) {
+              return;
+            }
+
+            const [
+              pathname,
+              hash
+            ] = href.split("#");
+
+            /*
+              Only smooth-scroll if target
+              belongs to current page.
+            */
+
+            const currentFile =
+              window.location.pathname
+                .split("/")
+                .pop() ||
+              "index.html";
+
+            const linkFile =
+              pathname
+                ?.split("/")
+                .pop() || "";
+
+            const samePage =
+              !pathname ||
+              pathname === "." ||
+              linkFile ===
+                currentFile ||
+              (
+                currentFile === "" &&
+                linkFile ===
+                  "index.html"
+              );
+
+            if (
+              !samePage ||
+              !hash
+            ) {
+              return;
+            }
+
+            const target =
+              doc.getElementById(hash);
+
+            if (!target) return;
+
+            event.preventDefault();
+
+            target.scrollIntoView({
+              behavior:
+                prefersReducedMotion
+                  ? "auto"
+                  : "smooth",
+              block: "start"
+            });
+
+            history.replaceState(
+              null,
+              "",
+              `#${hash}`
+            );
+          }
+        );
+      }
+    );
+  };
+
+
+  /* =========================================================
+     COOKIE CONSENT
+  ========================================================= */
+
+  const initCookieConsent = () => {
+    const card = qs(
+      ".cookie-card"
+    );
+
+    if (!card) return;
+
+    const acceptButton = qs(
+      "[data-cookie-accept]",
+      card
+    );
+
+    const closeButton = qs(
+      "[data-cookie-close]",
+      card
+    );
+
+    const storageKey =
+      "nova-cookie-consent";
+
+    let alreadyHandled = false;
+
+    try {
+      alreadyHandled =
+        Boolean(
+          localStorage.getItem(
+            storageKey
+          )
+        );
+    } catch (error) {
+      alreadyHandled = false;
+    }
+
+    const hideCard = (
+      value = "accepted"
+    ) => {
+      card.classList.remove(
+        "is-visible"
+      );
+
+      try {
+        localStorage.setItem(
+          storageKey,
+          value
+        );
+      } catch (error) {
+        /* Local storage unavailable. */
+      }
+    };
+
+    if (!alreadyHandled) {
+      window.setTimeout(() => {
+        card.classList.add(
+          "is-visible"
+        );
+      }, 900);
+    }
+
+    acceptButton?.addEventListener(
+      "click",
+      () => {
+        hideCard("accepted");
+      }
+    );
+
+    closeButton?.addEventListener(
+      "click",
+      () => {
+        hideCard("dismissed");
+      }
+    );
+  };
+
+
+  /* =========================================================
+     AJAX FORMS
+  ========================================================= */
+
+  const initForms = () => {
+    const forms = qsa(
+      "form[data-ajax-form]"
+    );
+
+    if (!forms.length) {
+      return;
+    }
+
+    forms.forEach((form) => {
+      const message = qs(
+        ".form-message",
+        form
+      );
+
+      const submitButton = qs(
+        '[type="submit"]',
+        form
+      );
+
+      const initialButtonText =
+        submitButton?.textContent ||
+        "";
+
+      const showMessage = (
+        text,
+        type
+      ) => {
+        if (!message) return;
+
+        message.textContent = text;
+
+        message.classList.remove(
+          "is-success",
+          "is-error"
+        );
+
+        message.classList.add(
+          "is-visible",
+          type === "success"
+            ? "is-success"
+            : "is-error"
+        );
+      };
+
+      form.addEventListener(
+        "submit",
+        async (event) => {
+          event.preventDefault();
+
+          if (
+            !form.checkValidity()
+          ) {
+            form.reportValidity();
+
+            return;
+          }
+
+          if (submitButton) {
+            submitButton.disabled =
+              true;
+
+            submitButton.textContent =
+              "Sending...";
+          }
+
+          message?.classList.remove(
+            "is-visible",
+            "is-success",
+            "is-error"
+          );
+
+          try {
+            const response =
+              await fetch(
+                form.action ||
+                  "contact.php",
+                {
+                  method: "POST",
+                  body: new FormData(
+                    form
+                  ),
+                  headers: {
+                    "X-Requested-With":
+                      "XMLHttpRequest"
+                  }
+                }
+              );
+
+            let result = null;
+
+            try {
+              result =
+                await response.json();
+            } catch (error) {
+              result = null;
+            }
+
+            if (
+              !response.ok ||
+              result?.success === false
+            ) {
+              throw new Error(
+                result?.message ||
+                  "Unable to send your request."
+              );
+            }
+
+            showMessage(
+              result?.message ||
+                config.contactSuccessMessage ||
+                "Successfully sent!",
+              "success"
+            );
+
+            form.reset();
+          } catch (error) {
+            showMessage(
+              error?.message ||
+                "Something went wrong. Please try again.",
+              "error"
+            );
+          } finally {
+            if (submitButton) {
+              submitButton.disabled =
+                false;
+
+              submitButton.textContent =
+                initialButtonText;
+            }
+          }
+        }
+      );
+    });
+  };
+
+
+  /* =========================================================
+     ACTIVE NAVIGATION
+  ========================================================= */
+
+  const initActiveNavigation = () => {
+    const currentFile =
+      window.location.pathname
+        .split("/")
+        .pop() ||
+      "index.html";
+
+    qsa(
+      ".main-nav__link, .menu-panel__link"
+    ).forEach((link) => {
+      const href =
+        link.getAttribute("href");
+
+      if (!href) return;
+
+      const linkFile =
+        href.split("#")[0]
+          .split("/")
+          .pop();
+
+      const isHomeLink =
+        currentFile ===
+          "index.html" &&
+        (
+          href === "index.html" ||
+          href === "./" ||
+          href === "/"
+        );
+
+      if (
+        isHomeLink ||
+        (
+          linkFile &&
+          linkFile === currentFile
+        )
+      ) {
+        link.classList.add(
+          "is-active"
+        );
+      }
+    });
+  };
+
+
+  /* =========================================================
+     EXTERNAL LINK SAFETY
+  ========================================================= */
+
+  const initExternalLinks = () => {
+    qsa(
+      'a[target="_blank"]'
+    ).forEach((link) => {
+      const rel = new Set(
+        (
+          link.getAttribute(
+            "rel"
+          ) || ""
+        )
+          .split(/\s+/)
+          .filter(Boolean)
+      );
+
+      rel.add("noopener");
+      rel.add("noreferrer");
+
+      link.setAttribute(
+        "rel",
+        Array.from(rel).join(" ")
+      );
+    });
+  };
+
+
+  /* =========================================================
+     RESIZE REFRESH
+  ========================================================= */
+
+  const initResizeRefresh = () => {
+    let resizeTimer = null;
+
+    window.addEventListener(
+      "resize",
+      () => {
+        window.clearTimeout(
+          resizeTimer
+        );
+
+        resizeTimer =
+          window.setTimeout(
+            () => {
+              if (
+                typeof window.AOS !==
+                "undefined"
+              ) {
+                window.AOS.refresh();
+              }
+            },
+            180
+          );
+      }
+    );
+  };
+
+
+  /* =========================================================
+     INITIALIZE
+  ========================================================= */
+
+  const init = () => {
+    applySiteConfig();
+
+    initHeader();
+    initMenu();
+    initSearch();
+
+    initAOS();
+    initAccordions();
+    initParallax();
+    initRevealObserver();
+
+    initAnchors();
+    initCookieConsent();
+    initForms();
+
+    initActiveNavigation();
+    initExternalLinks();
+    initResizeRefresh();
+
+    body.classList.add(
+      "site-ready"
+    );
+  };
+
+
+  if (
+    doc.readyState === "loading"
+  ) {
+    doc.addEventListener(
+      "DOMContentLoaded",
+      init,
+      { once: true }
+    );
+  } else {
+    init();
+  }
+})();

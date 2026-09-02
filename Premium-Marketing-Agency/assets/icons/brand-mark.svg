@@ -1,0 +1,140 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 420 320"
+  role="img"
+  aria-labelledby="brandMarkTitle"
+>
+  <title id="brandMarkTitle">NOVA Performance decorative brand mark</title>
+
+  <g
+    fill="none"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+
+    <!-- LEFT LOOP / DARK DEPTH -->
+    <path
+      d="M78 186
+         C34 150 42 84 95 61
+         C146 39 191 68 181 113
+         C172 151 126 173 104 209
+         C88 235 99 267 132 275"
+      stroke="#171717"
+      stroke-width="55"
+    />
+
+    <!-- LEFT LOOP / ORANGE BODY -->
+    <path
+      d="M78 186
+         C34 150 42 84 95 61
+         C146 39 191 68 181 113
+         C172 151 126 173 104 209
+         C88 235 99 267 132 275"
+      stroke="#FFA400"
+      stroke-width="39"
+    />
+
+    <!-- LEFT LOOP / HIGHLIGHT -->
+    <path
+      d="M73 172
+         C48 137 57 97 92 80
+         C121 66 151 74 158 94"
+      stroke="#FFD15A"
+      stroke-width="8"
+    />
+
+
+    <!-- CENTER CROSS / DARK DEPTH -->
+    <path
+      d="M128 267
+         C173 286 215 261 211 218
+         C207 177 163 151 156 112
+         C148 67 187 39 229 52
+         C266 63 285 101 267 134"
+      stroke="#171717"
+      stroke-width="55"
+    />
+
+    <!-- CENTER CROSS / ORANGE BODY -->
+    <path
+      d="M128 267
+         C173 286 215 261 211 218
+         C207 177 163 151 156 112
+         C148 67 187 39 229 52
+         C266 63 285 101 267 134"
+      stroke="#FF9800"
+      stroke-width="39"
+    />
+
+    <!-- CENTER HIGHLIGHT -->
+    <path
+      d="M181 69
+         C207 48 240 59 253 82
+         C262 98 260 113 254 125"
+      stroke="#FFD15A"
+      stroke-width="8"
+    />
+
+
+    <!-- RIGHT LOOP / DARK DEPTH -->
+    <path
+      d="M259 130
+         C285 94 323 76 352 95
+         C386 117 381 163 349 186
+         C318 209 277 207 254 236
+         C236 259 246 286 277 292
+         C311 299 340 280 348 251"
+      stroke="#171717"
+      stroke-width="55"
+    />
+
+    <!-- RIGHT LOOP / ORANGE BODY -->
+    <path
+      d="M259 130
+         C285 94 323 76 352 95
+         C386 117 381 163 349 186
+         C318 209 277 207 254 236
+         C236 259 246 286 277 292
+         C311 299 340 280 348 251"
+      stroke="#FFAA00"
+      stroke-width="39"
+    />
+
+    <!-- RIGHT HIGHLIGHT -->
+    <path
+      d="M292 111
+         C314 94 341 99 353 117
+         C365 135 356 155 341 166"
+      stroke="#FFD15A"
+      stroke-width="8"
+    />
+
+
+    <!-- FRONT INTERLOCK -->
+    <path
+      d="M103 207
+         C129 169 170 149 204 165
+         C237 181 249 213 276 218
+         C302 224 325 211 343 190"
+      stroke="#171717"
+      stroke-width="50"
+    />
+
+    <path
+      d="M103 207
+         C129 169 170 149 204 165
+         C237 181 249 213 276 218
+         C302 224 325 211 343 190"
+      stroke="#FF9E00"
+      stroke-width="34"
+    />
+
+    <path
+      d="M124 193
+         C148 167 177 163 199 174"
+      stroke="#FFD15A"
+      stroke-width="7"
+    />
+
+  </g>
+</svg>

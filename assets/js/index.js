@@ -346,114 +346,6 @@
   };
 
 
-  const initHeroMotion = () => {
-    const hero = qs(".home-hero");
-
-    const mark = qs(
-      ".home-hero__mark-wrap",
-      hero
-    );
-
-    if (
-      !hero ||
-      !mark ||
-      reducedMotion
-    ) {
-      return;
-    }
-
-    if (
-      !window.matchMedia(
-        "(pointer: fine)"
-      ).matches
-    ) {
-      return;
-    }
-
-    let frame = null;
-
-    let targetX = 0;
-    let targetY = 0;
-
-    let currentX = 0;
-    let currentY = 0;
-
-    const render = () => {
-      currentX +=
-        (targetX - currentX) *
-        0.075;
-
-      currentY +=
-        (targetY - currentY) *
-        0.075;
-
-      mark.style.transform =
-        `translate3d(${currentX}px, ${currentY}px, 0) rotate(-7deg)`;
-
-      const distance =
-        Math.abs(
-          targetX - currentX
-        ) +
-        Math.abs(
-          targetY - currentY
-        );
-
-      if (distance > 0.05) {
-        frame =
-          requestAnimationFrame(
-            render
-          );
-      } else {
-        frame = null;
-      }
-    };
-
-    const requestRender = () => {
-      if (frame) return;
-
-      frame =
-        requestAnimationFrame(
-          render
-        );
-    };
-
-    hero.addEventListener(
-      "pointermove",
-      (event) => {
-        const rect =
-          hero.getBoundingClientRect();
-
-        const x =
-          (event.clientX -
-            rect.left) /
-            rect.width -
-          0.5;
-
-        const y =
-          (event.clientY -
-            rect.top) /
-            rect.height -
-          0.5;
-
-        targetX = x * 24;
-        targetY = y * 18;
-
-        requestRender();
-      }
-    );
-
-    hero.addEventListener(
-      "pointerleave",
-      () => {
-        targetX = 0;
-        targetY = 0;
-
-        requestRender();
-      }
-    );
-  };
-
-
   const initHeroEntrance = () => {
     const hero = qs(".home-hero");
 
@@ -903,7 +795,6 @@
     initCounters();
 
     initHeroEntrance();
-    initHeroMotion();
     initHeroScroll();
 
     initVideo();

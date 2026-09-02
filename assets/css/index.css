@@ -209,39 +209,6 @@
   inset: 23%;
 }
 
-.home-hero__mark-wrap {
-  position: relative;
-  z-index: 3;
-
-  width: min(41vw, 620px);
-
-  transform: rotate(-7deg);
-
-  will-change: transform;
-}
-
-.home-hero__mark {
-  width: 100%;
-  height: auto;
-
-  filter: drop-shadow(0 30px 45px rgba(0, 0, 0, 0.26));
-
-  transform-origin: 50% 50%;
-
-  animation: heroMarkFloat 6.5s ease-in-out infinite;
-}
-
-@keyframes heroMarkFloat {
-  0%,
-  100% {
-    transform: translate3d(0, 0, 0) rotate(0deg);
-  }
-
-  50% {
-    transform: translate3d(0, -13px, 0) rotate(2deg);
-  }
-}
-
 .home-hero__agency-word {
   position: absolute;
   right: 0;
@@ -2088,10 +2055,6 @@
     height: 500px;
   }
 
-  .home-hero__mark-wrap {
-    width: min(68vw, 500px);
-  }
-
   .home-hero__agency-word {
     right: 8%;
     bottom: 2%;
@@ -2301,10 +2264,6 @@
     height: 390px;
 
     margin-top: -12px;
-  }
-
-  .home-hero__mark-wrap {
-    width: min(92vw, 430px);
   }
 
   .home-hero__agency-word {
@@ -2643,10 +2602,6 @@
 
 
 @media (prefers-reduced-motion: reduce) {
-  .home-hero__mark {
-    animation: none;
-  }
-
   .home-case,
   .home-case__media img,
   .home-case__details,

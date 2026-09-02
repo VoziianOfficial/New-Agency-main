@@ -409,6 +409,17 @@ main {
   border-color: var(--color-dark);
 }
 
+.home-hero .btn--ghost,
+.service-hero .btn--ghost {
+  color: var(--color-white);
+  border-color: var(--color-border-dark);
+}
+
+.home-hero .btn--ghost:hover,
+.service-hero .btn--ghost:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
 .section--dark .btn--ghost {
   color: var(--color-white);
   border-color: var(--color-border-dark);

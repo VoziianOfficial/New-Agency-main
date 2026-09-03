@@ -243,134 +243,6 @@
   };
 
 
-  const initCounters = () => {
-    const counters = qsa(
-      "[data-count]"
-    );
-
-    if (!counters.length) return;
-
-    const setFinalValue = (element) => {
-      const value =
-        Number(element.dataset.count) || 0;
-
-      const decimals =
-        Number(
-          element.dataset.decimals
-        ) || 0;
-
-      const prefix =
-        element.dataset.prefix || "";
-
-      const suffix =
-        element.dataset.suffix || "";
-
-      element.textContent =
-        `${prefix}${value.toFixed(decimals)}${suffix}`;
-    };
-
-    if (
-      reducedMotion ||
-      !("IntersectionObserver" in window)
-    ) {
-      counters.forEach(setFinalValue);
-      return;
-    }
-
-    const animate = (element) => {
-      if (
-        element.dataset.countDone === "true"
-      ) {
-        return;
-      }
-
-      element.dataset.countDone = "true";
-
-      const finalValue =
-        Number(element.dataset.count) || 0;
-
-      const decimals =
-        Number(
-          element.dataset.decimals
-        ) || 0;
-
-      const prefix =
-        element.dataset.prefix || "";
-
-      const suffix =
-        element.dataset.suffix || "";
-
-      const duration =
-        Number(
-          element.dataset.duration
-        ) || 1250;
-
-      const start =
-        performance.now();
-
-      const update = (time) => {
-        const progress =
-          Math.min(
-            (time - start) /
-              duration,
-            1
-          );
-
-        const eased =
-          1 -
-          Math.pow(
-            1 - progress,
-            4
-          );
-
-        const current =
-          finalValue * eased;
-
-        element.textContent =
-          `${prefix}${current.toFixed(decimals)}${suffix}`;
-
-        if (progress < 1) {
-          requestAnimationFrame(
-            update
-          );
-        } else {
-          setFinalValue(element);
-        }
-      };
-
-      requestAnimationFrame(update);
-    };
-
-    const observer =
-      new IntersectionObserver(
-        (entries) => {
-          entries.forEach(
-            (entry) => {
-              if (
-                !entry.isIntersecting
-              ) {
-                return;
-              }
-
-              animate(entry.target);
-
-              observer.unobserve(
-                entry.target
-              );
-            }
-          );
-        },
-        {
-          threshold: 0.35
-        }
-      );
-
-    counters.forEach((element) => {
-      observer.observe(element);
-    });
-  };
-
-
   const initHeroEntrance = () => {
     const hero = qs(".home-hero");
 
@@ -544,76 +416,6 @@
           scrub: 0.55
         }
       }
-    );
-  };
-
-
-  const initVideo = () => {
-    const section = qs(".home-video");
-
-    if (!section) return;
-
-    const button = qs(
-      ".home-video__play",
-      section
-    );
-
-    const video = qs(
-      "video",
-      section
-    );
-
-    if (!button || !video) {
-      return;
-    }
-
-    const updateState = () => {
-      const playing =
-        !video.paused;
-
-      button.classList.toggle(
-        "is-playing",
-        playing
-      );
-
-      button.setAttribute(
-        "aria-label",
-        playing
-          ? "Pause video"
-          : "Play video"
-      );
-    };
-
-    button.addEventListener(
-      "click",
-      async () => {
-        if (video.paused) {
-          try {
-            await video.play();
-          } catch (error) {
-            return;
-          }
-        } else {
-          video.pause();
-        }
-
-        updateState();
-      }
-    );
-
-    video.addEventListener(
-      "play",
-      updateState
-    );
-
-    video.addEventListener(
-      "pause",
-      updateState
-    );
-
-    video.addEventListener(
-      "ended",
-      updateState
     );
   };
 
@@ -796,12 +598,9 @@
 
     initCases();
 
-    initCounters();
-
     initHeroEntrance();
     initHeroScroll();
 
-    initVideo();
     initProcess();
 
     initScrollMotion();

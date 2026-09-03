@@ -374,26 +374,6 @@
   border-bottom: 0;
 }
 
-.legal-section__number {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  min-width: 44px;
-  min-height: 28px;
-
-  margin-bottom: 15px;
-  padding: 0 10px;
-
-  font-size: 10px;
-  font-weight: 700;
-
-  color: var(--color-dark);
-  background: var(--color-accent);
-
-  border-radius: var(--radius-pill);
-}
-
 .legal-section h2 {
   max-width: 820px;
 

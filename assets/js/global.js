@@ -1114,62 +1114,6 @@
   };
 
 
-  const initRevealObserver = () => {
-    const targets = qsa(
-      "[data-fade]"
-    );
-
-    if (!targets.length) {
-      return;
-    }
-
-    if (
-      prefersReducedMotion ||
-      !("IntersectionObserver" in window)
-    ) {
-      targets.forEach((element) => {
-        element.classList.add(
-          "is-visible"
-        );
-      });
-
-      return;
-    }
-
-    const observer =
-      new IntersectionObserver(
-        (entries) => {
-          entries.forEach(
-            (entry) => {
-              if (
-                !entry.isIntersecting
-              ) {
-                return;
-              }
-
-              entry.target.classList.add(
-                "is-visible"
-              );
-
-              observer.unobserve(
-                entry.target
-              );
-            }
-          );
-        },
-        {
-          threshold: 0.14,
-          rootMargin:
-            "0px 0px -5% 0px"
-        }
-      );
-
-    targets.forEach((element) => {
-      observer.observe(element);
-    });
-  };
-
-
   const initAnchors = () => {
     qsa('a[href*="#"]').forEach(
       (link) => {
@@ -1519,30 +1463,6 @@
   };
 
 
-  const initExternalLinks = () => {
-    qsa(
-      'a[target="_blank"]'
-    ).forEach((link) => {
-      const rel = new Set(
-        (
-          link.getAttribute(
-            "rel"
-          ) || ""
-        )
-          .split(/\s+/)
-          .filter(Boolean)
-      );
-
-      rel.add("noopener");
-      rel.add("noreferrer");
-
-      link.setAttribute(
-        "rel",
-        Array.from(rel).join(" ")
-      );
-    });
-  };
-
   const initCurrentYear = () => {
     const year = qs("#current-year");
 
@@ -1593,14 +1513,12 @@
     initAOS();
     initAccordions();
     initParallax();
-    initRevealObserver();
 
     initAnchors();
     initCookieConsent();
     initForms();
 
     initActiveNavigation();
-    initExternalLinks();
     initCurrentYear();
     initMotionRefresh();
     initResizeRefresh();

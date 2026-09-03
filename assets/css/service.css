@@ -19,19 +19,25 @@
   z-index: 2;
 
   display: grid;
-  grid-template-columns:
-    minmax(0, 1.05fr)
-    minmax(420px, 0.95fr);
+  grid-template-columns: minmax(0, 1fr);
 
-  gap: clamp(40px, 6vw, 100px);
+  gap: 0;
 
+  justify-items: center;
   align-items: center;
+
+  text-align: center;
 }
 
 .service-hero__content {
   position: relative;
   z-index: 4;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  width: 100%;
   min-width: 0;
 }
 
@@ -41,6 +47,8 @@
 
 .service-hero__title {
   max-width: 920px;
+
+  margin-inline: auto;
 
   font-family: var(--font-display);
   font-size: clamp(64px, 7vw, 110px);
@@ -59,6 +67,7 @@
   max-width: 610px;
 
   margin-top: 34px;
+  margin-inline: auto;
 
   font-size: clamp(16px, 1.3vw, 20px);
   line-height: 1.55;
@@ -69,6 +78,7 @@
 .service-hero__actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
 
   margin-top: 34px;
@@ -78,6 +88,7 @@
 .service-hero__meta {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 8px;
 
   margin-top: 42px;
@@ -113,112 +124,6 @@
 
   background: var(--color-accent);
   border-radius: 50%;
-}
-
-
-.service-hero__visual {
-  position: relative;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  min-width: 0;
-  height: min(650px, 67vh);
-}
-
-.service-hero__media {
-  position: relative;
-
-  width: min(100%, 590px);
-  height: 100%;
-
-  border-radius: var(--radius-lg);
-
-  overflow: hidden;
-}
-
-.service-hero__media img {
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-
-  transform: scale(1.03);
-
-  will-change: transform;
-}
-
-.service-hero__media::after {
-  content: "";
-
-  position: absolute;
-  inset: 0;
-
-  background: rgba(23, 23, 25, 0.18);
-
-  pointer-events: none;
-}
-
-
-.service-hero__metric {
-  position: absolute;
-  z-index: 5;
-
-  right: -22px;
-  bottom: 34px;
-
-  display: grid;
-  gap: 8px;
-
-  width: min(290px, 58%);
-
-  padding: 24px;
-
-  color: var(--color-dark);
-  background: var(--color-accent);
-
-  border-radius: var(--radius-md);
-}
-
-.service-hero__metric strong {
-  font-family: var(--font-display);
-  font-size: clamp(42px, 4vw, 68px);
-  font-weight: 600;
-  line-height: 0.9;
-
-  letter-spacing: -0.065em;
-}
-
-.service-hero__metric span {
-  max-width: 220px;
-
-  font-size: 11px;
-  font-weight: 600;
-  line-height: 1.4;
-
-  text-transform: uppercase;
-}
-
-
-.service-hero__mark {
-  position: absolute;
-  z-index: 5;
-
-  top: 2%;
-  left: -8%;
-
-  width: 150px;
-
-  transform: rotate(-16deg);
-
-  filter: drop-shadow(0 16px 30px rgba(0, 0, 0, 0.22));
-
-  pointer-events: none;
-}
-
-.service-hero__mark img {
-  width: 100%;
 }
 
 
@@ -1560,9 +1465,7 @@
 @media (max-width: 1199px) {
 
   .service-hero__container {
-    grid-template-columns:
-      minmax(0, 1fr)
-      minmax(370px, 0.9fr);
+    grid-template-columns: minmax(0, 1fr);
   }
 
   .service-capabilities__grid {
@@ -1607,17 +1510,6 @@
   .service-hero__actions,
   .service-hero__meta {
     justify-content: center;
-  }
-
-  .service-hero__visual {
-    width: min(100%, 680px);
-    height: 560px;
-
-    margin-inline: auto;
-  }
-
-  .service-hero__mark {
-    left: 0;
   }
 
   .service-intro__grid,
@@ -1813,34 +1705,6 @@
 
   .service-hero__actions {
     margin-top: 27px;
-  }
-
-  .service-hero__visual {
-    height: 430px;
-  }
-
-  .service-hero__media {
-    border-radius: 18px;
-  }
-
-  .service-hero__metric {
-    right: 12px;
-    bottom: 14px;
-
-    width: min(240px, 70%);
-
-    padding: 18px;
-  }
-
-  .service-hero__metric strong {
-    font-size: 44px;
-  }
-
-  .service-hero__mark {
-    top: -28px;
-    left: -15px;
-
-    width: 105px;
   }
 
   .service-intro__grid {
@@ -2090,10 +1954,6 @@
     justify-content: center;
   }
 
-  .service-hero__visual {
-    height: 390px;
-  }
-
   .service-case__results {
     grid-template-columns: 1fr;
   }
@@ -2195,10 +2055,6 @@
     padding-bottom: 34px;
   }
 
-  .service-hero__visual {
-    height: 420px;
-  }
-
   .service-case,
   .service-case__media {
     min-height: 340px;
@@ -2208,15 +2064,6 @@
 @media (max-width: 767px) {
   .service-hero {
     padding-top: 92px;
-  }
-
-  .service-hero__visual {
-    height: 330px;
-  }
-
-  .service-hero__mark {
-    left: 0;
-    width: 92px;
   }
 
   .service-cases__head {

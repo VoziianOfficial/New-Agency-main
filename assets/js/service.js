@@ -1031,10 +1031,16 @@
           if (
             sideCards.length
           ) {
+            const horizontalReveal =
+              window.matchMedia(
+                "(min-width: 992px)"
+              ).matches;
+
             window.gsap.from(
               sideCards,
               {
-                x: 24,
+                x: horizontalReveal ? 24 : 0,
+                y: horizontalReveal ? 0 : 18,
                 opacity: 0,
 
                 duration: 0.65,
@@ -1091,10 +1097,16 @@
             return;
           }
 
+          const horizontalReveal =
+            window.matchMedia(
+              "(min-width: 992px)"
+            ).matches;
+
           window.gsap.from(
             items,
             {
-              x: 22,
+              x: horizontalReveal ? 22 : 0,
+              y: horizontalReveal ? 0 : 18,
               opacity: 0,
 
               duration: 0.58,

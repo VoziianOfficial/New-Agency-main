@@ -1971,6 +1971,11 @@ html:not(.no-js) [data-aos="fade-right"] {
     --header-height: 86px;
   }
 
+  html:not(.no-js) [data-aos="fade-left"],
+  html:not(.no-js) [data-aos="fade-right"] {
+    transform: translate3d(0, 18px, 0);
+  }
+
   .main-nav__link {
     padding-inline: 11px;
     font-size: 11px;
@@ -2251,8 +2256,12 @@ html:not(.no-js) [data-aos="fade-right"] {
 
 
 @media (max-width: 420px) {
+  .header-shell {
+    gap: 8px;
+  }
+
   .site-logo span {
-    max-width: 110px;
+    max-width: 76px;
   }
 
   .cookie-card__icon {
@@ -2265,6 +2274,13 @@ html:not(.no-js) [data-aos="fade-right"] {
 
   .menu-panel__link {
     font-size: 38px;
+  }
+}
+
+
+@media (max-width: 340px) {
+  .site-logo span {
+    max-width: 54px;
   }
 }
 

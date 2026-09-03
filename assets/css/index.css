@@ -1190,6 +1190,19 @@
   align-items: center;
 }
 
+.home-testimonials__grid > * {
+  min-width: 0;
+}
+
+.home-about__grid > *,
+.home-process__grid > *,
+.home-why__grid > *,
+.home-team__grid > *,
+.home-faq__grid > *,
+.home-contact__shell > * {
+  min-width: 0;
+}
+
 .home-testimonials__intro {
   position: relative;
 }
@@ -2663,6 +2676,20 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
 
   .team-card {
     height: 440px;
+  }
+
+  .team-card__info {
+    left: 16px;
+    right: 16px;
+
+    min-width: 0;
+  }
+}
+
+
+@media (max-width: 340px) {
+  .home-hero__agency-word {
+    font-size: 45px;
   }
 }
 

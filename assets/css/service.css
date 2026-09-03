@@ -1364,10 +1364,6 @@
 }
 
 
-.service-benefits {
-  overflow: hidden;
-}
-
 .service-benefits__grid {
   display: grid;
   grid-template-columns: minmax(300px, 0.7fr) minmax(0, 1.3fr);
@@ -2222,5 +2218,9 @@
   .service-benefits__item,
   .service-process__card {
     min-height: 170px;
+  }
+
+  .service-benefits__item {
+    padding: 20px 0;
   }
 }

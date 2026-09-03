@@ -2312,7 +2312,7 @@
 .home-performance-system {
   padding-block: clamp(24px, 3vw, 42px);
 
-  overflow: clip;
+  overflow-x: clip;
   background: var(--color-light-soft);
 }
 
@@ -2327,7 +2327,9 @@
 }
 
 .home-performance-system__content {
-  position: relative;
+  position: sticky;
+  top: 112px;
+  align-self: start;
 
   min-width: 0;
 }
@@ -3374,6 +3376,8 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
   }
 
   .home-performance-system__content {
+    position: static;
+
     text-align: center;
   }
 

@@ -205,8 +205,6 @@
 .service-intro__point {
   position: relative;
 
-  min-height: 78px;
-
   padding: 18px 18px 18px 47px;
 
   font-size: 12px;
@@ -979,7 +977,6 @@
 }
 
 .service-dashboard__metric {
-  min-height: 130px;
 
   padding: 19px;
 
@@ -1151,10 +1148,33 @@
   margin-bottom: 38px;
 }
 
+.service-cases__head > div {
+  flex: 1;
+  min-width: 0;
+  padding-right: clamp(16px, 3vw, 52px);
+}
+
+.service-cases__head .swiper-controls {
+  justify-content: flex-end;
+  margin-left: auto;
+}
+
 .service-cases__title {
   max-width: 700px;
 
   margin-top: 22px;
+}
+
+.service-strategy__title,
+.service-platforms__title,
+.service-cases__title {
+  max-width: none;
+  font-size: min(clamp(38px, 4.4vw, 70px), 7.2vw);
+  white-space: nowrap;
+}
+
+.service-strategy__title {
+  font-size: clamp(30px, 2.8vw, 44px);
 }
 
 .service-cases__slider {
@@ -1491,6 +1511,16 @@
 
   .service-process__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .service-strategy__title,
+  .service-platforms__title,
+  .service-cases__title {
+    font-size: min(52px, 5.2vw);
+  }
+
+  .service-strategy__title {
+    font-size: clamp(30px, 4vw, 42px);
   }
 }
 
@@ -1863,9 +1893,6 @@
     grid-template-columns: 1fr;
   }
 
-  .service-dashboard__metric {
-    min-height: 105px;
-  }
 
   .service-dashboard__side {
     grid-template-columns: 1fr;
@@ -2034,7 +2061,6 @@
 }
 
 .capability-card,
-.service-benefits__item,
 .service-process__card {
   min-height: 210px;
   padding: 24px;
@@ -2087,12 +2113,25 @@
     text-align: center;
   }
 
+  .service-cases__head > div {
+    padding-right: 0;
+  }
+
+  .service-cases__head .swiper-controls {
+    align-self: flex-end;
+  }
+
+  .service-strategy__title,
+  .service-platforms__title,
+  .service-cases__title {
+    white-space: normal;
+  }
+
   .service-cases__title {
     margin-inline: auto;
   }
 
   .capability-card,
-  .service-benefits__item,
   .service-process__card {
     min-height: 170px;
   }

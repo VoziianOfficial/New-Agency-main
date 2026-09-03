@@ -243,6 +243,93 @@
   };
 
 
+  const initAboutTabs = () => {
+    const section = qs("[data-about-tabs]");
+
+    if (!section) return;
+
+    const tabs = qsa("[data-about-tab]", section);
+    const title = qs("[data-about-title]", section);
+    const kicker = qs("[data-about-kicker]", section);
+    const text = qs("[data-about-text]", section);
+    const cardTitle = qs("[data-about-card-title]", section);
+    const cardText = qs("[data-about-card-text]", section);
+
+    if (
+      !tabs.length ||
+      !title ||
+      !kicker ||
+      !text ||
+      !cardTitle ||
+      !cardText
+    ) {
+      return;
+    }
+
+    const activateTab = (tab) => {
+      tabs.forEach((item) => {
+        const active =
+          item === tab;
+
+        item.classList.toggle(
+          "is-active",
+          active
+        );
+
+        item.setAttribute(
+          "aria-pressed",
+          String(active)
+        );
+      });
+
+      kicker.textContent =
+        tab.dataset.kicker || "";
+
+      title.textContent =
+        tab.dataset.title || "";
+
+      text.textContent =
+        tab.dataset.text || "";
+
+      cardTitle.textContent =
+        tab.dataset.cardTitle || "";
+
+      cardText.textContent =
+        tab.dataset.cardText || "";
+
+      section.classList.add(
+        "is-switching"
+      );
+
+      window.setTimeout(
+        () => {
+          section.classList.remove(
+            "is-switching"
+          );
+        },
+        260
+      );
+    };
+
+    tabs.forEach((tab) => {
+      tab.addEventListener(
+        "mouseenter",
+        () => activateTab(tab)
+      );
+
+      tab.addEventListener(
+        "focus",
+        () => activateTab(tab)
+      );
+
+      tab.addEventListener(
+        "click",
+        () => activateTab(tab)
+      );
+    });
+  };
+
+
   const initHeroEntrance = () => {
     const hero = qs(".home-hero");
 
@@ -462,40 +549,6 @@
 
 
     qsa(
-      ".home-about__media img"
-    ).forEach((image) => {
-      if (image.hasAttribute("data-parallax")) {
-        return;
-      }
-
-      window.gsap.fromTo(
-        image,
-        {
-          scale: 1.07
-        },
-        {
-          scale: 1,
-
-          ease: "none",
-
-          scrollTrigger: {
-            trigger:
-              image.parentElement,
-
-            start:
-              "top bottom",
-
-            end:
-              "bottom top",
-
-            scrub: 0.6
-          }
-        }
-      );
-    });
-
-
-    qsa(
       ".team-card"
     ).forEach((card) => {
       const image =
@@ -597,6 +650,8 @@
     initTestimonialsSwiper();
 
     initCases();
+
+    initAboutTabs();
 
     initHeroEntrance();
     initHeroScroll();

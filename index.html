@@ -697,133 +697,159 @@
 
         <div class="container">
 
-          <div class="home-about__grid">
+          <div
+            class="home-about__shell"
+            data-about-tabs
+          >
 
 
-            <div
-              class="home-about__copy"
-              data-aos="fade-up"
+            <nav
+              class="home-about__nav"
+              aria-label="Growth focus areas"
             >
 
-              <span class="mini-label">
-                About the agency
+              <span class="home-about__nav-label">
+                Discover
               </span>
 
+              <button
+                class="home-about__tab is-active"
+                type="button"
+                data-about-tab
+                data-title="Google Ads"
+                data-kicker="Paid search systems"
+                data-text="Campaigns structured around intent, lead quality and revenue signals from the first click."
+                data-card-title="Let's scale your Google Ads!"
+                data-card-text="Search, Shopping and Performance Max managed as one measurable acquisition system."
+                aria-pressed="true"
+              >
+                Google Ads
+              </button>
 
-              <h2 class="section-title home-about__title">
-                Built for
-                <span class="accent-word">
-                  outcomes,
-                </span>
-                not clicks.
+              <button
+                class="home-about__tab"
+                type="button"
+                data-about-tab
+                data-title="Lead Gen"
+                data-kicker="Qualified pipeline"
+                data-text="We connect forms, calls, CRM feedback and ads so budget moves toward the leads that close."
+                data-card-title="Turn clicks into pipeline!"
+                data-card-text="Landing pages, tracking and campaign signals aligned around real sales conversations."
+                aria-pressed="false"
+              >
+                Lead Gen
+              </button>
+
+              <button
+                class="home-about__tab"
+                type="button"
+                data-about-tab
+                data-title="E-commerce"
+                data-kicker="Profitable shopping"
+                data-text="Product feeds, campaigns and analytics tuned around contribution, repeat purchase and scale."
+                data-card-title="Grow profitable sales!"
+                data-card-text="Shopping strategy built for cleaner data, sharper testing and stronger product economics."
+                aria-pressed="false"
+              >
+                E-commerce
+              </button>
+
+              <button
+                class="home-about__tab"
+                type="button"
+                data-about-tab
+                data-title="Tracking"
+                data-kicker="Measurement clarity"
+                data-text="Conversion events, analytics and automation cleaned up so decisions are based on usable data."
+                data-card-title="Make every signal count!"
+                data-card-text="Reliable measurement for faster optimisation and confident performance decisions."
+                aria-pressed="false"
+              >
+                Tracking
+              </button>
+
+              <button
+                class="home-about__tab"
+                type="button"
+                data-about-tab
+                data-title="Automation"
+                data-kicker="Smarter workflows"
+                data-text="Reporting, alerts and customer feedback loops automated so your team can act faster."
+                data-card-title="Automate growth work!"
+                data-card-text="Less manual reporting, more focused action across campaigns, CRM and analytics."
+                aria-pressed="false"
+              >
+                Automation
+              </button>
+
+            </nav>
+
+
+            <div class="home-about__content">
+
+              <span
+                class="home-about__kicker"
+                data-about-kicker
+              >
+                Paid search systems
+              </span>
+
+              <h2
+                class="home-about__title"
+                data-about-title
+              >
+                Google Ads
               </h2>
 
-
-              <p class="home-about__description">
-                We connect advertising, conversion data
-                and business performance so campaigns
-                can be optimised around qualified leads,
-                sales and revenue — not vanity metrics.
+              <p
+                class="home-about__text"
+                data-about-text
+              >
+                Campaigns structured around intent, lead quality and revenue
+                signals from the first click.
               </p>
 
-
-              <div class="home-about__actions">
-
-                <a
-                  href="#services"
-                  class="btn btn--dark"
-                >
-                  Explore Services
-                </a>
-
-                <a
-                  href="#contact"
-                  class="btn btn--ghost"
-                >
-                  Request Audit
-                </a>
-
-              </div>
+              <a
+                class="home-about__link"
+                href="#services"
+              >
+                Explore services
+              </a>
 
             </div>
 
 
-            <div class="home-about__visuals">
+            <article class="home-about__card">
 
-
-              <div
-                class="home-about__metric"
-                data-aos="fade-left"
+              <img
+                class="home-about__card-image"
+                src="assets/images/home/about-interactive-card.webp"
+                alt="Dark marketing workspace with analytics screen"
+                loading="lazy"
               >
 
-                <strong class="home-about__metric-value">
-                  DATA
-                </strong>
+              <div class="home-about__card-copy">
 
-                <p class="home-about__metric-copy">
-                  Campaign decisions connected to
-                  conversion quality, customer value
-                  and commercial results.
+                <h3 data-about-card-title>
+                  Let's scale your Google Ads!
+                </h3>
+
+                <p data-about-card-text>
+                  Search, Shopping and Performance Max managed as one measurable
+                  acquisition system.
                 </p>
 
-              </div>
-
-
-              <div
-                class="home-about__media"
-                data-aos="fade-up"
-              >
-                <img
-                  src="assets/images/home/about-dashboard.webp"
-                  alt="Advertising performance dashboard"
-                  loading="lazy"
-                  data-parallax
-                  data-parallax-speed="0.04"
+                <a
+                  class="home-about__card-link"
+                  href="#contact"
                 >
-              </div>
-
-
-              <div
-                class="home-about__feature"
-                data-aos="fade-up"
-              >
-
-                <div class="home-about__feature-main">
-
-                  <span class="home-about__feature-icon">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      aria-hidden="true"
-                    >
-                      <path
-                        d="M5 17L10 12L13.5 15.5L20 7"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                  </span>
-
-                  <strong>
-                    Advertising connected
-                    to business performance.
-                  </strong>
-
-                </div>
-
-
-                <ul class="home-about__feature-list">
-                  <li>Campaign architecture</li>
-                  <li>Conversion tracking</li>
-                  <li>Lead quality feedback</li>
-                  <li>Revenue optimisation</li>
-                </ul>
+                  Request audit
+                </a>
 
               </div>
 
-            </div>
+            </article>
+
 
           </div>
 

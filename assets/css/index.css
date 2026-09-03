@@ -1100,8 +1100,6 @@
 
   align-items: center;
 
-  min-height: 140px;
-
   padding: 24px 24px 24px 28px;
 
   background: var(--color-white);
@@ -2520,8 +2518,6 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
 
   .home-process__item {
     grid-template-columns: 62px 1fr;
-
-    min-height: 132px;
 
     padding: 20px;
   }

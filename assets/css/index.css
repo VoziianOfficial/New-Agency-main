@@ -635,7 +635,7 @@
   display: grid;
   align-items: center;
 
-  min-height: min(670px, calc(100svh - 92px));
+  min-height: min(540px, calc(100svh - 140px));
   padding: clamp(34px, 4.5vw, 66px);
 
   color: var(--color-white);
@@ -3257,7 +3257,7 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
   }
 
   .home-expertise__panel {
-    min-height: 610px;
+    min-height: 500px;
   }
 
   .home-expertise__copy {
@@ -3619,7 +3619,7 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
   .home-expertise__panel {
     align-items: start;
 
-    min-height: min(680px, calc(100svh - 36px));
+    min-height: min(560px, calc(100svh - 72px));
     padding: 24px 20px;
 
     border-radius: 18px;

@@ -646,6 +646,428 @@
   };
 
 
+  const initPerformanceSystem = () => {
+    const field = qs(
+      "[data-performance-system-field]"
+    );
+
+    if (!field) return;
+
+    const capsules = qsa(
+      "[data-system-capsule]",
+      field
+    );
+
+    if (!capsules.length) return;
+
+    const positions = [
+      [0.12, 0.48, -2.5],
+      [0.36, 0.32, 4],
+      [0.48, 0.58, -6],
+      [0.53, 0.14, 8],
+      [0.68, 0.36, -3],
+      [0.72, 0.62, 5]
+    ];
+
+    let bounds = {
+      width: 0,
+      height: 0
+    };
+
+    let bodies = [];
+    let activeBody = null;
+    let isRunning = false;
+    let frameId = 0;
+    let lastTime = 0;
+    let resizeTimer = 0;
+
+    const clamp = (value, min, max) =>
+      Math.min(
+        Math.max(value, min),
+        max
+      );
+
+    const render = (body) => {
+      body.element.style.transform =
+        `translate3d(${body.x}px, ${body.y}px, 0) rotate(${body.angle}deg)`;
+    };
+
+    const measure = () => {
+      const rect = field.getBoundingClientRect();
+
+      bounds = {
+        width: rect.width,
+        height: rect.height
+      };
+
+      bodies = capsules.map(
+        (element, index) => {
+          const width = element.offsetWidth;
+          const height = element.offsetHeight;
+          const position =
+            positions[index % positions.length];
+          const x = clamp(
+            bounds.width * position[0],
+            0,
+            bounds.width - width
+          );
+          const y = clamp(
+            bounds.height * position[1],
+            0,
+            bounds.height - height
+          );
+
+          return {
+            element,
+            width,
+            height,
+            x,
+            y,
+            vx: 0,
+            vy: 0,
+            angle: position[2],
+            baseAngle: position[2],
+            va: 0,
+            homeX: x,
+            homeY: y,
+            pointerX: 0,
+            pointerY: 0,
+            lastPointerX: 0,
+            lastPointerY: 0,
+            isDragging: false
+          };
+        }
+      );
+
+      bodies.forEach(render);
+    };
+
+    const keepInBounds = (body) => {
+      if (body.x < 0) {
+        body.x = 0;
+        body.vx = Math.abs(body.vx) * 0.46;
+      }
+
+      if (body.y < 0) {
+        body.y = 0;
+        body.vy = Math.abs(body.vy) * 0.46;
+      }
+
+      if (body.x + body.width > bounds.width) {
+        body.x = bounds.width - body.width;
+        body.vx = -Math.abs(body.vx) * 0.46;
+      }
+
+      if (body.y + body.height > bounds.height) {
+        body.y = bounds.height - body.height;
+        body.vy = -Math.abs(body.vy) * 0.46;
+      }
+    };
+
+    const resolveCollisions = () => {
+      for (let i = 0; i < bodies.length; i += 1) {
+        for (let j = i + 1; j < bodies.length; j += 1) {
+          const a = bodies[i];
+          const b = bodies[j];
+          const dx =
+            a.x + a.width / 2 -
+            (b.x + b.width / 2);
+          const dy =
+            a.y + a.height / 2 -
+            (b.y + b.height / 2);
+          const overlapX =
+            (a.width + b.width) / 2 -
+            Math.abs(dx);
+          const overlapY =
+            (a.height + b.height) / 2 -
+            Math.abs(dy);
+
+          if (
+            overlapX <= 0 ||
+            overlapY <= 0
+          ) {
+            continue;
+          }
+
+          const pushX = dx < 0 ? -1 : 1;
+          const pushY = dy < 0 ? -1 : 1;
+          const aLocked = a.isDragging ? 0.18 : 1;
+          const bLocked = b.isDragging ? 0.18 : 1;
+          const total =
+            aLocked + bLocked;
+
+          if (overlapX < overlapY) {
+            const push =
+              overlapX / total;
+
+            a.x += push * pushX * aLocked;
+            b.x -= push * pushX * bLocked;
+            a.vx += 0.34 * pushX * aLocked;
+            b.vx -= 0.34 * pushX * bLocked;
+            a.va += 0.018 * pushX;
+            b.va -= 0.018 * pushX;
+          } else {
+            const push =
+              overlapY / total;
+
+            a.y += push * pushY * aLocked;
+            b.y -= push * pushY * bLocked;
+            a.vy += 0.34 * pushY * aLocked;
+            b.vy -= 0.34 * pushY * bLocked;
+            a.va -= 0.018 * pushY;
+            b.va += 0.018 * pushY;
+          }
+        }
+      }
+    };
+
+    const tick = (time) => {
+      if (!isRunning) return;
+
+      const delta = Math.min(
+        (time - lastTime) / 16.67 || 1,
+        2
+      );
+      const idleTime = time * 0.001;
+
+      lastTime = time;
+
+      bodies.forEach(
+        (body, index) => {
+          if (body.isDragging) {
+            const targetX =
+              body.pointerX - body.width / 2;
+            const targetY =
+              body.pointerY - body.height / 2;
+
+            body.vx +=
+              (targetX - body.x) * 0.34 * delta;
+            body.vy +=
+              (targetY - body.y) * 0.34 * delta;
+            body.vx *= 0.64;
+            body.vy *= 0.64;
+            body.va +=
+              (body.pointerX - body.lastPointerX) * 0.0015;
+          } else {
+            body.vx +=
+              (body.homeX - body.x) * 0.0011 * delta;
+            body.vy +=
+              (body.homeY - body.y) * 0.0011 * delta;
+
+            if (!reducedMotion) {
+              body.vx +=
+                Math.sin(idleTime + index * 1.7) * 0.012;
+              body.vy +=
+                Math.cos(idleTime * 0.9 + index) * 0.01;
+              body.va +=
+                Math.sin(idleTime * 0.7 + index) * 0.0008;
+            }
+
+            body.vx *= 0.985;
+            body.vy *= 0.985;
+            body.va *= 0.95;
+          }
+
+          body.x += body.vx * delta;
+          body.y += body.vy * delta;
+          body.angle += body.va * delta;
+          body.angle +=
+            (body.baseAngle - body.angle) * 0.012 * delta;
+
+          keepInBounds(body);
+        }
+      );
+
+      resolveCollisions();
+
+      bodies.forEach(
+        (body) => {
+          keepInBounds(body);
+          render(body);
+        }
+      );
+
+      frameId = window.requestAnimationFrame(
+        tick
+      );
+    };
+
+    const start = () => {
+      if (isRunning) return;
+
+      isRunning = true;
+      lastTime = performance.now();
+      frameId = window.requestAnimationFrame(
+        tick
+      );
+    };
+
+    const stop = () => {
+      isRunning = false;
+      window.cancelAnimationFrame(
+        frameId
+      );
+    };
+
+    const getBody = (element) =>
+      bodies.find(
+        (body) => body.element === element
+      );
+
+    const updatePointer = (event, body) => {
+      const rect = field.getBoundingClientRect();
+
+      body.lastPointerX = body.pointerX;
+      body.lastPointerY = body.pointerY;
+      body.pointerX = clamp(
+        event.clientX - rect.left,
+        0,
+        bounds.width
+      );
+      body.pointerY = clamp(
+        event.clientY - rect.top,
+        0,
+        bounds.height
+      );
+    };
+
+    capsules.forEach(
+      (capsule) => {
+        capsule.addEventListener(
+          "pointerdown",
+          (event) => {
+            if (
+              event.pointerType === "touch" ||
+              !window.matchMedia("(pointer: fine)").matches
+            ) {
+              return;
+            }
+
+            const body = getBody(capsule);
+
+            if (!body) return;
+
+            activeBody = body;
+            body.isDragging = true;
+            body.element.classList.add(
+              "is-dragging"
+            );
+            updatePointer(event, body);
+            body.lastPointerX = body.pointerX;
+            body.lastPointerY = body.pointerY;
+            capsule.setPointerCapture(
+              event.pointerId
+            );
+            start();
+          }
+        );
+
+        capsule.addEventListener(
+          "pointermove",
+          (event) => {
+            if (
+              !activeBody ||
+              activeBody.element !== capsule
+            ) {
+              return;
+            }
+
+            updatePointer(
+              event,
+              activeBody
+            );
+          }
+        );
+
+        capsule.addEventListener(
+          "pointerup",
+          () => {
+            if (
+              !activeBody ||
+              activeBody.element !== capsule
+            ) {
+              return;
+            }
+
+            activeBody.isDragging = false;
+            activeBody.vx +=
+              (activeBody.pointerX - activeBody.lastPointerX) * 0.18;
+            activeBody.vy +=
+              (activeBody.pointerY - activeBody.lastPointerY) * 0.18;
+            activeBody.element.classList.remove(
+              "is-dragging"
+            );
+            activeBody = null;
+          }
+        );
+
+        capsule.addEventListener(
+          "pointercancel",
+          () => {
+            if (
+              !activeBody ||
+              activeBody.element !== capsule
+            ) {
+              return;
+            }
+
+            activeBody.isDragging = false;
+            activeBody.element.classList.remove(
+              "is-dragging"
+            );
+            activeBody = null;
+          }
+        );
+      }
+    );
+
+    measure();
+
+    if (
+      "IntersectionObserver" in window
+    ) {
+      const observer =
+        new IntersectionObserver(
+          (entries) => {
+            entries.forEach(
+              (entry) => {
+                if (entry.isIntersecting) {
+                  start();
+                } else {
+                  stop();
+                }
+              }
+            );
+          },
+          {
+            rootMargin: "180px 0px"
+          }
+        );
+
+      observer.observe(field);
+    } else {
+      start();
+    }
+
+    window.addEventListener(
+      "resize",
+      () => {
+        window.clearTimeout(
+          resizeTimer
+        );
+
+        resizeTimer = window.setTimeout(
+          () => {
+            measure();
+            start();
+          },
+          160
+        );
+      }
+    );
+  };
+
+
   const initScrollMotion = () => {
     if (
       !canUseScrollEffects() ||
@@ -771,6 +1193,8 @@
     initHeroScroll();
 
     initProcess();
+
+    initPerformanceSystem();
 
     initScrollMotion();
 

@@ -2308,6 +2308,191 @@
 }
 
 
+.home-performance-system {
+  padding-block: clamp(34px, 3.8vw, 54px);
+
+  overflow: clip;
+  background: var(--color-light-soft);
+}
+
+.home-performance-system__grid {
+  display: grid;
+  grid-template-columns: minmax(360px, 0.72fr) minmax(0, 1.28fr);
+  gap: clamp(34px, 4.6vw, 72px);
+
+  align-items: center;
+
+  min-height: min(640px, calc(100vh - 170px));
+}
+
+.home-performance-system__content {
+  position: relative;
+
+  min-width: 0;
+}
+
+.home-performance-system__meta {
+  display: grid;
+  grid-template-columns: auto minmax(48px, 120px) auto;
+  gap: 16px;
+
+  align-items: center;
+
+  max-width: 330px;
+  margin-bottom: 24px;
+
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-text-soft);
+
+  text-transform: uppercase;
+}
+
+.home-performance-system__meta i {
+  display: block;
+
+  height: 1px;
+
+  background: var(--color-dark);
+}
+
+.home-performance-system__meta i::after {
+  content: "";
+
+  display: block;
+
+  width: 7px;
+  height: 7px;
+
+  margin-left: auto;
+
+  border-top: 1px solid var(--color-dark);
+  border-right: 1px solid var(--color-dark);
+
+  transform: translateY(-3px) rotate(45deg);
+}
+
+.home-performance-system__title {
+  max-width: 560px;
+  margin-top: 18px;
+}
+
+.home-performance-system__text {
+  max-width: 460px;
+
+  margin-top: 20px;
+
+  color: var(--color-text-soft);
+}
+
+.home-performance-system__cta {
+  margin-top: 26px;
+}
+
+.home-performance-system__field {
+  position: relative;
+
+  min-width: 0;
+  height: clamp(420px, 35vw, 560px);
+
+  overflow: hidden;
+  isolation: isolate;
+
+  touch-action: pan-y;
+}
+
+.home-performance-system__capsule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+
+  display: grid;
+  place-items: center;
+
+  width: var(--capsule-width);
+  height: var(--capsule-height);
+  padding: 16px 24px;
+
+  color: var(--color-dark);
+  background: rgba(248, 248, 248, 0.88);
+
+  border: 1.35px solid rgba(23, 23, 25, 0.68);
+  border-radius: var(--capsule-radius);
+
+  font-family: var(--font-display);
+  font-size: clamp(17px, 1.28vw, 22px);
+  font-weight: 600;
+  line-height: 1.08;
+  text-align: center;
+
+  cursor: grab;
+  user-select: none;
+  will-change: transform;
+
+  transition:
+    color var(--transition-fast),
+    background var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.home-performance-system__capsule:hover,
+.home-performance-system__capsule:focus-visible,
+.home-performance-system__capsule.is-dragging {
+  color: var(--color-dark);
+  background: rgba(255, 163, 0, 0.1);
+  border-color: var(--color-accent);
+}
+
+.home-performance-system__capsule:focus-visible {
+  outline: 3px solid rgba(255, 163, 0, 0.42);
+  outline-offset: 5px;
+}
+
+.home-performance-system__capsule.is-dragging {
+  cursor: grabbing;
+  box-shadow: 0 18px 38px rgba(23, 23, 25, 0.1);
+}
+
+.home-performance-system__capsule--google {
+  --capsule-width: clamp(168px, 14vw, 220px);
+  --capsule-height: clamp(78px, 6.4vw, 104px);
+  --capsule-radius: 52% 48% 45% 55% / 54% 46% 54% 46%;
+}
+
+.home-performance-system__capsule--lead {
+  --capsule-width: clamp(210px, 18vw, 290px);
+  --capsule-height: clamp(88px, 7.4vw, 120px);
+  --capsule-radius: 58% 42% 50% 50% / 44% 54% 46% 56%;
+}
+
+.home-performance-system__capsule--commerce {
+  --capsule-width: clamp(220px, 20vw, 320px);
+  --capsule-height: clamp(84px, 6.8vw, 112px);
+  --capsule-radius: 45% 55% 57% 43% / 50% 48% 52% 50%;
+}
+
+.home-performance-system__capsule--tracking {
+  --capsule-width: clamp(230px, 21vw, 335px);
+  --capsule-height: clamp(94px, 8vw, 130px);
+  --capsule-radius: 50% 50% 45% 55% / 56% 44% 55% 45%;
+}
+
+.home-performance-system__capsule--strategy {
+  --capsule-width: clamp(210px, 18.5vw, 300px);
+  --capsule-height: clamp(90px, 7.6vw, 124px);
+  --capsule-radius: 48% 52% 50% 50% / 43% 57% 47% 53%;
+}
+
+.home-performance-system__capsule--automation {
+  --capsule-width: clamp(152px, 13vw, 205px);
+  --capsule-height: clamp(76px, 6.2vw, 102px);
+  --capsule-radius: 54% 46% 52% 48% / 48% 56% 44% 52%;
+}
+
+
 .home-pricing {
   background: #f1f1f2;
 
@@ -3058,6 +3243,7 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
   .home-process__grid,
   .home-testimonials__grid,
   .home-why__grid,
+  .home-performance-system__grid,
   .home-team__grid,
   .home-faq__grid,
   .home-contact__shell {
@@ -3199,6 +3385,27 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
     margin-inline: auto;
   }
 
+  .home-performance-system__grid {
+    min-height: auto;
+  }
+
+  .home-performance-system__content {
+    text-align: center;
+  }
+
+  .home-performance-system__meta,
+  .home-performance-system__title,
+  .home-performance-system__text {
+    margin-inline: auto;
+  }
+
+  .home-performance-system__field {
+    width: min(820px, 100%);
+    height: clamp(390px, 56vw, 500px);
+
+    margin-inline: auto;
+  }
+
   .home-pricing__grid {
     grid-template-columns: 1fr;
   }
@@ -3310,6 +3517,7 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
   .home-process__grid,
   .home-testimonials__grid,
   .home-why__grid,
+  .home-performance-system__grid,
   .home-team__grid,
   .home-faq__grid {
     gap: 42px;
@@ -3547,6 +3755,45 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
 
   .home-results__grid {
     grid-template-columns: 1fr;
+  }
+
+  .home-performance-system__meta {
+    grid-template-columns: auto minmax(42px, 90px) auto;
+    gap: 12px;
+
+    margin-bottom: 26px;
+  }
+
+  .home-performance-system__text {
+    font-size: 15px;
+  }
+
+  .home-performance-system__field {
+    height: 340px;
+  }
+
+  .home-performance-system__capsule {
+    padding: 14px 18px;
+
+    font-size: clamp(15px, 4.6vw, 18px);
+  }
+
+  .home-performance-system__capsule--google,
+  .home-performance-system__capsule--automation {
+    --capsule-width: clamp(138px, 42vw, 172px);
+    --capsule-height: 76px;
+  }
+
+  .home-performance-system__capsule--lead,
+  .home-performance-system__capsule--commerce,
+  .home-performance-system__capsule--strategy {
+    --capsule-width: clamp(168px, 55vw, 220px);
+    --capsule-height: 92px;
+  }
+
+  .home-performance-system__capsule--tracking {
+    --capsule-width: clamp(190px, 62vw, 242px);
+    --capsule-height: 98px;
   }
 
   .home-result {

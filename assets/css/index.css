@@ -295,7 +295,7 @@
 
 
 .home-about {
-  padding-block: clamp(38px, 5vw, 72px);
+  padding-block: clamp(38px, 5vw, 72px) clamp(19px, 2.5vw, 36px);
   overflow: clip;
 }
 
@@ -626,7 +626,7 @@
 
 
 .home-expertise {
-  padding-block: clamp(42px, 5vw, 72px);
+  padding-block: clamp(21px, 2.5vw, 36px);
 }
 
 .home-expertise__panel {
@@ -845,7 +845,7 @@
 
 
 .home-ai {
-  padding-block: clamp(54px, 7vw, 86px);
+  padding-block: clamp(27px, 3.5vw, 43px);
   overflow: visible;
 }
 
@@ -1024,6 +1024,7 @@
 
 
 .home-services {
+  padding-bottom: calc(var(--section-space) / 2);
   background: var(--color-white);
   overflow: hidden;
 }
@@ -3608,7 +3609,7 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
   }
 
   .home-expertise {
-    padding-block: 36px;
+    padding-block: 18px;
   }
 
   .home-expertise__panel {
@@ -3684,7 +3685,7 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
   }
 
   .home-ai {
-    padding-block: 44px;
+    padding-block: 22px;
   }
 
   .home-ai__panel {

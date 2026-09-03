@@ -313,6 +313,8 @@
 
 .service-capabilities {
   overflow: hidden;
+
+  background: var(--color-white);
 }
 
 .service-capabilities__head {
@@ -336,7 +338,9 @@
 .service-capabilities__grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  gap: 14px;
+
+  align-items: stretch;
 }
 
 
@@ -345,37 +349,58 @@
 
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
-  min-height: 410px;
+  min-height: 318px;
 
-  padding: 26px;
+  padding: 18px;
 
+  color: var(--color-dark);
   background: var(--color-white);
 
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border: 2px solid rgba(255, 163, 0, 0.72);
+  border-radius: var(--radius-sm);
+  box-shadow:
+    0 28px 70px rgba(23, 23, 25, 0.16),
+    0 10px 0 rgba(255, 163, 0, 0.16),
+    14px 14px 0 rgba(255, 163, 0, 0.08),
+    inset 0 0 0 1px rgba(23, 23, 25, 0.08),
+    inset 0 0 0 10px rgba(255, 163, 0, 0.055);
 
   overflow: hidden;
+  isolation: isolate;
 
   transition:
     transform var(--transition),
     border-color var(--transition),
-    background var(--transition);
+    background var(--transition),
+    box-shadow var(--transition);
 }
 
 .capability-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-5px);
   border-color: var(--color-accent);
+  box-shadow:
+    0 34px 80px rgba(23, 23, 25, 0.18),
+    0 10px 0 rgba(255, 163, 0, 0.2),
+    14px 14px 0 rgba(255, 163, 0, 0.11),
+    inset 0 0 0 1px rgba(23, 23, 25, 0.08),
+    inset 0 0 0 10px rgba(255, 163, 0, 0.07);
 }
 
 .capability-card__icon {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 2;
+
   display: grid;
   place-items: center;
 
-  width: 68px;
-  height: 68px;
+  width: 28px;
+  height: 28px;
 
-  color: var(--color-dark);
+  color: var(--color-white);
   background: var(--color-accent);
 
   border-radius: 50%;
@@ -384,40 +409,40 @@
 }
 
 .capability-card:hover .capability-card__icon {
-  transform: rotate(8deg) scale(1.04);
+  transform: rotate(8deg) scale(1.06);
 }
 
 .capability-card__icon svg {
-  width: 29px;
-  height: 29px;
+  width: 14px;
+  height: 14px;
 
-  stroke-width: 1.5;
+  stroke-width: 1.8;
 }
 
 .capability-card__title {
-  margin-top: 45px;
+  max-width: calc(100% - 42px);
+  margin-top: 0;
 
-  font-size: clamp(22px, 1.8vw, 30px);
+  font-family: var(--font-display);
+  font-size: clamp(15px, 1.1vw, 19px);
+  font-weight: 800;
+  line-height: 1.02;
 
   text-transform: uppercase;
 }
 
 .capability-card__text {
-  margin-top: 15px;
+  max-width: 92%;
+  margin-top: 12px;
 
-  font-size: 13px;
+  font-size: 12px;
+  line-height: 1.45;
 
   color: var(--color-text-soft);
 }
 
 .capability-card__list {
-  display: grid;
-  gap: 8px;
-
-  margin-top: 20px;
-  padding-top: 18px;
-
-  border-top: 1px solid var(--color-border);
+  display: none;
 }
 
 .capability-card__list li {
@@ -441,6 +466,39 @@
 
   background: var(--color-accent);
   border-radius: 50%;
+}
+
+.capability-card__media {
+  position: relative;
+
+  display: block;
+
+  width: 100%;
+  aspect-ratio: 1.56 / 1;
+  margin-top: 24px;
+
+  background: var(--color-light);
+  border: 1px solid rgba(23, 23, 25, 0.12);
+  border-radius: 6px;
+
+  overflow: hidden;
+}
+
+.capability-card__media img {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  filter: saturate(0.94) contrast(1.02);
+
+  transition: transform var(--transition-slow);
+}
+
+.capability-card:hover .capability-card__media img {
+  transform: scale(1.04);
 }
 
 
@@ -1872,11 +1930,11 @@
   }
 
   .capability-card {
-    min-height: 350px;
+    min-height: 300px;
   }
 
   .capability-card__title {
-    margin-top: 35px;
+    margin-top: 0;
   }
 
   .service-flow__canvas {
@@ -2145,10 +2203,14 @@
   gap: 18px;
 }
 
-.capability-card,
 .service-process__card {
   min-height: 210px;
   padding: 24px;
+}
+
+.capability-card {
+  min-height: 318px;
+  padding: 18px;
 }
 
 .service-case {

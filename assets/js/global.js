@@ -934,7 +934,7 @@
 
   const initRevealObserver = () => {
     const targets = qsa(
-      "[data-fade], .reveal-line"
+      "[data-fade]"
     );
 
     if (!targets.length) {

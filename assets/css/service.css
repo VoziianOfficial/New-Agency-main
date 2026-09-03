@@ -1561,61 +1561,6 @@
 }
 
 
-.service-contact__shell {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
-  gap: clamp(45px, 6vw, 90px);
-
-  align-items: start;
-}
-
-.service-contact__title {
-  margin-top: 22px;
-}
-
-.service-contact__text {
-  max-width: 530px;
-
-  margin-top: 22px;
-
-  color: var(--color-text-soft);
-}
-
-.service-contact__email {
-  display: inline-block;
-
-  margin-top: 28px;
-
-  font-family: var(--font-display);
-  font-size: clamp(20px, 2vw, 30px);
-  font-weight: 600;
-
-  letter-spacing: -0.04em;
-
-  transition: color var(--transition);
-}
-
-.service-contact__email:hover {
-  color: var(--color-accent);
-}
-
-.service-contact__form {
-  padding: 30px;
-
-  background: var(--color-light);
-
-  border-radius: var(--radius-lg);
-}
-
-.service-contact__form-title {
-  margin-bottom: 25px;
-
-  font-size: 30px;
-
-  text-transform: uppercase;
-}
-
-
 @media (max-width: 1199px) {
 
   .service-hero__container {
@@ -1682,8 +1627,7 @@
   .service-intro__grid,
   .service-strategy__grid,
   .service-benefits__grid,
-  .service-faq__grid,
-  .service-contact__shell {
+  .service-faq__grid {
     grid-template-columns: 1fr;
   }
 
@@ -1697,14 +1641,12 @@
 
   .service-intro__title,
   .service-benefits__title,
-  .service-faq__title,
-  .service-contact__title {
+  .service-faq__title {
     margin-inline: auto;
   }
 
   .service-benefits__text,
-  .service-faq__text,
-  .service-contact__text {
+  .service-faq__text {
     margin-inline: auto;
 
     text-align: center;
@@ -1846,26 +1788,12 @@
     height: 390px;
   }
 
-  .service-benefits__list,
-  .service-faq__accordion {
+  .service-benefits__list {
     max-width: 760px;
 
     margin-inline: auto;
   }
 
-  .service-contact__intro {
-    text-align: center;
-  }
-
-  .service-contact__email {
-    text-align: center;
-  }
-
-  .service-contact__form {
-    max-width: 720px;
-
-    margin-inline: auto;
-  }
 }
 
 
@@ -2143,15 +2071,6 @@
     height: 35px;
   }
 
-  .service-contact__shell {
-    gap: 38px;
-  }
-
-  .service-contact__form {
-    padding: 24px 18px;
-
-    border-radius: 18px;
-  }
 }
 
 
@@ -2210,23 +2129,14 @@
 }
 
 .service-hero__container,
-.service-overview__grid,
-.service-stack__grid,
-.service-platforms__grid,
-.service-faq__grid,
-.service-contact__shell {
+.service-faq__grid {
   gap: clamp(24px, 3.4vw, 64px);
-}
-
-.service-hero__eyebrow {
-  margin-bottom: 18px;
 }
 
 .service-hero__title {
   font-size: clamp(54px, 6.2vw, 96px);
 }
 
-.service-hero__lead,
 .service-hero__actions {
   margin-top: 24px;
 }
@@ -2235,33 +2145,22 @@
   margin-top: 28px;
 }
 
-.service-stat__value,
-.service-kpi__value,
 .service-cta__title {
   font-size: clamp(34px, 4vw, 58px);
 }
 
-.service-overview__lead,
-.service-difference__title,
 .service-cases__title,
-.service-process__intro,
-.service-faq__intro,
-.service-contact__intro {
+.service-faq__intro {
   margin-top: 14px;
 }
 
-.service-overview__text,
-.service-stack__text,
-.service-platforms__text,
-.service-faq__text,
-.service-contact__text {
+.service-faq__text {
   margin-top: 16px;
 }
 
 .service-capabilities__grid,
 .service-benefits__grid,
-.service-process__grid,
-.service-metrics__grid {
+.service-process__grid {
   gap: 18px;
 }
 
@@ -2270,15 +2169,6 @@
 .service-process__card {
   min-height: 210px;
   padding: 24px;
-}
-
-.service-workflow__media,
-.service-stack__media {
-  height: clamp(330px, 36vw, 500px);
-}
-
-.service-step {
-  min-height: 380px;
 }
 
 .service-case {
@@ -2291,15 +2181,6 @@
 
 .service-case__content {
   padding: clamp(24px, 3vw, 42px);
-}
-
-.service-case__label {
-  margin-top: 22px;
-}
-
-.service-case__title {
-  margin-top: 14px;
-  font-size: clamp(30px, 3vw, 44px);
 }
 
 .service-case__results {
@@ -2318,13 +2199,10 @@
     padding-bottom: 34px;
   }
 
-  .service-hero__visual,
-  .service-workflow__media,
-  .service-stack__media {
+  .service-hero__visual {
     height: 420px;
   }
 
-  .service-step,
   .service-case,
   .service-case__media {
     min-height: 340px;
@@ -2336,9 +2214,7 @@
     padding-top: 92px;
   }
 
-  .service-hero__visual,
-  .service-workflow__media,
-  .service-stack__media {
+  .service-hero__visual {
     height: 330px;
   }
 

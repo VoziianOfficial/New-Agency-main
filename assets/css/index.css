@@ -489,10 +489,6 @@
   color: var(--color-text-light);
 }
 
-.home-services__actions {
-  margin-top: 24px;
-}
-
 .home-services__slider {
   padding-block: 10px;
   margin-block: -10px;
@@ -2689,10 +2685,6 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
 
 .home-hero__container,
 .home-about__grid,
-.home-proof__grid,
-.home-approach__grid,
-.home-industries__grid,
-.home-partners__grid,
 .home-cta__shell {
   gap: clamp(24px, 3.4vw, 62px);
 }
@@ -2716,19 +2708,8 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
 
 .home-about__copy,
 .home-services__intro,
-.home-process__intro,
-.home-team__intro,
-.home-contact__intro {
+.home-team__intro {
   margin-top: 14px;
-}
-
-.home-services__actions,
-.home-services__card-link,
-.home-process__actions,
-.home-industries__actions,
-.home-team__actions,
-.home-contact__actions {
-  margin-top: 18px;
 }
 
 .home-services__card {
@@ -2741,21 +2722,8 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
 }
 
 .home-services__card-text,
-.home-service__meta,
-.home-case__text,
 .home-team__text {
   margin-top: 12px;
-}
-
-.home-services__card-bottom {
-  padding-top: 18px;
-}
-
-.home-proof__visual,
-.home-method__visual,
-.home-partners__media,
-.home-contact__media {
-  height: clamp(320px, 34vw, 470px);
 }
 
 .home-case {
@@ -2784,8 +2752,7 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
   height: clamp(330px, 33vw, 450px);
 }
 
-.home-cta__shell,
-.home-testimonials__panel {
+.home-cta__shell {
   padding-block: 28px 38px;
 }
 
@@ -2832,10 +2799,4 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
     min-height: 380px;
   }
 
-  .home-proof__visual,
-  .home-method__visual,
-  .home-partners__media,
-  .home-contact__media {
-    height: 310px;
-  }
 }

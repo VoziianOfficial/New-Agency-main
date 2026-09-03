@@ -866,7 +866,8 @@
   const initAOS = () => {
     if (
       prefersReducedMotion ||
-      typeof window.AOS === "undefined"
+      typeof window.AOS === "undefined" ||
+      !qs("[data-aos]")
     ) {
       return;
     }
@@ -886,6 +887,13 @@
 
 
   const initMotionRefresh = () => {
+    if (
+      typeof window.AOS === "undefined" &&
+      typeof window.ScrollTrigger === "undefined"
+    ) {
+      return;
+    }
+
     window.addEventListener(
       "load",
       () => {
@@ -1535,8 +1543,24 @@
     });
   };
 
+  const initCurrentYear = () => {
+    const year = qs("#current-year");
+
+    if (year) {
+      year.textContent =
+        new Date().getFullYear();
+    }
+  };
+
 
   const initResizeRefresh = () => {
+    if (
+      typeof window.AOS === "undefined" &&
+      typeof window.ScrollTrigger === "undefined"
+    ) {
+      return;
+    }
+
     let resizeTimer = null;
 
     window.addEventListener(
@@ -1577,6 +1601,7 @@
 
     initActiveNavigation();
     initExternalLinks();
+    initCurrentYear();
     initMotionRefresh();
     initResizeRefresh();
 

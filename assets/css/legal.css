@@ -803,9 +803,10 @@
 
   .legal-sidebar__nav {
     display: flex;
+    flex-wrap: wrap;
     gap: 7px;
 
-    width: max-content;
+    width: 100%;
   }
 
   .legal-sidebar__link {
@@ -913,6 +914,11 @@
     margin-inline: -4px;
 
     border-radius: 14px;
+  }
+
+  .legal-sidebar__nav {
+    flex-wrap: wrap;
+    width: 100%;
   }
 
   .legal-sidebar__link {

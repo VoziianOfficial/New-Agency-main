@@ -527,18 +527,119 @@
 
     if (!section) return;
 
+    const visualImage = qs(
+      ".home-process__visual img",
+      section
+    );
+
     const items = qsa(
       ".home-process__item",
       section
     );
 
-    if (!items.length) return;
+    if (
+      !items.length ||
+      !visualImage
+    ) {
+      return;
+    }
+
+    const setActiveItem = (activeItem) => {
+      const thumbImage = qs(
+        ".home-process__thumb img",
+        activeItem
+      );
+
+      if (!thumbImage) {
+        return;
+      }
+
+      const title = qs(
+        ".home-process__body h3",
+        activeItem
+      );
+
+      const isSameImage =
+        visualImage.currentSrc === thumbImage.currentSrc ||
+        visualImage.getAttribute("src") === thumbImage.getAttribute("src");
+
+      items.forEach(
+        (item) => {
+          const isActive = item === activeItem;
+
+          item.classList.toggle(
+            "is-active",
+            isActive
+          );
+
+          item.setAttribute(
+            "aria-pressed",
+            String(isActive)
+          );
+        }
+      );
+
+      if (isSameImage) return;
+
+      visualImage.classList.add(
+        "is-switching"
+      );
+
+      window.setTimeout(
+        () => {
+          visualImage.src = thumbImage.src;
+          visualImage.alt = title
+            ? `${title.textContent.trim()} process`
+            : "Agency process";
+
+          visualImage.classList.remove(
+            "is-switching"
+          );
+        },
+        reducedMotion ? 0 : 160
+      );
+    };
 
     items.forEach(
       (item, index) => {
         item.style.setProperty(
           "--process-index",
           index
+        );
+
+        item.setAttribute(
+          "role",
+          "button"
+        );
+
+        item.setAttribute(
+          "tabindex",
+          "0"
+        );
+
+        item.setAttribute(
+          "aria-pressed",
+          "false"
+        );
+
+        item.addEventListener(
+          "click",
+          () => setActiveItem(item)
+        );
+
+        item.addEventListener(
+          "keydown",
+          (event) => {
+            if (
+              event.key !== "Enter" &&
+              event.key !== " "
+            ) {
+              return;
+            }
+
+            event.preventDefault();
+            setActiveItem(item);
+          }
         );
       }
     );

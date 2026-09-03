@@ -840,6 +840,67 @@
     };
 
 
+  const initProofMosaicMotion =
+    () => {
+      const sections = qsa(
+        ".service-proof-mosaic"
+      );
+
+      if (
+        !sections.length ||
+        reducedMotion ||
+        typeof window.gsap ===
+          "undefined" ||
+        typeof window.ScrollTrigger ===
+          "undefined"
+      ) {
+        return;
+      }
+
+      sections.forEach(
+        (section) => {
+          const cubes = qsa(
+            ".proof-cube",
+            section
+          );
+
+          if (!cubes.length) {
+            return;
+          }
+
+          window.gsap.from(
+            cubes,
+            {
+              opacity: 0,
+              y: 34,
+              scale: 0.82,
+              rotate: -3,
+
+              duration: 0.72,
+
+              stagger: {
+                each: 0.14,
+                from: 0
+              },
+
+              ease:
+                "back.out(1.35)",
+
+              scrollTrigger: {
+                trigger: section,
+
+                start:
+                  "top 78%",
+
+                once: true
+              }
+            }
+          );
+        }
+      );
+    };
+
+
   const initDashboardMotion =
     () => {
       const sections = qsa(
@@ -1238,6 +1299,7 @@
     initFlowMotion();
     initProcessMotion();
     initCapabilityMotion();
+    initProofMosaicMotion();
     initDashboardMotion();
     initBenefitsMotion();
 

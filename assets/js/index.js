@@ -86,6 +86,14 @@
         prevEl: prev
       },
 
+      autoplay: reducedMotion
+        ? false
+        : {
+            delay: 4200,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true
+          },
+
       breakpoints: {
         580: {
           slidesPerView: 1.45,
@@ -98,8 +106,13 @@
         },
 
         1100: {
-          slidesPerView: 2,
+          slidesPerView: 2.35,
           spaceBetween: 16
+        },
+
+        1320: {
+          slidesPerView: 3,
+          spaceBetween: 18
         }
       }
     });

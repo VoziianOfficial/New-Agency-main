@@ -699,7 +699,6 @@
         window.gsap.from(
           cards,
           {
-            y: 32,
             opacity: 0,
 
             duration: 0.7,

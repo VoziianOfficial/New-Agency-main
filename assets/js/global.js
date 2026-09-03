@@ -142,13 +142,7 @@
       if (!config.email) return;
 
       element.href = `mailto:${config.email}`;
-
-      if (
-        !element.textContent.trim() ||
-        element.hasAttribute("data-email-text")
-      ) {
-        element.textContent = config.email;
-      }
+      element.textContent = config.email;
     });
 
 
@@ -177,12 +171,23 @@
     });
 
 
+    const pageKey =
+      doc.body?.dataset.pageKey || "";
+
+    const configuredPageTitle =
+      pageKey && config.pageTitles
+        ? config.pageTitles[pageKey]
+        : "";
+
     const explicitPageTitle =
-      doc.body?.dataset.pageTitle || "";
+      configuredPageTitle ||
+      doc.body?.dataset.pageTitle ||
+      "";
 
     if (explicitPageTitle) {
-      doc.title =
-        `${explicitPageTitle} | ${config.companyName || ""}`;
+      doc.title = replaceConfigTokens(
+        explicitPageTitle
+      );
     } else if (config.browserTitle) {
       doc.title = replaceConfigTokens(
         config.browserTitle
@@ -190,12 +195,31 @@
     }
 
 
+    qsa("[data-config-favicon]").forEach((link) => {
+      if (!config.favicon) return;
+
+      link.href = config.favicon;
+
+      if (link.rel === "icon") {
+        link.type = config.favicon.endsWith(".svg")
+          ? "image/svg+xml"
+          : "image/png";
+      }
+    });
+
+
     if (config.favicon) {
-      let favicon = qs('link[rel="icon"]');
+      let favicon =
+        qs("[data-config-favicon]") ||
+        qs('link[rel="icon"]');
 
       if (!favicon) {
         favicon = doc.createElement("link");
         favicon.rel = "icon";
+        favicon.setAttribute(
+          "data-config-favicon",
+          ""
+        );
 
         doc.head.appendChild(favicon);
       }
@@ -593,7 +617,10 @@
       },
 
       {
-        title: "Google Ads Management",
+        title:
+          config.services?.googleAds
+            ?.title ||
+          "Google Ads Management",
         description:
           "Search, Performance Max, Shopping and campaign management",
         url:
@@ -603,7 +630,10 @@
       },
 
       {
-        title: "Lead Generation",
+        title:
+          config.services
+            ?.leadGeneration?.title ||
+          "Lead Generation",
         description:
           "Qualified leads and customer acquisition",
         url:
@@ -613,7 +643,10 @@
       },
 
       {
-        title: "E-commerce Advertising",
+        title:
+          config.services?.ecommerce
+            ?.title ||
+          "E-commerce Advertising",
         description:
           "Shopping, PMax and revenue optimisation",
         url:
@@ -623,7 +656,11 @@
       },
 
       {
-        title: "Tracking & Automation",
+        title:
+          config.services
+            ?.trackingAutomation
+            ?.title ||
+          "Tracking & Automation",
         description:
           "Analytics, conversion tracking and automation",
         url:
@@ -633,14 +670,19 @@
       },
 
       {
-        title: "Free Google Ads Audit",
+        title:
+          config.primaryCTA ||
+          "Free Google Ads Audit",
         description:
           "Request an account review",
         url: "index.html#contact"
       },
 
       {
-        title: "Privacy Policy",
+        title:
+          config.legal?.privacy
+            ?.title ||
+          "Privacy Policy",
         description:
           "Privacy information",
         url:
@@ -649,7 +691,10 @@
       },
 
       {
-        title: "Terms & Conditions",
+        title:
+          config.legal?.terms
+            ?.title ||
+          "Terms & Conditions",
         description:
           "Website terms",
         url:
@@ -658,7 +703,10 @@
       },
 
       {
-        title: "Cookie Policy",
+        title:
+          config.legal?.cookies
+            ?.title ||
+          "Cookie Policy",
         description:
           "Cookie information",
         url:

@@ -2,268 +2,235 @@
 
 declare(strict_types=1);
 
+/*
+|--------------------------------------------------------------------------
+| CONFIG
+|--------------------------------------------------------------------------
+| Change these two values when installing the site on a new hosting account.
+*/
+$recipientEmail = 'hello@novaperformance.agency';
+$companyName = 'NOVA Performance';
+
+ini_set('display_errors', '0');
+ini_set('html_errors', '0');
+error_reporting(E_ALL);
+
 header('Content-Type: application/json; charset=UTF-8');
 header('X-Content-Type-Options: nosniff');
 
+$successMessage = 'Thank you. Your request has been sent successfully.';
 
-$recipientEmail = 'hello@novaperformance.agency';
-
-$siteName = 'NOVA Performance';
-
-
-function respond(bool $success, string $message, int $status = 200): never
+function respondJson($success, $message, $statusCode, array $errors = array())
 {
-    http_response_code($status);
+    http_response_code($statusCode);
+
+    $payload = array(
+        'success' => (bool) $success,
+        'message' => (string) $message,
+    );
+
+    if (!empty($errors)) {
+        $payload['errors'] = $errors;
+    }
 
     echo json_encode(
-        [
-            'success' => $success,
-            'message' => $message
-        ],
+        $payload,
         JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
     );
 
     exit;
 }
 
-
-function cleanText(?string $value): string
+function postString($key)
 {
-    $value = trim((string) $value);
-
-    $value = strip_tags($value);
-
-    return preg_replace('/\s+/u', ' ', $value) ?? '';
-}
-
-
-function cleanMessage(?string $value): string
-{
-    $value = trim((string) $value);
-
-    return strip_tags($value);
-}
-
-
-function safeLength(string $value): int
-{
-    if (function_exists('mb_strlen')) {
-        return mb_strlen($value, 'UTF-8');
+    if (!isset($_POST[$key]) || !is_scalar($_POST[$key])) {
+        return '';
     }
 
+    return trim((string) $_POST[$key]);
+}
+
+function containsHeaderInjection($value)
+{
+    return preg_match('/(?:\r|\n|%0a|%0d)/i', $value) === 1;
+}
+
+function cleanSingleLine($value)
+{
+    $value = trim(strip_tags((string) $value));
+    $value = preg_replace('/[ \t\r\n]+/', ' ', $value);
+
+    return $value === null ? '' : trim($value);
+}
+
+function cleanMessage($value)
+{
+    $value = trim(strip_tags((string) $value));
+    $value = preg_replace("/\r\n|\r|\n/", "\n", $value);
+
+    return $value === null ? '' : trim($value);
+}
+
+function textLength($value)
+{
     return strlen($value);
 }
 
-
-function validEmail(string $email): bool
+function isValidEmailAddress($email)
 {
-    if (
-        str_contains($email, "\r") ||
-        str_contains($email, "\n")
-    ) {
+    if ($email === '' || containsHeaderInjection($email)) {
         return false;
     }
 
-    return filter_var(
-        $email,
-        FILTER_VALIDATE_EMAIL
-    ) !== false;
+    return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
 }
 
+function safeHeaderValue($value)
+{
+    $value = cleanSingleLine($value);
+
+    return containsHeaderInjection($value) ? '' : $value;
+}
+
+function safeHost()
+{
+    $host = isset($_SERVER['HTTP_HOST']) ? (string) $_SERVER['HTTP_HOST'] : 'localhost';
+    $host = preg_replace('/:\d+$/', '', $host);
+    $host = preg_replace('/[^a-zA-Z0-9.-]/', '', (string) $host);
+    $host = trim((string) $host, '.-');
+
+    return $host !== '' ? $host : 'localhost';
+}
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    respond(
+    header('Allow: POST');
+
+    respondJson(
         false,
-        'Method not allowed.',
+        'Method not allowed. Please submit the form using POST.',
         405
     );
 }
 
+$recipientEmail = trim($recipientEmail);
+$companyName = safeHeaderValue($companyName);
 
-$honeypot = trim(
-    (string) ($_POST['website_check'] ?? '')
-);
+if (!isValidEmailAddress($recipientEmail) || $companyName === '') {
+    respondJson(
+        false,
+        'Contact form is not configured correctly.',
+        500
+    );
+}
+
+$honeypot = postString('website_check');
 
 if ($honeypot !== '') {
-    respond(
+    respondJson(
         true,
-        'Successfully sent!'
+        $successMessage,
+        200
     );
 }
 
+$name = cleanSingleLine(postString('name'));
+$company = cleanSingleLine(postString('company'));
+$email = cleanSingleLine(postString('email'));
+$website = cleanSingleLine(postString('website'));
+$businessType = cleanSingleLine(postString('business_type'));
+$budget = cleanSingleLine(postString('budget'));
+$service = cleanSingleLine(postString('service'));
+$message = cleanMessage(postString('message'));
 
-$name = cleanText(
-    $_POST['name'] ?? ''
-);
-
-$company = cleanText(
-    $_POST['company'] ?? ''
-);
-
-$email = cleanText(
-    $_POST['email'] ?? ''
-);
-
-$website = cleanText(
-    $_POST['website'] ?? ''
-);
-
-$businessType = cleanText(
-    $_POST['business_type'] ?? ''
-);
-
-$budget = cleanText(
-    $_POST['budget'] ?? ''
-);
-
-$service = cleanText(
-    $_POST['service'] ?? ''
-);
-
-$message = cleanMessage(
-    $_POST['message'] ?? ''
-);
-
+$errors = array();
 
 if ($name === '') {
-    respond(
-        false,
-        'Please enter your name.',
-        422
-    );
+    $errors['name'] = 'Please enter your name.';
+} elseif (textLength($name) < 2 || textLength($name) > 100) {
+    $errors['name'] = 'Please enter a valid name.';
 }
-
-if (
-    safeLength($name) < 2 ||
-    safeLength($name) > 100
-) {
-    respond(
-        false,
-        'Please enter a valid name.',
-        422
-    );
-}
-
 
 if ($email === '') {
-    respond(
-        false,
-        'Please enter your business email.',
-        422
-    );
+    $errors['email'] = 'Please enter your business email.';
+} elseif (!isValidEmailAddress($email)) {
+    $errors['email'] = 'Please enter a valid email address.';
 }
 
-if (!validEmail($email)) {
-    respond(
-        false,
-        'Please enter a valid email address.',
-        422
-    );
+if ($company !== '' && textLength($company) > 150) {
+    $errors['company'] = 'Company name is too long.';
 }
 
-
-if (
-    safeLength($company) > 150 ||
-    safeLength($website) > 250 ||
-    safeLength($businessType) > 100 ||
-    safeLength($budget) > 100 ||
-    safeLength($service) > 150
-) {
-    respond(
-        false,
-        'One or more fields are too long.',
-        422
-    );
+if ($businessType !== '' && textLength($businessType) > 100) {
+    $errors['business_type'] = 'Business type is too long.';
 }
 
-
-if (
-    $message !== '' &&
-    safeLength($message) > 3000
-) {
-    respond(
-        false,
-        'Your message is too long.',
-        422
-    );
+if ($budget !== '' && textLength($budget) > 100) {
+    $errors['budget'] = 'Budget value is too long.';
 }
 
+if ($service !== '' && textLength($service) > 150) {
+    $errors['service'] = 'Service value is too long.';
+}
+
+if ($message !== '' && textLength($message) > 3000) {
+    $errors['message'] = 'Your message is too long.';
+}
 
 if ($website !== '') {
-
-    if (
-        !preg_match(
-            '~^https?://~i',
-            $website
-        )
-    ) {
+    if (!preg_match('~^https?://~i', $website)) {
         $website = 'https://' . $website;
     }
 
-    if (
-        filter_var(
-            $website,
-            FILTER_VALIDATE_URL
-        ) === false
-    ) {
-        respond(
-            false,
-            'Please enter a valid website address.',
-            422
-        );
+    if (filter_var($website, FILTER_VALIDATE_URL) === false || textLength($website) > 250) {
+        $errors['website'] = 'Please enter a valid website address.';
     }
 }
 
+if (!empty($errors)) {
+    respondJson(
+        false,
+        reset($errors),
+        422,
+        $errors
+    );
+}
 
-$subject = sprintf(
-    'New Google Ads audit request — %s',
-    $siteName
-);
+$subject = safeHeaderValue('New Google Ads audit request - ' . $companyName);
 
-$lines = [
+$lines = array(
     'NEW WEBSITE ENQUIRY',
     '==============================',
     '',
-    'Name: ' . ($name ?: 'Not provided'),
-    'Company: ' . ($company ?: 'Not provided'),
-    'Business Email: ' . ($email ?: 'Not provided'),
-    'Website: ' . ($website ?: 'Not provided'),
-    'Business Type: ' . ($businessType ?: 'Not provided'),
-    'Monthly Advertising Budget: ' . ($budget ?: 'Not provided'),
-    'Service Required: ' . ($service ?: 'Not provided'),
+    'Name: ' . ($name !== '' ? $name : 'Not provided'),
+    'Company: ' . ($company !== '' ? $company : 'Not provided'),
+    'Business Email: ' . $email,
+    'Website: ' . ($website !== '' ? $website : 'Not provided'),
+    'Business Type: ' . ($businessType !== '' ? $businessType : 'Not provided'),
+    'Monthly Advertising Budget: ' . ($budget !== '' ? $budget : 'Not provided'),
+    'Service Required: ' . ($service !== '' ? $service : 'Not provided'),
     '',
     'Message:',
-    $message ?: 'Not provided',
+    $message !== '' ? $message : 'Not provided',
     '',
     '==============================',
     'Submitted: ' . date('Y-m-d H:i:s'),
-];
-
-$emailBody = implode(
-    PHP_EOL,
-    $lines
 );
 
+$emailBody = implode(PHP_EOL, $lines);
 
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$fromEmail = 'website@' . safeHost();
 
-$host = preg_replace(
-    '/[^a-zA-Z0-9.-]/',
-    '',
-    $host
-) ?: 'localhost';
+if (!isValidEmailAddress($fromEmail)) {
+    $fromEmail = $recipientEmail;
+}
 
-$fromEmail =
-    'website@' . $host;
-
-$headers = [
+$headers = array(
     'MIME-Version: 1.0',
     'Content-Type: text/plain; charset=UTF-8',
-    'From: ' . $siteName . ' <' . $fromEmail . '>',
+    'From: ' . $companyName . ' <' . $fromEmail . '>',
     'Reply-To: ' . $email,
-    'X-Mailer: PHP/' . phpversion()
-];
-
+    'X-Mailer: PHP/' . phpversion(),
+);
 
 $sent = @mail(
     $recipientEmail,
@@ -272,17 +239,16 @@ $sent = @mail(
     implode("\r\n", $headers)
 );
 
-
 if (!$sent) {
-    respond(
+    respondJson(
         false,
-        'Unable to send your request right now. Please try again.',
+        'Unable to send your request right now. Please try again later.',
         500
     );
 }
 
-
-respond(
+respondJson(
     true,
-    'Successfully sent!'
+    $successMessage,
+    200
 );

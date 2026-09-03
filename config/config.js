@@ -13,6 +13,17 @@ window.SiteConfig = {
 
   browserTitle: "{companyName} | Google Ads Performance Agency",
 
+  pageTitles: {
+    home: "{companyName} | Google Ads Performance Agency",
+    googleAds: "Google Ads Management | {companyName}",
+    leadGeneration: "Lead Generation | {companyName}",
+    ecommerce: "E-commerce Advertising | {companyName}",
+    trackingAutomation: "Tracking & Automation | {companyName}",
+    privacy: "Privacy Policy | {companyName}",
+    terms: "Terms & Conditions | {companyName}",
+    cookies: "Cookie Policy | {companyName}"
+  },
+
   disclaimer:
     "{companyName} is an independent performance marketing agency specialising in Google Ads, lead generation, e-commerce advertising, analytics and marketing automation. Advertising results vary by business, market, budget and campaign conditions. Final strategy, scope, pricing and performance expectations should be confirmed directly before engagement.",
 

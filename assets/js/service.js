@@ -901,6 +901,68 @@
     };
 
 
+  const initStrategyCardsMotion =
+    () => {
+      const sections = qsa(
+        ".service-strategy"
+      );
+
+      if (
+        !sections.length ||
+        reducedMotion ||
+        typeof window.gsap ===
+          "undefined" ||
+        typeof window.ScrollTrigger ===
+          "undefined"
+      ) {
+        return;
+      }
+
+      sections.forEach(
+        (section) => {
+          const cards = qsa(
+            ".service-strategy__card",
+            section
+          );
+
+          if (!cards.length) {
+            return;
+          }
+
+          window.gsap.from(
+            cards,
+            {
+              opacity: 0,
+              y: 34,
+              scale: 0.84,
+              rotate: -2.5,
+
+              duration: 0.72,
+
+              stagger: {
+                each: 0.14,
+                from: 0
+              },
+
+              ease:
+                "back.out(1.28)",
+
+              scrollTrigger: {
+                trigger:
+                  section,
+
+                start:
+                  "top 72%",
+
+                once: true
+              }
+            }
+          );
+        }
+      );
+    };
+
+
   const initDashboardMotion =
     () => {
       const sections = qsa(
@@ -1285,6 +1347,87 @@
     };
 
 
+  const initStrategyCounters = () => {
+    const counters = qsa(
+      ".service-strategy__metric strong[data-count]"
+    );
+
+    if (!counters.length) return;
+
+    const formatValue = (value) =>
+      new Intl.NumberFormat("en-US").format(value);
+
+    const setValue = (counter, value) => {
+      counter.textContent = formatValue(value);
+    };
+
+    const runCounter = (counter) => {
+      if (counter.dataset.counted === "true") return;
+
+      counter.dataset.counted = "true";
+
+      const target = Number(counter.dataset.count || 0);
+
+      if (!target || reducedMotion) {
+        setValue(counter, target);
+        return;
+      }
+
+      const duration = 1300;
+      const start = performance.now();
+
+      const tick = (now) => {
+        const progress = Math.min(
+          (now - start) / duration,
+          1
+        );
+
+        const eased =
+          1 - Math.pow(1 - progress, 3);
+
+        setValue(
+          counter,
+          Math.round(target * eased)
+        );
+
+        if (progress < 1) {
+          requestAnimationFrame(tick);
+        }
+      };
+
+      requestAnimationFrame(tick);
+    };
+
+    if (
+      typeof IntersectionObserver ===
+      "undefined"
+    ) {
+      counters.forEach(runCounter);
+      return;
+    }
+
+    const observer =
+      new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+
+            runCounter(entry.target);
+            observer.unobserve(entry.target);
+          });
+        },
+        {
+          threshold: 0.45
+        }
+      );
+
+    counters.forEach((counter) => {
+      setValue(counter, 0);
+      observer.observe(counter);
+    });
+  };
+
+
   const init = () => {
     initPlatformTabs();
     initDashboardCards();
@@ -1300,11 +1443,13 @@
     initProcessMotion();
     initCapabilityMotion();
     initProofMosaicMotion();
+    initStrategyCardsMotion();
     initDashboardMotion();
     initBenefitsMotion();
 
     initMagneticCTA();
     initPerformanceHover();
+    initStrategyCounters();
   };
 
 

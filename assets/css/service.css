@@ -894,20 +894,24 @@
 .service-strategy__grid {
   display: grid;
   grid-template-columns:
-    minmax(400px, 0.95fr)
-    minmax(0, 1.05fr);
+    minmax(360px, 0.9fr)
+    minmax(0, 1.1fr);
 
-  gap: clamp(55px, 7vw, 110px);
+  gap: clamp(42px, 5.8vw, 92px);
 
-  align-items: center;
+  align-items: start;
 }
 
-.service-strategy__media {
+.service-strategy__showcase {
+  display: grid;
+  gap: clamp(26px, 4vw, 56px);
+}
+
+.service-strategy__media,
+.service-strategy__card {
   position: relative;
 
-  height: clamp(490px, 52vw, 690px);
-
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
 
   overflow: hidden;
 }
@@ -919,112 +923,156 @@
   object-fit: cover;
 }
 
+.service-strategy__media {
+  height: clamp(420px, 45vw, 620px);
+}
+
+.service-strategy__stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(18px, 3vw, 34px);
+}
+
 .service-strategy__metric {
-  position: absolute;
-  z-index: 3;
+  min-width: 0;
 
-  left: 24px;
-  bottom: 24px;
+  text-align: center;
 
-  width: min(290px, calc(100% - 48px));
-
-  padding: 22px;
-
-  color: var(--dark-color);
-  background: var(--color-accent);
-
-  border-radius: var(--radius-md);
+  color: var(--color-text);
 }
 
 .service-strategy__metric strong {
   display: block;
 
   font-family: var(--font-display);
-  font-size: 50px;
-  line-height: 0.9;
+  font-size: clamp(32px, 3.6vw, 58px);
+  line-height: 0.95;
+  font-weight: 800;
 
-  letter-spacing: -0.06em;
+  letter-spacing: -0.055em;
+
+  color: var(--color-accent);
 }
 
 .service-strategy__metric span {
   display: block;
 
-  margin-top: 9px;
+  margin-top: 8px;
 
-  font-size: 10px;
-  font-weight: 700;
-  line-height: 1.4;
+  font-size: clamp(12px, 1vw, 15px);
+  font-weight: 600;
+  line-height: 1.25;
 
-  text-transform: uppercase;
+  color: var(--color-text-soft);
+}
+
+.service-strategy__content {
+  padding-top: clamp(0px, 1.4vw, 22px);
 }
 
 .service-strategy__title {
-  margin-top: 22px;
+  max-width: 760px;
+
+  margin-top: 20px;
+
+  font-size: clamp(38px, 4.2vw, 66px);
+  line-height: 0.96;
+  white-space: normal;
 }
 
-.service-strategy__text {
-  max-width: 610px;
+.service-strategy__title-accent {
+  display: inline-block;
 
-  margin-top: 24px;
-
-  color: var(--color-text-soft);
+  font-size: 0.78em;
+  line-height: 1.02;
+  color: var(--color-accent);
 }
 
-.service-strategy__list {
+.service-strategy__cards {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 
-  margin-top: 34px;
-
-  border-top: 1px solid var(--color-border);
+  margin-top: clamp(28px, 3.4vw, 48px);
 }
 
-.service-strategy__item {
-  display: grid;
-  grid-template-columns: 46px 1fr;
-  gap: 18px;
+.service-strategy__card {
+  aspect-ratio: 1 / 1;
 
-  align-items: center;
-
-  padding: 17px 0;
-
-  border-bottom: 1px solid var(--color-border);
+  isolation: isolate;
 }
 
-.service-strategy__item-icon {
+.service-strategy__card img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition:
+    transform var(--transition-slow),
+    filter var(--transition);
+}
+
+.service-strategy__card::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(23, 23, 25, 0.04) 0%,
+      rgba(23, 23, 25, 0.64) 100%
+    );
+}
+
+.service-strategy__card::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+
+  background: var(--color-accent);
+  opacity: 0;
+
+  mix-blend-mode: multiply;
+
+  transition: opacity var(--transition);
+}
+
+.service-strategy__card.is-accent::after {
+  opacity: 0.72;
+}
+
+.service-strategy__card span {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+
   display: grid;
   place-items: center;
 
-  width: 40px;
-  height: 40px;
+  padding: 22px;
 
-  background: var(--color-light);
+  font-family: var(--font-display);
+  font-size: clamp(16px, 1.7vw, 27px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  text-align: center;
 
-  border-radius: 50%;
+  color: var(--color-white);
 }
 
-.service-strategy__item-icon svg {
-  width: 18px;
-  height: 18px;
-
-  stroke-width: 1.6;
+.service-strategy__card:hover img {
+  transform: scale(1.07);
+  filter: saturate(1.08) contrast(1.04);
 }
 
-.service-strategy__item strong {
-  display: block;
-
-  margin-bottom: 3px;
-
-  font-size: 13px;
-
-  text-transform: uppercase;
-}
-
-.service-strategy__item p {
-  max-width: 500px;
-
-  font-size: 12px;
-
-  color: var(--color-text-soft);
+.service-strategy__card:hover::after {
+  opacity: 0.58;
 }
 
 
@@ -1562,7 +1610,6 @@
   margin-top: 22px;
 }
 
-.service-strategy__title,
 .service-platforms__title,
 .service-cases__title {
   max-width: none;
@@ -1571,7 +1618,9 @@
 }
 
 .service-strategy__title {
-  font-size: clamp(30px, 2.8vw, 44px);
+  max-width: 760px;
+  font-size: clamp(38px, 4.2vw, 66px);
+  white-space: normal;
 }
 
 .service-cases__slider {
@@ -1926,7 +1975,7 @@
   }
 
   .service-strategy__title {
-    font-size: clamp(30px, 4vw, 42px);
+    font-size: clamp(34px, 6.2vw, 52px);
   }
 }
 
@@ -2051,22 +2100,29 @@
     margin-inline: auto;
   }
 
+  .service-strategy__showcase {
+    order: 2;
+  }
+
   .service-strategy__content {
+    order: 1;
+
     text-align: center;
   }
 
-  .service-strategy__title,
-  .service-strategy__text {
+  .service-strategy__title {
     margin-inline: auto;
   }
 
-  .service-strategy__list {
-    max-width: 720px;
+  .service-strategy__title-accent {
+    margin-top: 6px;
+  }
+
+  .service-strategy__cards {
+    max-width: 780px;
 
     margin-inline: auto;
-    margin-top: 34px;
-
-    text-align: left;
+    margin-top: 26px;
   }
 
   .service-platforms__shell {
@@ -2244,6 +2300,11 @@
 
   .service-strategy__media {
     height: 440px;
+  }
+
+  .service-strategy__stats,
+  .service-strategy__cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .service-platforms__shell {
@@ -2445,6 +2506,8 @@
   .capability-card,
   .capability-card__icon,
   .service-flow__step,
+  .service-strategy__card,
+  .service-strategy__card img,
   .service-platforms__panel,
   .service-process__card,
   .service-benefits__item,

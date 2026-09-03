@@ -21,6 +21,61 @@
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
+  const canUseScrollEffects = () =>
+    !prefersReducedMotion &&
+    window.matchMedia("(min-width: 992px)").matches &&
+    window.matchMedia("(pointer: fine)").matches;
+
+  let motionRefreshFrame = null;
+  let motionRefreshTimer = null;
+
+  const refreshAnimationEngines = (
+    { hardAOS = false } = {}
+  ) => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    window.clearTimeout(motionRefreshTimer);
+
+    motionRefreshTimer =
+      window.setTimeout(() => {
+        if (motionRefreshFrame) {
+          window.cancelAnimationFrame(
+            motionRefreshFrame
+          );
+        }
+
+        motionRefreshFrame =
+          window.requestAnimationFrame(() => {
+            motionRefreshFrame = null;
+
+            if (
+              typeof window.AOS !==
+                "undefined"
+            ) {
+              if (
+                hardAOS &&
+                typeof window.AOS
+                  .refreshHard ===
+                  "function"
+              ) {
+                window.AOS.refreshHard();
+              } else {
+                window.AOS.refresh();
+              }
+            }
+
+            if (
+              typeof window.ScrollTrigger !==
+              "undefined"
+            ) {
+              window.ScrollTrigger.refresh();
+            }
+          });
+      }, 80);
+  };
+
   const escapeHTML = (value = "") =>
     String(value)
       .replaceAll("&", "&amp;")
@@ -779,12 +834,33 @@
         "top-bottom"
     });
 
+  };
+
+
+  const initMotionRefresh = () => {
     window.addEventListener(
       "load",
       () => {
-        window.AOS.refreshHard();
+        refreshAnimationEngines({
+          hardAOS: true
+        });
       },
       { once: true }
+    );
+
+    doc.addEventListener(
+      "load",
+      (event) => {
+        if (
+          event.target instanceof
+            HTMLImageElement ||
+          event.target instanceof
+            HTMLVideoElement
+        ) {
+          refreshAnimationEngines();
+        }
+      },
+      true
     );
   };
 
@@ -898,7 +974,7 @@
 
 
   const initParallax = () => {
-    if (prefersReducedMotion) {
+    if (!canUseScrollEffects()) {
       return;
     }
 
@@ -976,7 +1052,8 @@
 
     window.addEventListener(
       "resize",
-      requestUpdate
+      requestUpdate,
+      { passive: true }
     );
   };
 
@@ -1424,12 +1501,7 @@
         resizeTimer =
           window.setTimeout(
             () => {
-              if (
-                typeof window.AOS !==
-                "undefined"
-              ) {
-                window.AOS.refresh();
-              }
+              refreshAnimationEngines();
             },
             180
           );
@@ -1457,6 +1529,7 @@
 
     initActiveNavigation();
     initExternalLinks();
+    initMotionRefresh();
     initResizeRefresh();
 
     body.classList.add(

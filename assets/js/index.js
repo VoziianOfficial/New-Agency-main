@@ -38,6 +38,11 @@
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
+  const canUseScrollEffects = () =>
+    !reducedMotion &&
+    window.matchMedia("(min-width: 992px)").matches &&
+    window.matchMedia("(pointer: fine)").matches;
+
 
   const initServicesSwiper = () => {
     const slider = qs(".home-services__slider");
@@ -476,7 +481,7 @@
 
   const initHeroScroll = () => {
     if (
-      reducedMotion ||
+      !canUseScrollEffects() ||
       typeof window.gsap ===
         "undefined" ||
       typeof window.ScrollTrigger ===
@@ -640,7 +645,7 @@
 
   const initScrollMotion = () => {
     if (
-      reducedMotion ||
+      !canUseScrollEffects() ||
       typeof window.gsap ===
         "undefined" ||
       typeof window.ScrollTrigger ===
@@ -657,6 +662,10 @@
     qsa(
       ".home-about__media img"
     ).forEach((image) => {
+      if (image.hasAttribute("data-parallax")) {
+        return;
+      }
+
       window.gsap.fromTo(
         image,
         {
@@ -780,31 +789,6 @@
   };
 
 
-  const refreshMotion = () => {
-    window.addEventListener(
-      "load",
-      () => {
-        if (
-          typeof window.ScrollTrigger !==
-          "undefined"
-        ) {
-          window.ScrollTrigger.refresh();
-        }
-
-        if (
-          typeof window.AOS !==
-          "undefined"
-        ) {
-          window.AOS.refresh();
-        }
-      },
-      {
-        once: true
-      }
-    );
-  };
-
-
   const init = () => {
     initServicesSwiper();
 
@@ -825,8 +809,6 @@
     initMagneticButtons();
 
     initVisibilityControl();
-
-    refreshMotion();
   };
 
 

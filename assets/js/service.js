@@ -42,6 +42,11 @@
     "(pointer: fine)"
   ).matches;
 
+  const canUseScrollEffects = () =>
+    !reducedMotion &&
+    window.matchMedia("(min-width: 992px)").matches &&
+    finePointer;
+
 
   const initPlatformTabs = () => {
     const sections = qsa(".service-platforms");
@@ -688,7 +693,7 @@
 
   const initScrollMotion = () => {
     if (
-      reducedMotion ||
+      !canUseScrollEffects() ||
       typeof window.gsap ===
         "undefined" ||
       typeof window.ScrollTrigger ===
@@ -1241,31 +1246,6 @@
     };
 
 
-  const initRefresh = () => {
-    window.addEventListener(
-      "load",
-      () => {
-        if (
-          typeof window.ScrollTrigger !==
-          "undefined"
-        ) {
-          window.ScrollTrigger.refresh();
-        }
-
-        if (
-          typeof window.AOS !==
-          "undefined"
-        ) {
-          window.AOS.refresh();
-        }
-      },
-      {
-        once: true
-      }
-    );
-  };
-
-
   const init = () => {
     initPlatformTabs();
 
@@ -1286,8 +1266,6 @@
 
     initMagneticCTA();
     initPerformanceHover();
-
-    initRefresh();
   };
 
 

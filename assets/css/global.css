@@ -2289,6 +2289,13 @@ html:not(.no-js) [data-aos="fade-right"] {
     animation: none !important;
   }
 
+  [data-aos],
+  [data-fade] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  [data-parallax],
   .parallax-media__image {
     transform: none !important;
   }

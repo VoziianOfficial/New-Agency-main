@@ -1506,77 +1506,159 @@
   overflow: hidden;
 }
 
-.service-process__head {
-  max-width: 800px;
-
-  margin-bottom: 42px;
-}
-
-.service-process__title {
-  margin-top: 22px;
-}
-
 .service-process__grid {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  perspective: 1400px;
 }
 
 .service-process__card {
   position: relative;
 
+  min-height: 206px;
+
+  overflow: hidden;
+  outline: none;
+  perspective: inherit;
+}
+
+.service-process__card:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.service-process__card-inner {
+  position: relative;
+  width: 100%;
+  min-height: inherit;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition:
+    transform 720ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.service-process__card:hover .service-process__card-inner,
+.service-process__card:focus-within .service-process__card-inner {
+  transform: rotateY(180deg);
+}
+
+.service-process__card-face {
+  position: absolute;
+  inset: 0;
+
   display: flex;
   flex-direction: column;
 
-  min-height: 330px;
+  min-height: inherit;
+  padding: 22px 78px 22px 22px;
 
-  padding: 24px;
-
-  background: var(--color-white);
-
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
+  border: 2px solid rgba(255, 163, 0, 0.72);
+  border-radius: var(--radius-lg);
 
   overflow: hidden;
-
-  transition:
-    transform var(--transition),
-    border-color var(--transition),
-    background var(--transition);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-.service-process__card:hover {
-  transform: translateY(-5px);
+.service-process__card-front {
+  justify-content: center;
 
+  background: #ffb52c;
+  box-shadow:
+    0 28px 70px rgba(23, 23, 25, 0.16),
+    0 10px 0 rgba(255, 163, 0, 0.16),
+    14px 14px 0 rgba(255, 163, 0, 0.08),
+    inset 0 0 0 1px rgba(23, 23, 25, 0.08),
+    inset 0 0 0 10px rgba(255, 255, 255, 0.13);
+}
+
+.service-process__card:nth-child(2) .service-process__card-front {
+  background: #ffc046;
+}
+
+.service-process__card:nth-child(3) .service-process__card-front {
+  background: #ffca5f;
+}
+
+.service-process__card:nth-child(4) .service-process__card-front {
+  background: #ffa91a;
+}
+
+.service-process__card:nth-child(5) .service-process__card-front {
+  background: #ffb93a;
+}
+
+.service-process__card:nth-child(6) .service-process__card-front {
+  background: #ffd074;
+}
+
+.service-process__card:hover .service-process__card-front,
+.service-process__card:focus-within .service-process__card-front {
   border-color: var(--color-accent);
 }
 
-.service-process__number {
-  font-family: var(--font-display);
-  font-size: 42px;
-  font-weight: 600;
-  line-height: 1;
+.service-process__card-back {
+  padding: 0;
+  background: var(--color-dark);
+  transform: rotateY(180deg);
+}
 
-  color: var(--color-accent);
+.service-process__card-back img {
+  width: 100%;
+  height: 100%;
+  min-height: inherit;
+  object-fit: cover;
+}
 
-  letter-spacing: -0.06em;
+.service-process__icon {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+
+  display: grid;
+  place-items: center;
+
+  width: 44px;
+  height: 44px;
+
+  color: var(--color-dark);
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(23, 23, 25, 0.08);
+  border-radius: 14px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.88),
+    0 10px 24px rgba(23, 23, 25, 0.06);
+}
+
+.service-process__icon svg {
+  width: 22px;
+  height: 22px;
+  stroke: currentColor;
+  stroke-width: 1.9;
 }
 
 .service-process__card h3 {
-  margin-top: auto;
+  margin-top: 0;
 
-  font-size: 18px;
+  font-size: clamp(20px, 1.65vw, 27px);
+  line-height: 1.03;
 
+  text-align: center;
   text-transform: uppercase;
 }
 
 .service-process__card p {
-  margin-top: 11px;
+  max-width: 360px;
+  margin-top: 14px;
+  margin-inline: auto;
 
-  font-size: 11px;
-  line-height: 1.5;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.42;
 
-  color: var(--color-text-soft);
+  color: rgba(23, 23, 25, 0.78);
+  text-align: center;
 }
 
 
@@ -2181,12 +2263,6 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .service-process__head {
-    margin-inline: auto;
-
-    text-align: center;
-  }
-
   .service-case {
     grid-template-columns: 1fr;
   }
@@ -2404,7 +2480,7 @@
   }
 
   .service-process__card {
-    min-height: 220px;
+    min-height: 218px;
   }
 
   .service-case {
@@ -2509,7 +2585,7 @@
   .service-strategy__card,
   .service-strategy__card img,
   .service-platforms__panel,
-  .service-process__card,
+  .service-process__card-inner,
   .service-benefits__item,
   .service-case__media img,
   .service-cta__action {
@@ -2560,8 +2636,15 @@
 }
 
 .service-process__card {
-  min-height: 210px;
-  padding: 24px;
+  min-height: 206px;
+}
+
+.service-process__card-face {
+  padding: 20px 72px 20px 20px;
+}
+
+.service-process__card-back {
+  padding: 0;
 }
 
 .capability-card {
@@ -2634,9 +2717,12 @@
     margin-inline: auto;
   }
 
-  .capability-card,
-  .service-process__card {
+  .capability-card {
     min-height: 170px;
+  }
+
+  .service-process__card {
+    min-height: 218px;
   }
 
   .service-benefits__item {

@@ -9,6 +9,18 @@
   const qsa = (selector, context = doc) =>
     context ? Array.from(context.querySelectorAll(selector)) : [];
 
+  const escapeHTML = (value) =>
+    String(value).replace(
+      /[&<>"']/g,
+      (character) => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;"
+      })[character]
+    );
+
   const duplicateSlidesForLoop = (slider, minSlides) => {
     const wrapper = qs(".swiper-wrapper", slider);
 
@@ -919,9 +931,107 @@
               }
             );
           }
-        }
+      }
+    );
+  };
+
+  const initDashboardCards = () => {
+    const sections = qsa(".service-dashboard");
+
+    if (!sections.length) return;
+
+    sections.forEach((section) => {
+      const main = qs(
+        ".service-dashboard__main",
+        section
       );
-    };
+
+      const label = qs(".mini-label", main);
+      const title = qs(
+        ".service-dashboard__title",
+        main
+      );
+      const text = qs(
+        ".service-dashboard__text",
+        main
+      );
+      const cards = qsa(
+        ".service-dashboard__side-card",
+        section
+      );
+
+      if (!main || !label || !title || !text || !cards.length) {
+        return;
+      }
+
+      const sectionLabel =
+        label.textContent.trim();
+
+      const activateCard = (card) => {
+        const cardTitle =
+          qs("strong", card)?.textContent.trim();
+        const cardText =
+          qs("p", card)?.textContent.trim();
+
+        if (!cardTitle || !cardText) {
+          return;
+        }
+
+        cards.forEach((item) => {
+          const active = item === card;
+
+          item.classList.toggle("is-accent", active);
+          item.setAttribute(
+            "aria-pressed",
+            active ? "true" : "false"
+          );
+        });
+
+        main.classList.add("is-switching");
+
+        window.setTimeout(() => {
+          label.textContent = sectionLabel;
+          title.innerHTML =
+            `${escapeHTML(cardTitle)} ` +
+            `<span class="accent-word">focus.</span>`;
+          text.textContent = cardText;
+
+          main.classList.remove("is-switching");
+        }, 120);
+      };
+
+      cards.forEach((card) => {
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+        card.setAttribute(
+          "aria-pressed",
+          card.classList.contains("is-accent")
+            ? "true"
+            : "false"
+        );
+
+        card.addEventListener(
+          "click",
+          () => activateCard(card)
+        );
+
+        card.addEventListener(
+          "keydown",
+          (event) => {
+            if (
+              event.key !== "Enter" &&
+              event.key !== " "
+            ) {
+              return;
+            }
+
+            event.preventDefault();
+            activateCard(card);
+          }
+        );
+      });
+    });
+  };
 
 
   const initBenefitsMotion =
@@ -1118,6 +1228,7 @@
 
   const init = () => {
     initPlatformTabs();
+    initDashboardCards();
 
     initCasesSwiper();
 

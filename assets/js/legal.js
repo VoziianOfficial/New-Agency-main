@@ -17,6 +17,7 @@
   const initSectionNavigation = () => {
     const sections = qsa(".legal-section[id]");
     const links = qsa(".legal-sidebar__link[href^='#']");
+    const navBox = qs(".legal-sidebar__box");
 
     if (!sections.length || !links.length) {
       return;
@@ -34,6 +35,27 @@
         link
       );
     });
+
+    const scrollActiveLinkIntoNav = (link) => {
+      if (
+        !navBox ||
+        window.innerWidth > 991 ||
+        navBox.scrollWidth <= navBox.clientWidth
+      ) {
+        return;
+      }
+
+      const nextLeft =
+        link.offsetLeft -
+        (navBox.clientWidth - link.offsetWidth) / 2;
+
+      navBox.scrollTo({
+        left: Math.max(0, nextLeft),
+        behavior: reducedMotion
+          ? "auto"
+          : "smooth"
+      });
+    };
 
     const setActive = (id) => {
       links.forEach((link) => {
@@ -60,18 +82,8 @@
       const activeLink =
         linkMap.get(id);
 
-      if (
-        activeLink &&
-        window.innerWidth <= 991
-      ) {
-        activeLink.scrollIntoView({
-          behavior: reducedMotion
-            ? "auto"
-            : "smooth",
-
-          block: "nearest",
-          inline: "center"
-        });
+      if (activeLink) {
+        scrollActiveLinkIntoNav(activeLink);
       }
     };
 
@@ -94,6 +106,7 @@
           if (!target) return;
 
           event.preventDefault();
+          event.stopImmediatePropagation();
 
           target.scrollIntoView({
             behavior: reducedMotion
@@ -110,7 +123,8 @@
           );
 
           setActive(id);
-        }
+        },
+        true
       );
     });
 

@@ -290,6 +290,7 @@
     );
 
     let lastFocusedElement = null;
+    let menuScrollY = 0;
 
     const getFocusableElements = () =>
       qsa(
@@ -315,6 +316,8 @@
       lastFocusedElement =
         doc.activeElement;
 
+      menuScrollY = window.scrollY;
+
       panel.classList.add("is-open");
       panel.setAttribute(
         "aria-hidden",
@@ -322,6 +325,11 @@
       );
 
       body.classList.add("menu-open");
+      body.style.position = "fixed";
+      body.style.top = `-${menuScrollY}px`;
+      body.style.left = "0";
+      body.style.right = "0";
+      body.style.width = "100%";
 
       openButtons.forEach((button) => {
         button.setAttribute(
@@ -338,10 +346,22 @@
       }, 80);
     };
 
-    const closeMenu = () => {
+    const closeMenu = (
+      { restoreFocus = true } = {}
+    ) => {
       if (!panel.classList.contains("is-open")) {
         return;
       }
+
+      const restoreScrollY = menuScrollY;
+      const previousScrollBehavior =
+        root.style.scrollBehavior;
+
+      if (panel.contains(doc.activeElement)) {
+        doc.activeElement.blur();
+      }
+
+      root.style.scrollBehavior = "auto";
 
       panel.classList.remove("is-open");
       panel.setAttribute(
@@ -350,6 +370,22 @@
       );
 
       body.classList.remove("menu-open");
+      body.style.position = "";
+      body.style.top = "";
+      body.style.left = "";
+      body.style.right = "";
+      body.style.width = "";
+
+      window.scrollTo({
+        left: 0,
+        top: restoreScrollY,
+        behavior: "auto"
+      });
+
+      window.requestAnimationFrame(() => {
+        root.style.scrollBehavior =
+          previousScrollBehavior;
+      });
 
       openButtons.forEach((button) => {
         button.setAttribute(
@@ -359,12 +395,21 @@
       });
 
       if (
+        restoreFocus &&
         lastFocusedElement &&
         typeof lastFocusedElement.focus ===
           "function"
       ) {
         window.setTimeout(() => {
-          lastFocusedElement.focus();
+          lastFocusedElement.focus({
+            preventScroll: true
+          });
+
+          window.scrollTo({
+            left: 0,
+            top: restoreScrollY,
+            behavior: "auto"
+          });
         }, 60);
       }
     };
@@ -388,7 +433,11 @@
       (link) => {
         link.addEventListener(
           "click",
-          closeMenu
+          () => {
+            closeMenu({
+              restoreFocus: false
+            });
+          }
         );
       }
     );

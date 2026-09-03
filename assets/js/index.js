@@ -661,12 +661,14 @@
     if (!capsules.length) return;
 
     const positions = [
-      [0.1, 0.44, -2.5],
-      [0.33, 0.28, 4],
-      [0.43, 0.56, -6],
-      [0.49, 0.1, 8],
-      [0.64, 0.34, -3],
-      [0.68, 0.6, 5]
+      [0.02, 0.43, -2.5],
+      [0.28, 0.28, 4],
+      [0.37, 0.56, -6],
+      [0.42, 0.18, 8],
+      [0.58, 0.36, -3],
+      [0.61, 0.62, 5],
+      [0.17, 0.66, 6],
+      [0.72, 0.24, -7]
     ];
 
     let bounds = {
@@ -680,6 +682,7 @@
     let frameId = 0;
     let lastTime = 0;
     let resizeTimer = 0;
+    let edgePadding = 0;
 
     const clamp = (value, min, max) =>
       Math.min(
@@ -700,6 +703,11 @@
         height: rect.height
       };
 
+      edgePadding = Math.min(
+        34,
+        bounds.width * 0.04
+      );
+
       bodies = capsules.map(
         (element, index) => {
           const width = element.offsetWidth;
@@ -708,13 +716,13 @@
             positions[index % positions.length];
           const x = clamp(
             bounds.width * position[0],
-            0,
-            bounds.width - width
+            edgePadding,
+            bounds.width - width - edgePadding
           );
           const y = clamp(
             bounds.height * position[1],
-            0,
-            bounds.height - height
+            edgePadding,
+            bounds.height - height - edgePadding
           );
 
           return {
@@ -734,6 +742,9 @@
             pointerY: 0,
             lastPointerX: 0,
             lastPointerY: 0,
+            grabOffsetX: width / 2,
+            grabOffsetY: height / 2,
+            hasCustomPosition: false,
             isDragging: false
           };
         }
@@ -743,23 +754,25 @@
     };
 
     const keepInBounds = (body) => {
-      if (body.x < 0) {
-        body.x = 0;
+      if (body.x < edgePadding) {
+        body.x = edgePadding;
         body.vx = Math.abs(body.vx) * 0.46;
       }
 
-      if (body.y < 0) {
-        body.y = 0;
+      if (body.y < edgePadding) {
+        body.y = edgePadding;
         body.vy = Math.abs(body.vy) * 0.46;
       }
 
-      if (body.x + body.width > bounds.width) {
-        body.x = bounds.width - body.width;
+      if (body.x + body.width > bounds.width - edgePadding) {
+        body.x =
+          bounds.width - body.width - edgePadding;
         body.vx = -Math.abs(body.vx) * 0.46;
       }
 
-      if (body.y + body.height > bounds.height) {
-        body.y = bounds.height - body.height;
+      if (body.y + body.height > bounds.height - edgePadding) {
+        body.y =
+          bounds.height - body.height - edgePadding;
         body.vy = -Math.abs(body.vy) * 0.46;
       }
     };
@@ -836,23 +849,25 @@
         (body, index) => {
           if (body.isDragging) {
             const targetX =
-              body.pointerX - body.width / 2;
+              body.pointerX - body.grabOffsetX;
             const targetY =
-              body.pointerY - body.height / 2;
+              body.pointerY - body.grabOffsetY;
 
             body.vx +=
-              (targetX - body.x) * 0.34 * delta;
+              (targetX - body.x) * 0.58 * delta;
             body.vy +=
-              (targetY - body.y) * 0.34 * delta;
-            body.vx *= 0.64;
-            body.vy *= 0.64;
+              (targetY - body.y) * 0.58 * delta;
+            body.vx *= 0.72;
+            body.vy *= 0.72;
             body.va +=
               (body.pointerX - body.lastPointerX) * 0.0015;
           } else {
-            body.vx +=
-              (body.homeX - body.x) * 0.0011 * delta;
-            body.vy +=
-              (body.homeY - body.y) * 0.0011 * delta;
+            if (!body.hasCustomPosition) {
+              body.vx +=
+                (body.homeX - body.x) * 0.0011 * delta;
+              body.vy +=
+                (body.homeY - body.y) * 0.0011 * delta;
+            }
 
             if (!reducedMotion) {
               body.vx +=
@@ -953,6 +968,10 @@
               "is-dragging"
             );
             updatePointer(event, body);
+            body.grabOffsetX =
+              body.pointerX - body.x;
+            body.grabOffsetY =
+              body.pointerY - body.y;
             body.lastPointerX = body.pointerX;
             body.lastPointerY = body.pointerY;
             capsule.setPointerCapture(
@@ -990,6 +1009,9 @@
             }
 
             activeBody.isDragging = false;
+            activeBody.homeX = activeBody.x;
+            activeBody.homeY = activeBody.y;
+            activeBody.hasCustomPosition = true;
             activeBody.vx +=
               (activeBody.pointerX - activeBody.lastPointerX) * 0.18;
             activeBody.vy +=
@@ -1012,6 +1034,9 @@
             }
 
             activeBody.isDragging = false;
+            activeBody.homeX = activeBody.x;
+            activeBody.homeY = activeBody.y;
+            activeBody.hasCustomPosition = true;
             activeBody.element.classList.remove(
               "is-dragging"
             );

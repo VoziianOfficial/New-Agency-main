@@ -2463,6 +2463,18 @@
   --capsule-radius: 54% 46% 52% 48% / 48% 56% 44% 52%;
 }
 
+.home-performance-system__capsule--roas {
+  --capsule-width: clamp(104px, 8vw, 132px);
+  --capsule-height: clamp(58px, 4.8vw, 74px);
+  --capsule-radius: 48% 52% 46% 54% / 53% 47% 55% 45%;
+}
+
+.home-performance-system__capsule--cpl {
+  --capsule-width: clamp(92px, 7vw, 118px);
+  --capsule-height: clamp(54px, 4.4vw, 68px);
+  --capsule-radius: 55% 45% 51% 49% / 44% 56% 48% 52%;
+}
+
 
 .home-pricing {
   background: #f1f1f2;
@@ -3757,6 +3769,12 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
   .home-performance-system__capsule--tracking {
     --capsule-width: clamp(190px, 62vw, 242px);
     --capsule-height: 98px;
+  }
+
+  .home-performance-system__capsule--roas,
+  .home-performance-system__capsule--cpl {
+    --capsule-width: clamp(86px, 27vw, 112px);
+    --capsule-height: 58px;
   }
 
   .home-result {

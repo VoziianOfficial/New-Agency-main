@@ -1951,11 +1951,41 @@
 }
 
 .home-testimonials__slider {
+  position: relative;
+
   min-width: 0;
 
   border-radius: var(--radius-md);
 
   overflow: hidden;
+}
+
+.home-testimonials__controls {
+  position: absolute;
+  right: 30px;
+  bottom: 16px;
+  z-index: 5;
+}
+
+.home-testimonials__controls .swiper-btn {
+  color: var(--color-dark);
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(23, 23, 25, 0.16);
+  box-shadow: 0 12px 24px rgba(23, 23, 25, 0.12);
+}
+
+.home-testimonials__controls .swiper-btn:hover,
+.home-testimonials__controls .swiper-btn:focus-visible {
+  color: var(--color-white);
+  background: var(--color-dark);
+  border-color: var(--color-dark);
+  box-shadow: 0 16px 30px rgba(23, 23, 25, 0.22);
+
+  transform: translateY(-3px);
+}
+
+.home-testimonials__controls .swiper-btn:active {
+  transform: translateY(-1px) scale(0.97);
 }
 
 .testimonial-card {
@@ -2022,6 +2052,7 @@
   min-height: 82px;
 
   padding: 16px 30px 16px clamp(34px, 5vw, 70px);
+  padding-right: 148px;
 
   background: var(--color-accent);
 }
@@ -3505,6 +3536,11 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
 
   .testimonial-card__footer {
     padding-inline: 24px;
+    padding-right: 142px;
+  }
+
+  .home-testimonials__controls {
+    right: 24px;
   }
 
   .home-why__metric {
@@ -3617,6 +3653,11 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
 
   .testimonial-card__footer {
     padding-inline: 20px;
+    padding-right: 136px;
+  }
+
+  .home-testimonials__controls {
+    right: 20px;
   }
 
   .team-card {
@@ -3709,6 +3750,12 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
 .testimonial-card__footer {
   min-height: 68px;
   padding: 12px 24px 12px clamp(26px, 3.5vw, 48px);
+  padding-right: 138px;
+}
+
+.home-testimonials__controls {
+  right: 24px;
+  bottom: 10px;
 }
 
 .team-card {

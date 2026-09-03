@@ -1771,7 +1771,7 @@
 
 
 .home-process {
-  overflow: hidden;
+  overflow: clip;
 }
 
 .home-process__grid {
@@ -2149,7 +2149,7 @@
 
 
 .home-why {
-  overflow: hidden;
+  overflow: clip;
 }
 
 .home-why__grid {
@@ -2240,8 +2240,6 @@
   gap: 28px;
 
   align-items: center;
-
-  min-height: 170px;
 
   padding: 30px 34px;
 
@@ -2661,7 +2659,7 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
 
 
 .home-contact {
-  overflow: hidden;
+  overflow: clip;
 }
 
 .home-contact__shell {
@@ -2678,7 +2676,7 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
 
   border-radius: var(--radius-lg);
 
-  overflow: hidden;
+  overflow: clip;
 }
 
 .home-contact__shell::after {
@@ -2824,6 +2822,17 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
 
 .home-contact__form .form-message {
   text-align: center;
+}
+
+
+@media (min-width: 992px) {
+  .home-process__visual,
+  .home-why__content,
+  .home-contact__content {
+    position: sticky;
+    top: 96px;
+    align-self: start;
+  }
 }
 
 

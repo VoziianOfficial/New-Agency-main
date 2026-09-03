@@ -635,6 +635,30 @@
 
 
     qsa(
+      ".service-parallax-cards"
+    ).forEach((section) => {
+      window.gsap.fromTo(
+        section,
+        {
+          "--service-parallax-y": "-7%"
+        },
+        {
+          "--service-parallax-y": "7%",
+
+          ease: "none",
+
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.75
+          }
+        }
+      );
+    });
+
+
+    qsa(
       ".service-case__media"
     ).forEach((media) => {
       const image =

@@ -1914,6 +1914,138 @@
 }
 
 
+.service-parallax-cards {
+  --service-parallax-y: 0%;
+
+  isolation: isolate;
+  padding-block: clamp(42px, 5vw, 72px);
+
+  color: var(--color-white);
+  background: var(--color-dark);
+
+  overflow: hidden;
+}
+
+.service-parallax-cards::before {
+  content: "";
+
+  position: absolute;
+  inset: -16%;
+  z-index: -2;
+
+  background: var(--service-parallax-image) center / cover no-repeat;
+
+  transform: translate3d(0, var(--service-parallax-y), 0);
+  will-change: transform;
+}
+
+.service-parallax-cards::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(23, 23, 25, 0.88),
+      rgba(23, 23, 25, 0.68)
+    );
+}
+
+.service-parallax-cards__grid {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 24px);
+
+  align-items: stretch;
+}
+
+.service-parallax-card {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  min-width: 0;
+  min-height: 212px;
+  height: 100%;
+
+  padding: 64px clamp(20px, 2.4vw, 34px) 30px;
+
+  color: var(--color-dark);
+  background: rgba(255, 163, 0, 0.88);
+
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-md);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.26),
+    inset 0 1px 0 rgba(255, 255, 255, 0.36);
+
+  text-align: center;
+}
+
+.service-parallax-card__icon {
+  position: absolute;
+  top: 0;
+  left: 50%;
+
+  display: grid;
+  place-items: center;
+
+  width: 76px;
+  height: 76px;
+
+  color: var(--color-white);
+  background: var(--color-dark);
+
+  border: 6px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+
+  transform: translate(-50%, -38%);
+}
+
+.service-parallax-card__icon svg {
+  width: 32px;
+  height: 32px;
+
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.service-parallax-card h3 {
+  max-width: 300px;
+
+  margin-inline: auto;
+
+  font-size: clamp(20px, 1.55vw, 26px);
+  line-height: 1.08;
+
+  text-transform: uppercase;
+}
+
+.service-parallax-card p {
+  max-width: 360px;
+
+  margin-top: 14px;
+  margin-inline: auto;
+
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+
+  color: rgba(23, 23, 25, 0.72);
+}
+
+
 .service-faq__grid {
   display: grid;
   grid-template-columns: minmax(300px, 0.7fr) minmax(0, 1.3fr);
@@ -2263,6 +2395,14 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .service-parallax-cards__grid {
+    grid-template-columns: 1fr;
+    gap: 42px;
+
+    max-width: 760px;
+    margin-inline: auto;
+  }
+
   .service-case {
     grid-template-columns: 1fr;
   }
@@ -2512,6 +2652,26 @@
   .service-benefits__icon {
     width: 44px;
     height: 44px;
+  }
+
+  .service-parallax-cards {
+    padding-block: 54px;
+  }
+
+  .service-parallax-card {
+    min-height: 0;
+    padding: 58px 20px 24px;
+
+    border-radius: 18px;
+  }
+
+  .service-parallax-card__icon {
+    width: 68px;
+    height: 68px;
+  }
+
+  .service-parallax-card h3 {
+    font-size: 22px;
   }
 
   .service-benefits__item:hover {

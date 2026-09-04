@@ -1612,6 +1612,23 @@ textarea.form-control {
   overflow: hidden;
 }
 
+.heading-reveal__line {
+  display: block;
+}
+
+html.js .heading-reveal__target {
+  opacity: 0;
+  transform: translate3d(0, 20px, 0);
+  transition-property: opacity, transform;
+  will-change: transform, opacity;
+}
+
+html.js .heading-reveal.is-visible.heading-reveal__target,
+html.js .heading-reveal.is-visible .heading-reveal__target {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
 [data-aos] {
   backface-visibility: hidden;
   transform-style: preserve-3d;
@@ -2180,6 +2197,13 @@ html:not(.no-js) [data-aos="fade-right"] {
   }
 
   .mobile-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  .heading-reveal,
+  .heading-reveal__target {
     opacity: 1 !important;
     transform: none !important;
     transition: none !important;

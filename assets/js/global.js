@@ -934,6 +934,221 @@
 
   };
 
+  const initSectionHeadingReveal = () => {
+    if (prefersReducedMotion) {
+      return;
+    }
+
+    const headings = Array.from(
+      new Set(
+        qsa(
+          [
+            "main h2",
+            "main .section-title",
+            "main .home-expertise__heading",
+            "main .home-ai__title",
+            "main .service-dashboard__title",
+            "main .service-cta__title",
+            "main .home-cta__title"
+          ].join(",")
+        )
+      )
+    ).filter((heading) => {
+      if (
+        heading.matches(
+          ".search__title, .legal-sidebar__title"
+        )
+      ) {
+        return false;
+      }
+
+      return !heading.closest(
+        [
+          ".home-hero",
+          ".hero-section",
+          ".service-hero",
+          "header",
+          "nav",
+          "footer",
+          ".site-footer",
+          ".search",
+          ".accordion",
+          "form",
+          "[data-aos]"
+        ].join(",")
+      );
+    });
+
+    if (!headings.length) {
+      return;
+    }
+
+    const splitExplicitLines = (heading) => {
+      const hasLineBreak = Array.from(
+        heading.childNodes
+      ).some(
+        (node) => node.nodeName === "BR"
+      );
+
+      if (!hasLineBreak) {
+        return [];
+      }
+
+      const fragment =
+        doc.createDocumentFragment();
+      let line = doc.createElement("span");
+      const lines = [];
+
+      line.className = "heading-reveal__line";
+
+      const appendLine = () => {
+        if (!line.textContent.trim()) {
+          return;
+        }
+
+        fragment.appendChild(line);
+        lines.push(line);
+        line = doc.createElement("span");
+        line.className =
+          "heading-reveal__line";
+      };
+
+      while (heading.firstChild) {
+        const node = heading.firstChild;
+
+        if (node.nodeName === "BR") {
+          heading.removeChild(node);
+          appendLine();
+        } else {
+          line.appendChild(node);
+        }
+      }
+
+      appendLine();
+      heading.appendChild(fragment);
+
+      return lines;
+    };
+
+    const isMobile = mobileMotionQuery.matches;
+    const yOffset = isMobile ? 20 : 34;
+    const duration = isMobile ? 0.58 : 0.74;
+    const ease = "cubic-bezier(0.22, 1, 0.36, 1)";
+
+    headings.forEach((heading) => {
+      heading.classList.add("heading-reveal");
+    });
+
+    if (
+      !isMobile &&
+      typeof window.gsap !== "undefined" &&
+      typeof window.ScrollTrigger !== "undefined"
+    ) {
+      window.gsap.registerPlugin(
+        window.ScrollTrigger
+      );
+
+      headings.forEach((heading) => {
+        const lines = splitExplicitLines(heading);
+        const targets = lines.length
+          ? lines
+          : [heading];
+
+        window.gsap.set(targets, {
+          y: yOffset,
+          opacity: 0,
+          willChange:
+            "transform, opacity"
+        });
+
+        window.gsap.to(targets, {
+          y: 0,
+          opacity: 1,
+          duration,
+          stagger:
+            targets.length > 1 ? 0.09 : 0,
+          ease: "power3.out",
+          clearProps:
+            "transform,opacity,willChange",
+          scrollTrigger: {
+            trigger: heading,
+            start: "top 88%",
+            once: true
+          }
+        });
+      });
+
+      return;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      headings.forEach((heading) => {
+        heading.classList.add("is-visible");
+      });
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.add(
+            "is-visible"
+          );
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        rootMargin: "0px 0px -8% 0px",
+        threshold: 0.01
+      }
+    );
+
+    headings.forEach((heading) => {
+      const lines = splitExplicitLines(heading);
+      const targets = lines.length
+        ? lines
+        : [heading];
+
+      heading.classList.add(
+        "heading-reveal--io"
+      );
+
+      targets.forEach((target, index) => {
+        target.classList.add(
+          "heading-reveal__target"
+        );
+        target.style.transitionDelay =
+          targets.length > 1
+            ? `${index * 80}ms`
+            : "";
+        target.style.transitionDuration =
+          `${duration}s`;
+        target.style.transitionTimingFunction =
+          ease;
+      });
+
+      observer.observe(heading);
+
+      const rect =
+        heading.getBoundingClientRect();
+
+      if (
+        rect.bottom > 0 &&
+        rect.top <
+          window.innerHeight * 0.92
+      ) {
+        window.requestAnimationFrame(() => {
+          heading.classList.add(
+            "is-visible"
+          );
+          observer.unobserve(heading);
+        });
+      }
+    });
+  };
+
 
   const initMotionRefresh = () => {
     if (mobileMotionQuery.matches) {
@@ -1567,6 +1782,7 @@
     initMenu();
     initSearch();
 
+    initSectionHeadingReveal();
     initAOS();
     initAccordions();
     initParallax();

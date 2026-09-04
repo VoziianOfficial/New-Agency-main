@@ -3980,7 +3980,42 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
   }
 
   .home-contact__form {
-    padding: 24px 18px;
+    padding: 22px 18px;
+  }
+
+  .home-contact__form-title {
+    margin-bottom: 16px;
+
+    font-size: clamp(22px, 6vw, 28px);
+  }
+
+  .home-contact__form .form-grid {
+    gap: 10px;
+  }
+
+  .home-contact__form .form-field {
+    gap: 5px;
+  }
+
+  .home-contact__form .form-label {
+    font-size: 11px;
+  }
+
+  .home-contact__form .form-control {
+    min-height: 44px;
+
+    padding: 10px 14px;
+  }
+
+  .home-contact__form textarea.form-control {
+    min-height: 84px;
+  }
+
+  .home-contact__form .form-grid > .form-field:nth-child(2),
+  .home-contact__form .form-grid > .form-field:nth-child(4),
+  .home-contact__form .form-grid > .form-field:nth-child(5),
+  .home-contact__form .form-grid > .form-field:nth-child(6) {
+    display: none;
   }
 
   .home-cta {

@@ -4,7 +4,7 @@ const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)
 const coarsePointer = window.matchMedia("(pointer: coarse)").matches;
 const lowPowerDevice = coarsePointer || (navigator.hardwareConcurrency || 8) <= 4;
 const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-const maxPixelRatio = coarsePointer ? 1.35 : 1.75;
+const maxPixelRatio = coarsePointer ? 1.15 : 1.75;
 const pixelRatio = Math.min(window.devicePixelRatio || 1, maxPixelRatio);
 const accentColor =
   getComputedStyle(document.documentElement).getPropertyValue("--color-accent").trim() ||
@@ -237,8 +237,8 @@ function createSpheres(seed, isService) {
 }
 
 function getSphereCount(width, isService) {
-  if (width < 560) return isService ? 3 : 4;
-  if (width < 900) return isService ? 4 : 5;
+  if (width < 560) return isService ? 2 : 3;
+  if (width < 900) return isService ? 3 : 4;
   if (width < 1180) return isService ? 5 : 6;
 
   return isService ? 6 : 8;
@@ -321,6 +321,7 @@ function initMetaballs(element, options = {}) {
   let isVisible = false;
   let rafId = 0;
   let needsStaticRender = true;
+  let resizeFrame = 0;
 
   function updateBounds() {
     bounds = element.getBoundingClientRect();
@@ -342,12 +343,26 @@ function initMetaballs(element, options = {}) {
 
     renderer.setSize(width, height, false);
     resolution.set(width, height);
-    material.uniforms.uSteps.value = width < 560 ? 24 : lowPowerDevice ? 32 : isService ? 40 : 46;
+    material.uniforms.uSteps.value = width < 560 ? 16 : width < 900 ? 22 : lowPowerDevice ? 32 : isService ? 40 : 46;
     needsStaticRender = true;
-    startLoop();
+
+    if (isVisible) {
+      startLoop();
+    }
+  }
+
+  function requestResize() {
+    if (resizeFrame) return;
+
+    resizeFrame = requestAnimationFrame(() => {
+      resizeFrame = 0;
+      resize();
+    });
   }
 
   function onPointerMove(event) {
+    if (coarsePointer) return;
+
     updateBounds();
     cursor.target.set(
       THREE.MathUtils.clamp(event.clientX - bounds.left, 0, bounds.width),
@@ -359,6 +374,8 @@ function initMetaballs(element, options = {}) {
   }
 
   function onPointerLeave() {
+    if (coarsePointer) return;
+
     cursor.targetActive = 0;
     startLoop();
   }
@@ -367,9 +384,9 @@ function initMetaballs(element, options = {}) {
     const count = getSphereCount(bounds.width, isService);
     const aspect = bounds.width / Math.max(bounds.height, 1);
     const radiusScale =
-      bounds.width < 560 ? (isService ? 0.36 : 0.52) : bounds.width < 900 ? (isService ? 0.62 : 0.72) : isService ? 0.82 : 0.94;
+      bounds.width < 560 ? (isService ? 0.34 : 0.48) : bounds.width < 900 ? (isService ? 0.58 : 0.68) : isService ? 0.82 : 0.94;
     const motionScale =
-      bounds.width < 560 ? 0.7 : bounds.width < 900 ? 0.82 : isService ? 0.88 : 1;
+      bounds.width < 560 ? 0.46 : bounds.width < 900 ? 0.68 : isService ? 0.88 : 1;
     const cursorWorld = viewportToWorld(cursor.current.x, cursor.current.y);
     const cursorRadius = THREE.MathUtils.lerp(
       0,
@@ -459,18 +476,22 @@ function initMetaballs(element, options = {}) {
         clock.getDelta();
         needsStaticRender = true;
         startLoop();
+      } else if (rafId) {
+        cancelAnimationFrame(rafId);
+        rafId = 0;
       }
     },
-    { threshold: 0.02 }
+    { rootMargin: "80px 0px", threshold: 0.02 }
   );
 
   resizeObserver.observe(element);
   intersectionObserver.observe(element);
-  element.addEventListener("pointermove", onPointerMove, { passive: true });
-  element.addEventListener("pointerenter", onPointerMove, { passive: true });
-  element.addEventListener("pointerleave", onPointerLeave, { passive: true });
-  window.addEventListener("resize", resize, { passive: true });
-  window.addEventListener("orientationchange", resize, { passive: true });
+  if (!coarsePointer) {
+    element.addEventListener("pointermove", onPointerMove, { passive: true });
+    element.addEventListener("pointerenter", onPointerMove, { passive: true });
+    element.addEventListener("pointerleave", onPointerLeave, { passive: true });
+  }
+  window.addEventListener("orientationchange", requestResize, { passive: true });
 
   resize();
   updateSpheres(0);

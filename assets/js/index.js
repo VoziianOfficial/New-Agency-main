@@ -38,10 +38,14 @@
     "(prefers-reduced-motion: reduce)"
   ).matches;
 
+  const finePointer = window.matchMedia(
+    "(pointer: fine)"
+  ).matches;
+
   const canUseScrollEffects = () =>
     !reducedMotion &&
     window.matchMedia("(min-width: 992px)").matches &&
-    window.matchMedia("(pointer: fine)").matches;
+    finePointer;
 
 
   const initServicesSwiper = () => {
@@ -711,6 +715,9 @@
 
     if (!capsules.length) return;
 
+    const mobileSystemQuery =
+      window.matchMedia("(max-width: 991px)");
+
     const positions = [
       [0.02, 0.43, -2.5],
       [0.28, 0.28, 4],
@@ -997,6 +1004,30 @@
       );
     };
 
+    measure();
+
+    if (
+      mobileSystemQuery.matches ||
+      !finePointer
+    ) {
+      window.addEventListener(
+        "resize",
+        () => {
+          window.clearTimeout(
+            resizeTimer
+          );
+
+          resizeTimer = window.setTimeout(
+            measure,
+            180
+          );
+        },
+        { passive: true }
+      );
+
+      return;
+    }
+
     capsules.forEach(
       (capsule) => {
         capsule.addEventListener(
@@ -1096,8 +1127,6 @@
         );
       }
     );
-
-    measure();
 
     if (
       "IntersectionObserver" in window

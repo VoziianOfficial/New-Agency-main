@@ -24,6 +24,8 @@
     }
 
     const linkMap = new Map();
+    let activeId = "";
+    let navScrollFrame = 0;
 
     links.forEach((link) => {
       const href = link.getAttribute("href");
@@ -45,19 +47,29 @@
         return;
       }
 
-      const nextLeft =
-        link.offsetLeft -
-        (navBox.clientWidth - link.offsetWidth) / 2;
+      if (navScrollFrame) return;
 
-      navBox.scrollTo({
-        left: Math.max(0, nextLeft),
-        behavior: reducedMotion
-          ? "auto"
-          : "smooth"
+      navScrollFrame = window.requestAnimationFrame(() => {
+        navScrollFrame = 0;
+
+        const nextLeft =
+          link.offsetLeft -
+          (navBox.clientWidth - link.offsetWidth) / 2;
+
+        navBox.scrollTo({
+          left: Math.max(0, nextLeft),
+          behavior: "auto"
+        });
       });
     };
 
     const setActive = (id) => {
+      if (id === activeId) {
+        return;
+      }
+
+      activeId = id;
+
       links.forEach((link) => {
         const active =
           link === linkMap.get(id);

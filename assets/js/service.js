@@ -59,6 +59,48 @@
     window.matchMedia("(min-width: 992px)").matches &&
     finePointer;
 
+  const mobileMotionQuery = window.matchMedia("(max-width: 991px)");
+
+  const revealMobileElements = (elements) => {
+    if (!elements.length) return true;
+
+    elements.forEach((element) => {
+      element.classList.add("mobile-service-reveal");
+    });
+
+    if (reducedMotion || !mobileMotionQuery.matches) {
+      return false;
+    }
+
+    if (!("IntersectionObserver" in window)) {
+      elements.forEach((element) => {
+        element.classList.add("is-visible");
+      });
+      return true;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      {
+        rootMargin: "0px 0px -12% 0px",
+        threshold: 0.01
+      }
+    );
+
+    elements.forEach((element) => {
+      observer.observe(element);
+    });
+
+    return true;
+  };
+
 
   const initPlatformTabs = () => {
     const sections = qsa(".service-platforms");
@@ -710,6 +752,11 @@
           return;
         }
 
+        if (mobileMotionQuery.matches) {
+          revealMobileElements(cards);
+          return;
+        }
+
         if (
           reducedMotion ||
           typeof window.gsap ===
@@ -772,6 +819,11 @@
             );
           }
         );
+
+        if (mobileMotionQuery.matches) {
+          revealMobileElements(cards);
+          return;
+        }
 
         if (
           reducedMotion ||
@@ -837,6 +889,11 @@
             return;
           }
 
+          if (mobileMotionQuery.matches) {
+            revealMobileElements(cards);
+            return;
+          }
+
           window.gsap.from(
             cards,
             {
@@ -889,6 +946,11 @@
           );
 
           if (!cubes.length) {
+            return;
+          }
+
+          if (mobileMotionQuery.matches) {
+            revealMobileElements(cubes);
             return;
           }
 
@@ -950,6 +1012,11 @@
           );
 
           if (!cards.length) {
+            return;
+          }
+
+          if (mobileMotionQuery.matches) {
+            revealMobileElements(cards);
             return;
           }
 
@@ -1016,6 +1083,14 @@
               ".service-dashboard__side-card",
               section
             );
+
+          if (mobileMotionQuery.matches) {
+            revealMobileElements([
+              ...metrics,
+              ...sideCards
+            ]);
+            return;
+          }
 
           if (metrics.length) {
             window.gsap.from(
@@ -1197,6 +1272,11 @@
           );
 
           if (!items.length) {
+            return;
+          }
+
+          if (mobileMotionQuery.matches) {
+            revealMobileElements(items);
             return;
           }
 

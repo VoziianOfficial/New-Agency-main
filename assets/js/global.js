@@ -26,13 +26,21 @@
     window.matchMedia("(min-width: 992px)").matches &&
     window.matchMedia("(pointer: fine)").matches;
 
+  const mobileMotionQuery = window.matchMedia("(max-width: 991px)");
+  const canUseMobileReveal = () =>
+    !prefersReducedMotion &&
+    mobileMotionQuery.matches;
+
   let motionRefreshFrame = null;
   let motionRefreshTimer = null;
 
   const refreshAnimationEngines = (
     { hardAOS = false } = {}
   ) => {
-    if (prefersReducedMotion) {
+    if (
+      prefersReducedMotion ||
+      mobileMotionQuery.matches
+    ) {
       return;
     }
 
@@ -866,9 +874,50 @@
   const initAOS = () => {
     if (
       prefersReducedMotion ||
-      typeof window.AOS === "undefined" ||
       !qs("[data-aos]")
     ) {
+      return;
+    }
+
+    if (canUseMobileReveal()) {
+      qsa("[data-aos]").forEach((element) => {
+        element.classList.add("mobile-reveal");
+        element.removeAttribute("data-aos");
+        element.removeAttribute("data-aos-delay");
+        element.removeAttribute("data-aos-duration");
+        element.removeAttribute("data-aos-easing");
+      });
+
+      if (!("IntersectionObserver" in window)) {
+        qsa(".mobile-reveal").forEach((element) => {
+          element.classList.add("is-visible");
+        });
+        return;
+      }
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        },
+        {
+          rootMargin: "0px 0px -12% 0px",
+          threshold: 0.01
+        }
+      );
+
+      qsa(".mobile-reveal").forEach((element) => {
+        observer.observe(element);
+      });
+
+      return;
+    }
+
+    if (typeof window.AOS === "undefined") {
       return;
     }
 
@@ -887,6 +936,10 @@
 
 
   const initMotionRefresh = () => {
+    if (mobileMotionQuery.matches) {
+      return;
+    }
+
     if (
       typeof window.AOS === "undefined" &&
       typeof window.ScrollTrigger === "undefined"
@@ -1474,6 +1527,10 @@
 
 
   const initResizeRefresh = () => {
+    if (mobileMotionQuery.matches) {
+      return;
+    }
+
     if (
       typeof window.AOS === "undefined" &&
       typeof window.ScrollTrigger === "undefined"

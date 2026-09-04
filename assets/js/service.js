@@ -867,14 +867,7 @@
         ".service-capabilities"
       );
 
-      if (
-        !sections.length ||
-        reducedMotion ||
-        typeof window.gsap ===
-          "undefined" ||
-        typeof window.ScrollTrigger ===
-          "undefined"
-      ) {
+      if (!sections.length) {
         return;
       }
 
@@ -891,6 +884,16 @@
 
           if (mobileMotionQuery.matches) {
             revealMobileElements(cards);
+            return;
+          }
+
+          if (
+            reducedMotion ||
+            typeof window.gsap ===
+              "undefined" ||
+            typeof window.ScrollTrigger ===
+              "undefined"
+          ) {
             return;
           }
 
@@ -927,14 +930,7 @@
         ".service-proof-mosaic"
       );
 
-      if (
-        !sections.length ||
-        reducedMotion ||
-        typeof window.gsap ===
-          "undefined" ||
-        typeof window.ScrollTrigger ===
-          "undefined"
-      ) {
+      if (!sections.length) {
         return;
       }
 
@@ -951,6 +947,16 @@
 
           if (mobileMotionQuery.matches) {
             revealMobileElements(cubes);
+            return;
+          }
+
+          if (
+            reducedMotion ||
+            typeof window.gsap ===
+              "undefined" ||
+            typeof window.ScrollTrigger ===
+              "undefined"
+          ) {
             return;
           }
 
@@ -993,14 +999,7 @@
         ".service-strategy"
       );
 
-      if (
-        !sections.length ||
-        reducedMotion ||
-        typeof window.gsap ===
-          "undefined" ||
-        typeof window.ScrollTrigger ===
-          "undefined"
-      ) {
+      if (!sections.length) {
         return;
       }
 
@@ -1017,6 +1016,16 @@
 
           if (mobileMotionQuery.matches) {
             revealMobileElements(cards);
+            return;
+          }
+
+          if (
+            reducedMotion ||
+            typeof window.gsap ===
+              "undefined" ||
+            typeof window.ScrollTrigger ===
+              "undefined"
+          ) {
             return;
           }
 
@@ -1060,14 +1069,7 @@
         ".service-dashboard"
       );
 
-      if (
-        !sections.length ||
-        reducedMotion ||
-        typeof window.gsap ===
-          "undefined" ||
-        typeof window.ScrollTrigger ===
-          "undefined"
-      ) {
+      if (!sections.length) {
         return;
       }
 
@@ -1089,6 +1091,16 @@
               ...metrics,
               ...sideCards
             ]);
+            return;
+          }
+
+          if (
+            reducedMotion ||
+            typeof window.gsap ===
+              "undefined" ||
+            typeof window.ScrollTrigger ===
+              "undefined"
+          ) {
             return;
           }
 

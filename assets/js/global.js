@@ -31,6 +31,15 @@
     !prefersReducedMotion &&
     mobileMotionQuery.matches;
 
+  if (
+    typeof window.ScrollTrigger !== "undefined" &&
+    typeof window.ScrollTrigger.config === "function"
+  ) {
+    window.ScrollTrigger.config({
+      ignoreMobileResize: true
+    });
+  }
+
   let motionRefreshFrame = null;
   let motionRefreshTimer = null;
 
@@ -1742,10 +1751,6 @@
 
 
   const initResizeRefresh = () => {
-    if (mobileMotionQuery.matches) {
-      return;
-    }
-
     if (
       typeof window.AOS === "undefined" &&
       typeof window.ScrollTrigger === "undefined"
@@ -1754,22 +1759,82 @@
     }
 
     let resizeTimer = null;
+    let lastWidth = window.innerWidth;
+    let lastBreakpoint = mobileMotionQuery.matches
+      ? "mobile"
+      : "desktop";
+    let lastOrientation =
+      window.screen?.orientation?.type ||
+      (window.innerWidth > window.innerHeight
+        ? "landscape"
+        : "portrait");
+
+    const getOrientation = () =>
+      window.screen?.orientation?.type ||
+      (window.innerWidth > window.innerHeight
+        ? "landscape"
+        : "portrait");
+
+    const shouldRefreshAfterResize = () => {
+      const currentWidth = window.innerWidth;
+      const currentBreakpoint = mobileMotionQuery.matches
+        ? "mobile"
+        : "desktop";
+      const currentOrientation = getOrientation();
+
+      const widthChanged =
+        Math.abs(currentWidth - lastWidth) > 1;
+      const breakpointChanged =
+        currentBreakpoint !== lastBreakpoint;
+      const orientationChanged =
+        currentOrientation !== lastOrientation;
+
+      lastWidth = currentWidth;
+      lastBreakpoint = currentBreakpoint;
+      lastOrientation = currentOrientation;
+
+      return (
+        widthChanged ||
+        breakpointChanged ||
+        orientationChanged
+      );
+    };
+
+    const queueRefresh = () => {
+      if (!shouldRefreshAfterResize()) {
+        return;
+      }
+
+      window.clearTimeout(resizeTimer);
+
+      resizeTimer = window.setTimeout(
+        () => {
+          refreshAnimationEngines();
+        },
+        220
+      );
+    };
+
+    window.addEventListener("resize", queueRefresh, {
+      passive: true
+    });
 
     window.addEventListener(
-      "resize",
+      "orientationchange",
       () => {
-        window.clearTimeout(
-          resizeTimer
-        );
+        window.clearTimeout(resizeTimer);
 
-        resizeTimer =
-          window.setTimeout(
-            () => {
-              refreshAnimationEngines();
-            },
-            180
-          );
-      }
+        resizeTimer = window.setTimeout(() => {
+          lastWidth = window.innerWidth;
+          lastBreakpoint = mobileMotionQuery.matches
+            ? "mobile"
+            : "desktop";
+          lastOrientation = getOrientation();
+
+          refreshAnimationEngines();
+        }, 360);
+      },
+      { passive: true }
     );
   };
 

@@ -322,6 +322,8 @@ function initMetaballs(element, options = {}) {
   let rafId = 0;
   let needsStaticRender = true;
   let resizeFrame = 0;
+  let canvasWidth = 0;
+  let canvasHeight = 0;
 
   function updateBounds() {
     bounds = element.getBoundingClientRect();
@@ -335,14 +337,35 @@ function initMetaballs(element, options = {}) {
     return new THREE.Vector3(nx * aspect * 2.12, ny * 2.12, 0);
   }
 
-  function resize() {
+  function resize(force = false) {
     updateBounds();
 
     const width = Math.max(1, Math.round(bounds.width));
     const height = Math.max(1, Math.round(bounds.height));
+    const widthChanged = Math.abs(width - canvasWidth) > 1;
+    const heightChanged = Math.abs(height - canvasHeight) > 1;
+
+    if (
+      !force &&
+      coarsePointer &&
+      !widthChanged &&
+      heightChanged
+    ) {
+      return;
+    }
+
+    if (
+      !force &&
+      !widthChanged &&
+      (!heightChanged || Math.abs(height - canvasHeight) < 24)
+    ) {
+      return;
+    }
 
     renderer.setSize(width, height, false);
     resolution.set(width, height);
+    canvasWidth = width;
+    canvasHeight = height;
     material.uniforms.uSteps.value = width < 560 ? 16 : width < 900 ? 22 : lowPowerDevice ? 32 : isService ? 40 : 46;
     needsStaticRender = true;
 
@@ -473,6 +496,7 @@ function initMetaballs(element, options = {}) {
       isVisible = entry.isIntersecting;
 
       if (isVisible) {
+        requestResize();
         clock.getDelta();
         needsStaticRender = true;
         startLoop();
@@ -491,9 +515,15 @@ function initMetaballs(element, options = {}) {
     element.addEventListener("pointerenter", onPointerMove, { passive: true });
     element.addEventListener("pointerleave", onPointerLeave, { passive: true });
   }
-  window.addEventListener("orientationchange", requestResize, { passive: true });
+  window.addEventListener(
+    "orientationchange",
+    () => {
+      window.setTimeout(() => resize(true), 280);
+    },
+    { passive: true }
+  );
 
-  resize();
+  resize(true);
   updateSpheres(0);
   renderer.render(scene, camera);
 }

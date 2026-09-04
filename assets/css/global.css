@@ -1912,13 +1912,43 @@ html:not(.no-js) [data-aos="fade-right"] {
   }
 
   .menu-panel__nav {
+    justify-content: center;
+
     padding-block: 24px;
+
+    text-align: center;
+  }
+
+  .menu-panel__list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .menu-panel__item {
+    width: 100%;
+
+    border-bottom: 1px solid var(--color-border-dark);
+  }
+
+  .menu-panel__item:first-child {
+    border-top: 1px solid var(--color-border-dark);
   }
 
   .menu-panel__link {
-    padding-block: 7px;
+    justify-content: center;
 
-    font-size: clamp(38px, 12vw, 58px);
+    padding-block: 14px;
+
+    font-size: clamp(32px, 11vw, 52px);
+  }
+
+  .menu-panel__link::before {
+    margin-right: 0;
+  }
+
+  .menu-panel__link:hover::before {
+    margin-right: 12px;
   }
 
   .menu-panel__bottom {

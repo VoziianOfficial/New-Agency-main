@@ -2730,11 +2730,6 @@
     width: 100%;
   }
 
-  .service-hero__meta-item {
-    width: 100%;
-
-    justify-content: center;
-  }
 
   .service-platforms__content {
     min-height: 580px;

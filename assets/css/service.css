@@ -2515,6 +2515,10 @@
     padding: 50px 42px 26px 22px;
   }
 
+  .service-flow__step:nth-child(n + 4) {
+    display: none;
+  }
+
   .service-flow__step h3 {
     margin-top: 0;
   }
@@ -2632,6 +2636,10 @@
     min-height: 218px;
   }
 
+  .service-process__card:nth-child(n + 4) {
+    display: none;
+  }
+
   .service-case {
     min-height: auto;
 
@@ -2728,11 +2736,6 @@
 
   .service-hero__meta {
     width: 100%;
-  }
-
-
-  .service-platforms__content {
-    min-height: 580px;
   }
 
   .service-dashboard__visual {

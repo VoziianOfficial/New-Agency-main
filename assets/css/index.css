@@ -3892,6 +3892,10 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
     padding: 20px;
   }
 
+  .home-process__item:nth-child(n + 4) {
+    display: none;
+  }
+
   .home-process__number {
     font-size: 38px;
   }

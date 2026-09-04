@@ -2300,8 +2300,22 @@
     margin-inline: auto;
   }
 
+  .service-proof-mosaic__title {
+    margin-top: 14px;
+  }
+
+  .service-proof-mosaic__copy {
+    margin-top: 12px;
+  }
+
+  .service-proof-mosaic__copy + .service-proof-mosaic__copy {
+    margin-top: 10px;
+  }
+
   .service-proof-mosaic__actions {
     justify-content: center;
+
+    margin-top: 20px;
   }
 
   .service-flow__canvas {
@@ -2451,20 +2465,6 @@
     grid-template-columns: 1fr;
   }
 
-  .service-performance__shell {
-    grid-template-columns: 1fr;
-  }
-
-  .service-performance__item {
-
-    border-right: 0;
-    border-bottom: 1px solid rgba(23, 23, 25, 0.24);
-  }
-
-  .service-performance__item:last-child {
-    border-bottom: 0;
-  }
-
   .service-performance__label {
     align-self: flex-start;
 
@@ -2486,6 +2486,11 @@
 
   .proof-cube {
     min-height: 0;
+  }
+
+  .proof-cube--feature {
+    aspect-ratio: auto;
+    padding: 22px 18px;
   }
 
   .proof-cube__title,
@@ -2518,7 +2523,11 @@
     height: 440px;
   }
 
-  .service-strategy__stats,
+  .service-strategy__stats {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+  }
+
   .service-strategy__cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2603,7 +2612,7 @@
   }
 
   .service-dashboard__visual {
-    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
 
@@ -2727,12 +2736,24 @@
     justify-content: center;
   }
 
-  .service-case__results {
-    grid-template-columns: 1fr;
-  }
-
   .service-platforms__content {
     min-height: 580px;
+  }
+
+  .service-dashboard__visual {
+    gap: 6px;
+  }
+
+  .service-dashboard__metric {
+    padding: 12px 8px;
+  }
+
+  .service-dashboard__metric strong {
+    font-size: 22px;
+  }
+
+  .service-dashboard__metric span {
+    font-size: 9px;
   }
 }
 

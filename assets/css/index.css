@@ -3959,6 +3959,14 @@ html:not(.no-js) .home-team__intro[data-aos="fade-right"] {
     height: 500px;
   }
 
+  .team-card:nth-child(2) {
+    display: none;
+  }
+
+  .team-card:nth-child(1) {
+    margin-inline: -10px;
+  }
+
   .home-contact__shell {
     gap: 38px;
 

@@ -258,7 +258,9 @@
     let fixed = false;
 
     const updateHeader = () => {
-      const shouldFix = window.scrollY > 260;
+      const shouldFix =
+        mobileMotionQuery.matches ||
+        window.scrollY > 0;
 
       if (shouldFix !== fixed) {
         fixed = shouldFix;
@@ -288,6 +290,11 @@
       "scroll",
       requestUpdate,
       { passive: true }
+    );
+
+    mobileMotionQuery.addEventListener?.(
+      "change",
+      requestUpdate
     );
   };
 

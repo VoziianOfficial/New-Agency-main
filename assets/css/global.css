@@ -361,7 +361,7 @@ main {
 }
 
 .site-header {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
@@ -371,24 +371,6 @@ main {
   padding-top: 22px;
 
   color: var(--color-white);
-}
-
-.site-header.is-fixed {
-  position: fixed;
-
-  padding-top: 10px;
-
-  animation: headerReveal 0.42s ease both;
-}
-
-@keyframes headerReveal {
-  from {
-    transform: translateY(-100%);
-  }
-
-  to {
-    transform: translateY(0);
-  }
 }
 
 .header-shell {
@@ -1818,6 +1800,12 @@ html:not(.no-js) [data-aos="fade-right"] {
   :root {
     --container-padding: 20px;
     --section-space: 54px;
+  }
+
+  .site-header {
+    position: fixed;
+
+    padding-top: 10px;
   }
 
   .main-nav {
